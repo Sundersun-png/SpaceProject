@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/correctquarters">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvQuarterTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quarter"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Restore Energy Button (top right) -->
+    <Button
+        android:id="@+id/btnRestoreEnergy"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Restore Energy"
+        android:textSize="12sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#1E90FF"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Crew Card: Andre -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardAndre"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#CC1A1A2E"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvAndreName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Andre"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/tvAndreEnergy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Max Energy: 25"
+                android:textColor="#AADDFF"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/tvAndreSkill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Skill: 5"
+                android:textColor="#AADDFF"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/tvAndreExp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EXP: 6"
+                android:textColor="#AADDFF"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/tvAndreBonus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bonus: 3"
+                android:textColor="#AADDFF"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/tvAndreSelectedBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TAP TO SELECT"
+                android:textColor="#888888"
+                android:textSize="10sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Move Buttons at the bottom (above nav bar) -->
+    <LinearLayout
+        android:id="@+id/moveButtonsRow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/btnMoveToSimulator"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="6dp"
+            android:text="Move To Simulator"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#CC1A1A2E"/>
+
+        <Button
+            android:id="@+id/btnMoveToMissionControl"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:text="Move To Mission Control"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#CC1A1A2E"/>
+
+    </LinearLayout>
+
+    <!-- Bottom Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:background="#CC0D0D1A"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout android:id="@+id/navQuarters" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏠" android:textSize="20sp" android:gravity="center"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Quarters" android:textSize="10sp" android:textColor="#FFFFFF" android:textStyle="bold" android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navSimulator" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎮" android:textSize="20sp" android:gravity="center"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Simulator" android:textSize="10sp" android:textColor="#AAAAAA" android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navMission" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🚀" android:textSize="20sp" android:gravity="center"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mission" android:textSize="10sp" android:textColor="#AAAAAA" android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navStats" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📊" android:textSize="20sp" android:gravity="center"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Statistics" android:textSize="10sp" android:textColor="#AAAAAA" android:gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navHospital" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚕️" android:textSize="20sp" android:gravity="center"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hospital" android:textSize="10sp" android:textColor="#AAAAAA" android:gravity="center"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
