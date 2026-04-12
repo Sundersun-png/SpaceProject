@@ -1,19 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
+    <!--
+        BACKGROUND IMAGE
+        This ImageView sits behind everything else.
+        scaleType="centerCrop" makes it fill the whole screen
+        without stretching, cropping edges if needed.
+        Place this as the FIRST child so it renders behind all other views.
+    -->
+    <ImageView
+        android:id="@+id/imgBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_space_home"
+        android:scaleType="centerCrop"
+        android:contentDescription="@null" />
+
+    <!--
+        LOGO / TITLE TEXT
+        Positioned in the upper-center area of the screen.
+        Adjust marginTop to move it up or down.
+    -->
     <TextView
+        android:id="@+id/tvGameTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="SPACE_X"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="160dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!--
+        START GAME BUTTON
+        Centered horizontally and placed in lower half of screen.
+        Matches the pink/magenta button style from your mockup.
+    -->
+    <Button
+        android:id="@+id/btnStartGame"
+        android:layout_width="220dp"
+        android:layout_height="56dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="102dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="302dp"
+        android:backgroundTint="#CC2D82"
+        android:text="START GAME"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

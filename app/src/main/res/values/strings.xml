@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SpaceProject</string>
+    <string name="space_colony">SPACE COLONY</string>
+    <string name="quarter">Quarter</string>
 </resources>
