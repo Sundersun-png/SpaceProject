@@ -28,6 +28,14 @@
         <activity
             android:name=".QuartersActivity"
             android:exported="false"/>
+
+        <activity
+            android:name=".HospitalActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".StatisticsActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

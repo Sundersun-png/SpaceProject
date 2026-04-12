@@ -97,6 +97,18 @@ public class MissionControlActivity extends AppCompatActivity {
             finish();
         });
 
+        LinearLayout navHospital = findViewById(R.id.navHospital);
+        navHospital.setOnClickListener(v -> {
+            startActivity(new Intent(this, HospitalActivity.class));
+            finish();
+        });
+
+        LinearLayout navStats = findViewById(R.id.navStats);
+        navStats.setOnClickListener(v -> {
+            startActivity(new Intent(this, StatisticsActivity.class));
+            finish();
+        });
+
         // navMission is the current screen — no action needed
     }
 

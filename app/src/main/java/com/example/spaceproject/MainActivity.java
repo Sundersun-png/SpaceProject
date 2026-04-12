@@ -51,12 +51,20 @@ public class MainActivity extends AppCompatActivity {
         // Bottom nav
         LinearLayout navMission  = findViewById(R.id.navMission);
         LinearLayout navQuarters = findViewById(R.id.navQuarters);
+        LinearLayout navHospital = findViewById(R.id.navHospital);
 
         navMission.setOnClickListener(v ->
             startActivity(new Intent(this, MissionControlActivity.class)));
 
         navQuarters.setOnClickListener(v ->
             startActivity(new Intent(this, QuartersActivity.class)));
+
+        navHospital.setOnClickListener(v ->
+            startActivity(new Intent(this, HospitalActivity.class)));
+
+        LinearLayout navStats = findViewById(R.id.navStats);
+        navStats.setOnClickListener(v ->
+            startActivity(new Intent(this, StatisticsActivity.class)));
 
         // navSimulator is the current screen — no action needed
     }
