@@ -80,15 +80,10 @@ public class QuartersActivity extends AppCompatActivity {
         });
 
         // Bottom nav
-        LinearLayout navSimulator = findViewById(R.id.navSimulator);
-        LinearLayout navMission   = findViewById(R.id.navMission);
-        LinearLayout navHospital  = findViewById(R.id.navHospital);
-        LinearLayout navStats     = findViewById(R.id.navStats);
-
-        navSimulator.setOnClickListener(v -> { startActivity(new Intent(this, MainActivity.class)); finish(); });
-        navMission.setOnClickListener(v   -> { startActivity(new Intent(this, MissionControlActivity.class)); finish(); });
-        navHospital.setOnClickListener(v  -> { startActivity(new Intent(this, HospitalActivity.class)); finish(); });
-        navStats.setOnClickListener(v     -> { startActivity(new Intent(this, StatisticsActivity.class)); finish(); });
+        findViewById(R.id.navSimulator).setOnClickListener(v -> { startActivity(new Intent(this, MainActivity.class)); finish(); });
+        findViewById(R.id.navMission).setOnClickListener(v   -> { startActivity(new Intent(this, MissionControlActivity.class)); finish(); });
+        findViewById(R.id.navHospital).setOnClickListener(v  -> { startActivity(new Intent(this, HospitalActivity.class)); finish(); });
+        findViewById(R.id.navStats).setOnClickListener(v     -> { startActivity(new Intent(this, StatisticsActivity.class)); finish(); });
     }
 
     @Override
@@ -103,13 +98,10 @@ public class QuartersActivity extends AppCompatActivity {
     private void buildCrewList() {
         crewListContainer.removeAllViews();
 
-        // Only show crew whose location is "Quarters"
-        List<CrewMember> inQuarters = new ArrayList<>();
-        for (CrewMember m : GameData.crewList) {
-            if ("Quarters".equals(m.location)) inQuarters.add(m);
-        }
+        // Always show all crew members created in Quarters
+        List<CrewMember> allCrew = GameData.crewList;
 
-        if (inQuarters.isEmpty()) {
+        if (allCrew.isEmpty()) {
             tvNoCrewInQuarters.setVisibility(View.VISIBLE);
             crewListScroll.setVisibility(View.GONE);
             return;
@@ -118,7 +110,7 @@ public class QuartersActivity extends AppCompatActivity {
         tvNoCrewInQuarters.setVisibility(View.GONE);
         crewListScroll.setVisibility(View.VISIBLE);
 
-        for (CrewMember m : inQuarters) {
+        for (CrewMember m : allCrew) {
             boolean isSelected = selectedCrew.contains(m);
 
             // ── Card ──────────────────────────────────────────────
@@ -162,7 +154,7 @@ public class QuartersActivity extends AppCompatActivity {
             tvName.setTypeface(null, Typeface.BOLD);
 
             TextView tvRole = new TextView(this);
-            tvRole.setText(m.role);
+            tvRole.setText(m.role + " (" + m.location + ")");
             tvRole.setTextColor(0xFFAADDFF);
             tvRole.setTextSize(13f);
 

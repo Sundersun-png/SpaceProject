@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GameData {
     public static List<CrewMember> crewList = new ArrayList<>();
-    public static int coins = 100; // Starting coins
+    public static int coins = 50; // Starting coins updated to 50
     public static final int INSTANT_TRAIN_COST = 5;
     public static final int MISSION_WIN_REWARD = 5;
     public static int crewCount = 0; // Legacy support if needed

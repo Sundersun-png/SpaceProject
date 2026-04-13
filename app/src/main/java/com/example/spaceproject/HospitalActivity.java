@@ -24,9 +24,11 @@ public class HospitalActivity extends AppCompatActivity {
         String name;
         PatientStatus status;
         long statusStartTime; // ms when they entered current status
+        CrewMember crewMember; // Reference to the actual crew member
 
-        Patient(String name, PatientStatus status) {
-            this.name            = name;
+        Patient(CrewMember crewMember, PatientStatus status) {
+            this.crewMember      = crewMember;
+            this.name            = crewMember.name;
             this.status          = status;
             this.statusStartTime = System.currentTimeMillis();
         }
@@ -93,11 +95,6 @@ public class HospitalActivity extends AppCompatActivity {
         patientList          = findViewById(R.id.patientList);
         patientListScroll    = findViewById(R.id.patientListScroll);
 
-        // Demo patient — remove once real crew admission is wired up
-        if (patients.isEmpty()) {
-            patients.add(new Patient("Andre", PatientStatus.CRITICAL));
-        }
-
         // Back arrow → NavigationActivity
         findViewById(R.id.btnBack).setOnClickListener(v -> {
             startActivity(new Intent(this, NavigationActivity.class));
@@ -105,28 +102,10 @@ public class HospitalActivity extends AppCompatActivity {
         });
 
         // Bottom nav
-        LinearLayout navQuarters  = findViewById(R.id.navQuarters);
-        LinearLayout navSimulator = findViewById(R.id.navSimulator);
-        LinearLayout navMission   = findViewById(R.id.navMission);
-
-        navQuarters.setOnClickListener(v -> {
-            startActivity(new Intent(this, QuartersActivity.class));
-            finish();
-        });
-        navSimulator.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        });
-        navMission.setOnClickListener(v -> {
-            startActivity(new Intent(this, MissionControlActivity.class));
-            finish();
-        });
-
-        LinearLayout navStats = findViewById(R.id.navStats);
-        navStats.setOnClickListener(v -> {
-            startActivity(new Intent(this, StatisticsActivity.class));
-            finish();
-        });
+        findViewById(R.id.navQuarters).setOnClickListener(v -> { startActivity(new Intent(this, QuartersActivity.class)); finish(); });
+        findViewById(R.id.navSimulator).setOnClickListener(v -> { startActivity(new Intent(this, MainActivity.class)); finish(); });
+        findViewById(R.id.navMission).setOnClickListener(v -> { startActivity(new Intent(this, MissionControlActivity.class)); finish(); });
+        findViewById(R.id.navStats).setOnClickListener(v -> { startActivity(new Intent(this, StatisticsActivity.class)); finish(); });
 
         refreshUI();
     }
@@ -211,6 +190,7 @@ public class HospitalActivity extends AppCompatActivity {
                 tvCountdown.setTextColor(0xFF90EE90);
                 btnSend.setVisibility(View.VISIBLE);
                 btnSend.setOnClickListener(v -> {
+                    if (p.crewMember != null) p.crewMember.location = "Quarters";
                     patients.remove(p);
                     startActivity(new Intent(this, MissionControlActivity.class));
                     finish();

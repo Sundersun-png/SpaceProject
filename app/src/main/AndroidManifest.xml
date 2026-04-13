@@ -30,6 +30,7 @@
         <activity android:name=".InventoryActivity" android:exported="false" />
         <activity android:name=".StatisticsActivity" android:exported="false" />
         <activity android:name=".EngineerMissionActivity" android:exported="false" />
+        <activity android:name=".AsteroidAttackActivity" android:exported="false" />
 
     </application>
 
