@@ -103,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:hint="Enter crew member name..."
-                    android:textColorHint="#FFFFFF"
+                    android:textColorHint="#666688"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     android:paddingStart="14dp"
