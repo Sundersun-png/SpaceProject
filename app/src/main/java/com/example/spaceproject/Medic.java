@@ -2,6 +2,6 @@ package com.example.spaceproject;
 
 public class Medic extends CrewMember {
     public Medic(String name) {
-        super(name, "Medic", 4);
+        super(name, "Medic", 0);
     }
 }

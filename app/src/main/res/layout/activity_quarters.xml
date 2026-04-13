@@ -126,9 +126,9 @@
             android:layout_width="0dp"
             android:layout_height="52dp"
             android:layout_weight="1"
-            android:layout_marginEnd="6dp"
+            android:layout_marginEnd="4dp"
             android:text="▶ Simulator"
-            android:textSize="12sp"
+            android:textSize="11sp"
             android:textColor="#FFFFFF"
             android:backgroundTint="#CC1A1A2E"/>
 
@@ -137,9 +137,21 @@
             android:layout_width="0dp"
             android:layout_height="52dp"
             android:layout_weight="1"
-            android:layout_marginStart="6dp"
-            android:text="🚀 Mission Control"
-            android:textSize="12sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="🚀 Mission"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#CC1A1A2E"/>
+
+        <Button
+            android:id="@+id/btnSendToHospital"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="⚕️ Hospital"
+            android:textSize="11sp"
             android:textColor="#FFFFFF"
             android:backgroundTint="#CC1A1A2E"/>
 

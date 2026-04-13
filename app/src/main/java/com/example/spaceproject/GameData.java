@@ -66,7 +66,10 @@ public class GameData {
 
     // 0=Spaceship, 1=Gun, 2=Grenade, 3=Missile
     public static int[] inventoryItemState = {0, 0, 0, 0};
-    public static int pendingRepairIndex   = -1;  // set before launching EngineerMissionActivity
+
+    // ── Scientist lab (potion effects) ────────────────────────────
+    public static int enemySkillReduction = 0;   // how many times "Reduce Enemy" was brewed
+    public static int powerBoostLevel     = 0;   // how many times "Power Boost" was brewed
 
     // ── Mission types ─────────────────────────────────────────────
     public static final String[] MISSION_TYPES = {
