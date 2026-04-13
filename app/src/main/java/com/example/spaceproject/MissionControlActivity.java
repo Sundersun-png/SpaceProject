@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -15,6 +16,7 @@ public class MissionControlActivity extends AppCompatActivity {
     private boolean crewBSelected = false;
     private String selectedMission = null;
 
+    private TextView tvCoins;
     private CardView cardSelectCrewA, cardSelectCrewB;
     private TextView tvCrewABadge, tvCrewBBadge;
 
@@ -25,6 +27,8 @@ public class MissionControlActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission_control);
+
+        tvCoins = findViewById(R.id.tvCoins);
 
         // Crew cards
         cardSelectCrewA = findViewById(R.id.cardSelectCrewA);
@@ -73,14 +77,52 @@ public class MissionControlActivity extends AppCompatActivity {
                 return;
             }
 
+            // Route Engineer mission to the Engineering Inventory screen
+            if ("Reactor Meltdown".equals(selectedMission)) {
+                startActivity(new Intent(this, InventoryActivity.class));
+                finish();
+                return;
+            }
+
             String crew;
             if (crewASelected && crewBSelected) crew = "Alex & Blake";
             else if (crewASelected)             crew = "Alex";
             else                                crew = "Blake";
 
-            Toast.makeText(this,
-                "Mission launched!\n" + crew + " → " + selectedMission,
-                Toast.LENGTH_LONG).show();
+            // Determine outcome — skill of crew assigned to MissionControl + luck
+            int crewSkill = 0;
+            boolean foundAssigned = false;
+            for (CrewMember m : GameData.crewList) {
+                if ("MissionControl".equals(m.location)) {
+                    crewSkill += m.getSkill();
+                    foundAssigned = true;
+                }
+            }
+            if (!foundAssigned) {
+                // Fall back: use any available crew
+                for (CrewMember m : GameData.crewList) crewSkill += m.getSkill();
+                if (GameData.crewList.isEmpty()) {
+                    crewSkill = crewASelected ? 8 : 0;
+                    crewSkill += crewBSelected ? 7 : 0;
+                }
+            }
+            int luck = new Random().nextInt(10); // 0–9
+            boolean won = (crewSkill + luck) >= 10;
+
+            StatisticsActivity.totalMissions++;
+            if (won) {
+                StatisticsActivity.missionsWon++;
+                GameData.addCoins(GameData.MISSION_WIN_REWARD);
+                tvCoins.setText(String.valueOf(GameData.coins));
+                Toast.makeText(this,
+                    "🏆 MISSION WON!\n" + crew + " → " + selectedMission
+                    + "\n+5🪙  Coins: " + GameData.coins,
+                    Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this,
+                    "💀 MISSION FAILED\n" + crew + " → " + selectedMission,
+                    Toast.LENGTH_LONG).show();
+            }
         });
 
         // Bottom nav
@@ -110,6 +152,17 @@ public class MissionControlActivity extends AppCompatActivity {
         });
 
         // navMission is the current screen — no action needed
+
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            startActivity(new Intent(this, NavigationActivity.class));
+            finish();
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (tvCoins != null) tvCoins.setText(String.valueOf(GameData.coins));
     }
 
     private void refreshCrewUI() {

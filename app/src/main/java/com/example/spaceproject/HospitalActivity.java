@@ -61,7 +61,7 @@ public class HospitalActivity extends AppCompatActivity {
     // ── Views ────────────────────────────────────────────────────────────────
     private TextView     tvBedsOccupied, tvExpectedRecoveries;
     private TextView     tvCritical, tvRecovering, tvHealed;
-    private TextView     tvNoPatients;
+    private TextView     tvNoPatients, tvCoins;
     private LinearLayout patientList;
     private View         patientListScroll;
 
@@ -89,6 +89,7 @@ public class HospitalActivity extends AppCompatActivity {
         tvRecovering         = findViewById(R.id.tvRecovering);
         tvHealed             = findViewById(R.id.tvHealed);
         tvNoPatients         = findViewById(R.id.tvNoPatients);
+        tvCoins              = findViewById(R.id.tvCoins);
         patientList          = findViewById(R.id.patientList);
         patientListScroll    = findViewById(R.id.patientListScroll);
 
@@ -97,8 +98,11 @@ public class HospitalActivity extends AppCompatActivity {
             patients.add(new Patient("Andre", PatientStatus.CRITICAL));
         }
 
-        // Back arrow
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+        // Back arrow → NavigationActivity
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            startActivity(new Intent(this, NavigationActivity.class));
+            finish();
+        });
 
         // Bottom nav
         LinearLayout navQuarters  = findViewById(R.id.navQuarters);
@@ -130,6 +134,7 @@ public class HospitalActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (tvCoins != null) tvCoins.setText(String.valueOf(GameData.coins));
         timerHandler.post(timerRunnable);   // start ticking
     }
 

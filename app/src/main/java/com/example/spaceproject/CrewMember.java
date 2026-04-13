@@ -5,6 +5,7 @@ public class CrewMember {
     String role;
     int baseSkill;
     int experience;
+    public String location = "Quarters";
 
     public CrewMember(String name, String role, int baseSkill) {
         this.name = name;

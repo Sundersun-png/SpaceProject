@@ -6,12 +6,49 @@
     android:layout_height="match_parent"
     android:background="@drawable/correctquarters">
 
+    <!-- Back button (top-left) -->
+    <TextView
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:text="← Back"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:background="@drawable/coin_display_bg"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Coin display (top-right) -->
+    <LinearLayout
+        android:id="@+id/coinDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/coin_display_bg"
+        android:paddingStart="10dp"
+        android:paddingEnd="14dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <View android:layout_width="18dp" android:layout_height="18dp" android:background="@drawable/coin_bg"/>
+        <TextView android:id="@+id/tvCoins" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="25" android:textColor="#FFD700" android:textSize="14sp" android:textStyle="bold" android:layout_marginStart="6dp"/>
+    </LinearLayout>
+
     <!-- Title -->
     <TextView
         android:id="@+id/tvQuarterTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Quarter"
+        android:text="Quarters"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -20,7 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Restore Energy Button (top right) -->
+    <!-- Restore Energy Button (below coin display, top-right) -->
     <Button
         android:id="@+id/btnRestoreEnergy"
         android:layout_width="wrap_content"
@@ -29,89 +66,49 @@
         android:textSize="12sp"
         android:textColor="#FFFFFF"
         android:backgroundTint="#1E90FF"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coinDisplay"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Crew Card: Andre -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardAndre"
-        android:layout_width="200dp"
+    <!-- Empty state -->
+    <TextView
+        android:id="@+id/tvNoCrewInQuarters"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="#CC1A1A2E"
-        app:layout_constraintTop_toTopOf="parent"
+        android:text="No crew in quarters.\nRecruit crew members first."
+        android:textColor="#AAAAAA"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tvQuarterTitle"
+        app:layout_constraintBottom_toTopOf="@id/moveButtonsRow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Crew list scroll -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/crewListScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/tvQuarterTitle"
+        app:layout_constraintBottom_toTopOf="@id/moveButtonsRow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
+            android:id="@+id/crewListContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical"/>
 
-            <TextView
-                android:id="@+id/tvAndreName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Andre"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"/>
+    </androidx.core.widget.NestedScrollView>
 
-            <TextView
-                android:id="@+id/tvAndreEnergy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Max Energy: 25"
-                android:textColor="#AADDFF"
-                android:textSize="13sp"/>
-
-            <TextView
-                android:id="@+id/tvAndreSkill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Skill: 5"
-                android:textColor="#AADDFF"
-                android:textSize="13sp"/>
-
-            <TextView
-                android:id="@+id/tvAndreExp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="EXP: 6"
-                android:textColor="#AADDFF"
-                android:textSize="13sp"/>
-
-            <TextView
-                android:id="@+id/tvAndreBonus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bonus: 3"
-                android:textColor="#AADDFF"
-                android:textSize="13sp"/>
-
-            <TextView
-                android:id="@+id/tvAndreSelectedBadge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TAP TO SELECT"
-                android:textColor="#888888"
-                android:textSize="10sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"/>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!-- Move Buttons at the bottom (above nav bar) -->
+    <!-- Move Buttons row (above nav bar) -->
     <LinearLayout
         android:id="@+id/moveButtonsRow"
         android:layout_width="0dp"
@@ -130,7 +127,7 @@
             android:layout_height="52dp"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
-            android:text="Move To Simulator"
+            android:text="▶ Simulator"
             android:textSize="12sp"
             android:textColor="#FFFFFF"
             android:backgroundTint="#CC1A1A2E"/>
@@ -141,7 +138,7 @@
             android:layout_height="52dp"
             android:layout_weight="1"
             android:layout_marginStart="6dp"
-            android:text="Move To Mission Control"
+            android:text="🚀 Mission Control"
             android:textSize="12sp"
             android:textColor="#FFFFFF"
             android:backgroundTint="#CC1A1A2E"/>

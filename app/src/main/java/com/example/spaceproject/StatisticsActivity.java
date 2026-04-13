@@ -19,7 +19,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
     // ── Views ────────────────────────────────────────────────────────────────
     private TextView tvTotalMissions, tvTotalCrew, tvMissionsWon, tvCrewLost;
-    private TextView tvWinRate;
+    private TextView tvWinRate, tvCoins;
     private View     winRateBar;
 
     @Override
@@ -33,6 +33,7 @@ public class StatisticsActivity extends AppCompatActivity {
         tvCrewLost      = findViewById(R.id.tvCrewLost);
         tvWinRate       = findViewById(R.id.tvWinRate);
         winRateBar      = findViewById(R.id.winRateBar);
+        tvCoins         = findViewById(R.id.tvCoins);
 
         // Bottom nav
         LinearLayout navQuarters  = findViewById(R.id.navQuarters);
@@ -59,6 +60,11 @@ public class StatisticsActivity extends AppCompatActivity {
 
         // navStats is the current screen — no action needed
 
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            startActivity(new Intent(this, NavigationActivity.class));
+            finish();
+        });
+
         refreshUI();
     }
 
@@ -69,6 +75,7 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void refreshUI() {
+        if (tvCoins != null) tvCoins.setText(String.valueOf(GameData.coins));
         tvTotalMissions.setText(String.valueOf(totalMissions));
         tvTotalCrew.setText(String.valueOf(totalCrew));
         tvMissionsWon.setText(String.valueOf(missionsWon));

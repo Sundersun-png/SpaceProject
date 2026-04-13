@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--
+        BACKGROUND IMAGE
+        Same technique as Home screen.
+        Use your cloud/space nav background here.
+    -->
+    <ImageView
+        android:id="@+id/imgBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"
+        android:contentDescription="@null" />
+
+    <!-- Coin display (top-right) -->
+    <LinearLayout
+        android:id="@+id/coinDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/coin_display_bg"
+        android:paddingStart="10dp"
+        android:paddingEnd="14dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true">
+        <View android:layout_width="18dp" android:layout_height="18dp" android:background="@drawable/coin_bg"/>
+        <TextView android:id="@+id/tvCoins" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="25" android:textColor="#FFD700" android:textSize="14sp" android:textStyle="bold" android:layout_marginStart="6dp"/>
+    </LinearLayout>
+
+    <!--
+        MAIN NAVIGATION BUTTONS
+        A vertical LinearLayout centered on screen
+        holding all the nav buttons grouped logically.
+    -->
+    <LinearLayout
+        android:id="@+id/layoutNavButtons"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center">
+
+        <!--
+            ROW 1: Quarter and Simulator side by side
+            Matches your mockup layout exactly.
+        -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnQuarters"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="Quarter"
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#3A3A6E"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btnSimulator"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="Simulator"
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#3A3A6E"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
+        <!--
+            ROW 2: Mission Control centered, full width
+        -->
+        <Button
+            android:id="@+id/btnMissionControl"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Mission Control"
+            android:textSize="15sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#3A3A6E"
+            android:layout_marginBottom="16dp" />
+
+        <!--
+            ROW 3: Statistics and Hospital side by side
+        -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnStatistics"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="Statistics"
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#3A3A6E"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btnHospital"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="Hospital"
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#3A3A6E"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--
+        ADD CREW MEMBER BUTTON
+        Pinned to the bottom of the screen.
+        Green color matches your mockup.
+        This button should only be visible/enabled
+        once a crew member has completed 5 missions
+        — you will control that in your Java Activity file.
+    -->
+    <Button
+        android:id="@+id/btnAddCrewMember"
+        android:layout_width="220dp"
+        android:layout_height="52dp"
+        android:text="Add Crew Member"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#1DB954"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp" />
+
+</RelativeLayout>
