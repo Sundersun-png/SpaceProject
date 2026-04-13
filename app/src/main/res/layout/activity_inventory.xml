@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Background image -->
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/inventory"
+        android:scaleType="centerCrop"
+        android:contentDescription="@null"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Slight dark overlay for readability -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#55000000"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Back button (top-left) -->
+    <TextView
+        android:id="@+id/btnBackInventory"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:text="← Back"
+        android:textColor="#FFFFFF"
+        android:textSize="13sp"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:background="@drawable/coin_display_bg"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         MISSILE panel — upper-right (item visible in top-right)
+         ═══════════════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:id="@+id/panelMissile"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="#CC0D0D1A"
+        android:padding="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="56dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🚀 Missile"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvStatusMissile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔧 Needs Repair"
+            android:textColor="#FF6600"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
+
+        <Button
+            android:id="@+id/btnRepairMissile"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="REPAIR"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#CC2200"
+            android:layout_marginTop="4dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
+
+        <Button
+            android:id="@+id/btnSendMissile"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="SEND TO MISSION"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1E90FF"
+            android:visibility="gone"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
+
+    </LinearLayout>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SPACESHIP panel — left, ~45% down
+         ═══════════════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:id="@+id/panelSpaceship"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="#CC0D0D1A"
+        android:padding="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.38"
+        android:layout_marginStart="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🛸 Spaceship"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvStatusSpaceship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔧 Needs Repair"
+            android:textColor="#FF6600"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
+
+        <Button
+            android:id="@+id/btnRepairSpaceship"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="REPAIR"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#CC2200"
+            android:layout_marginTop="4dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
+
+        <Button
+            android:id="@+id/btnSendSpaceship"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="SEND TO MISSION"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1E90FF"
+            android:visibility="gone"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
+
+    </LinearLayout>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         GUN panel — center, ~45% down
+         ═══════════════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:id="@+id/panelGun"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="#CC0D0D1A"
+        android:padding="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.58"
+        app:layout_constraintHorizontal_bias="0.45">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔫 Gun"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvStatusGun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔧 Needs Repair"
+            android:textColor="#FF6600"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
+
+        <Button
+            android:id="@+id/btnRepairGun"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="REPAIR"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#CC2200"
+            android:layout_marginTop="4dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
+
+        <Button
+            android:id="@+id/btnSendGun"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="SEND TO MISSION"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1E90FF"
+            android:visibility="gone"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
+
+    </LinearLayout>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         GRENADE panel — right, ~43% down
+         ═══════════════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:id="@+id/panelGrenade"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="#CC0D0D1A"
+        android:padding="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.40"
+        android:layout_marginEnd="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="💣 Grenade"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvStatusGrenade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔧 Needs Repair"
+            android:textColor="#FF6600"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
+
+        <Button
+            android:id="@+id/btnRepairGrenade"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="REPAIR"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#CC2200"
+            android:layout_marginTop="4dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
+
+        <Button
+            android:id="@+id/btnSendGrenade"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="SEND TO MISSION"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1E90FF"
+            android:visibility="gone"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

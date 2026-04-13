@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--
+        BACKGROUND IMAGE
+        This ImageView sits behind everything else.
+        scaleType="centerCrop" makes it fill the whole screen
+        without stretching, cropping edges if needed.
+        Place this as the FIRST child so it renders behind all other views.
+    -->
+    <ImageView
+        android:id="@+id/imgBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"
+        android:contentDescription="@null" />
+
+    <!--
+        LOGO / TITLE TEXT
+        Positioned in the upper-center area of the screen.
+        Adjust marginTop to move it up or down.
+    -->
+    <TextView
+        android:id="@+id/tvGameTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SPACE COLONY"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="160dp" />
+
+    <!--
+        START GAME BUTTON
+        Centered horizontally and placed in lower half of screen.
+        Matches the pink/magenta button style from your mockup.
+    -->
+    <Button
+        android:id="@+id/btnStartGame"
+        android:layout_width="220dp"
+        android:layout_height="56dp"
+        android:text="START GAME"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#CC2D82"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="160dp" />
+
+</RelativeLayout>
