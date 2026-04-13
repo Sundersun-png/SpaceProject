@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- BACKGROUND: top-down crew quarters room -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_quarters"
+        android:scaleType="centerCrop"
+        android:contentDescription="@null" />
+
+    <!-- Semi-transparent overlay -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000010" />
+
+    <!-- ══ TOP BAR ══ -->
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#BB000020"
+        android:layout_alignParentTop="true">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:src="@android:drawable/ic_media_previous"
+            android:background="@android:color/transparent"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="QUARTERS"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.15" />
+
+        <TextView
+            android:id="@+id/tvCoins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="12dp"
+            android:text="🪙 300"
+            android:textColor="#FFD700"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <!-- ══ CONTENT SCROLL ══ -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topBar"
+        android:scrollbars="none"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="▸ YOUR CREW"
+                android:textColor="#9B72CF"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.2"
+                android:layout_marginBottom="12dp" />
+
+            <!-- ════════════════════
+                 CREW MEMBER 1 CARD
+                 ════════════════════ -->
+            <LinearLayout
+                android:id="@+id/cardCrew1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#DD0A0A1E"
+                android:padding="14dp"
+                android:layout_marginBottom="14dp">
+
+                <!-- Name / Role / Trained badge row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <View
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="#BB2D82"
+                        android:layout_marginEnd="14dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvCrew1Name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvCrew1Role"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Role"
+                            android:textColor="#9B72CF"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tvCrew1Stats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Skill: —  |  XP: —"
+                            android:textColor="#AAAACC"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvCrew1Trained"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⏳ Untrained"
+                        android:textColor="#FFD700"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+
+                <!-- ── Energy bar section ── -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚡ ENERGY"
+                    android:textColor="#AAAACC"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp" />
+
+                <!-- Bar track -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="14dp"
+                    android:layout_marginBottom="5dp">
+
+                    <!-- Background track -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#33FFFFFF" />
+
+                    <!-- Fill bar — width set programmatically -->
+                    <View
+                        android:id="@+id/barEnergy1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#2DCC82" />
+                </FrameLayout>
+
+                <!-- Numeric energy label -->
+                <TextView
+                    android:id="@+id/tvCrew1Energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100 / 100"
+                    android:textColor="#2DCC82"
+                    android:textSize="11sp"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Action buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnRestoreEnergy1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="⚡ Recharge"
+                        android:textSize="11sp"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#2D82CC"
+                        android:layout_marginEnd="6dp" />
+
+                    <Button
+                        android:id="@+id/btnSendSimulator1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="→ Simulator"
+                        android:textSize="11sp"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#552D82"
+                        android:layout_marginEnd="6dp" />
+
+                    <Button
+                        android:id="@+id/btnSendMission1"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="→ Mission"
+                        android:textSize="11sp"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#CC2D82" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ════════════════════
+                 CREW MEMBER 2 CARD
+                 ════════════════════ -->
+            <LinearLayout
+                android:id="@+id/cardCrew2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#DD0A0A1E"
+                android:padding="14dp"
+                android:layout_marginBottom="14dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <View
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="#2D82CC"
+                        android:layout_marginEnd="14dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvCrew2Name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tvCrew2Role"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Role"
+                            android:textColor="#9B72CF"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tvCrew2Stats"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Skill: —  |  XP: —"
+                            android:textColor="#AAAACC"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvCrew2Trained"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⏳ Untrained"
+                        android:textColor="#FFD700"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚡ ENERGY"
+                    android:textColor="#AAAACC"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="14dp"
+                    android:layout_marginBottom="5dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#33FFFFFF" />
+
+                    <View
+                        android:id="@+id/barEnergy2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#2DCC82" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tvCrew2Energy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100 / 100"
+                    android:textColor="#2DCC82"
+                    android:textSize="11sp"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnRestoreEnergy2"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="⚡ Recharge"
+                        android:textSize="11sp"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#2D82CC"
+                        android:layout_marginEnd="6dp" />
+
+                    <Button
+                        android:id="@+id/btnSendSimulator2"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="→ Simulator"
+                        android:textSize="11sp"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#552D82"
+                        android:layout_marginEnd="6dp" />
+
+                    <Button
+                        android:id="@+id/btnSendMission2"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="→ Mission"
+                        android:textSize="11sp"
+                        android:textColor="#FFFFFF"
+                        android:backgroundTint="#CC2D82" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- EMPTY STATE -->
+            <TextView
+                android:id="@+id/tvEmptyState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No crew members yet.\nGo back → Add Crew Member."
+                android:textColor="#AAAACC"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_marginTop="60dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

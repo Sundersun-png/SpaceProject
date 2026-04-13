@@ -1,25 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    package="com.example.spaceproject">
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Space Colony"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SpaceProject">
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name=".NavigationActivity" />
+        <activity android:name=".RecruitActivity" />
+
+        <!-- HOME / LAUNCH SCREEN -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- QUARTERS -->
+        <activity
+            android:name=".QuartersActivity"
+            android:exported="false" />
+        <!-- SIMULATOR / TRAINING -->
+        <activity
+            android:name=".SimulatorActivity"
+            android:exported="false" />
+
+        <!-- MISSION CONTROL -->
+        <activity
+            android:name=".MissionControlActivity"
+            android:exported="false" />
+
+        <!-- MISSION / COMBAT -->
+        <activity
+            android:name=".MissionActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

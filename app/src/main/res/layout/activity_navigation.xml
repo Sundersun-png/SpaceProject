@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- BACKGROUND IMAGE -->
+    <ImageView
+        android:id="@+id/imgBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_space_home"
+        android:scaleType="centerCrop"
+        android:contentDescription="@null" />
+
+    <!-- NAV BUTTONS CLUSTER — floats in the open sky area -->
+    <LinearLayout
+        android:id="@+id/layoutNavButtons"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="80dp"
+        android:gravity="center">
+
+        <!-- ROW 1: Quarter + Simulator -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="12dp">
+
+            <Button
+                android:id="@+id/btnQuarters"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="Quarter"
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#552D82"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btnSimulator"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="Simulator"
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#552D82"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
+        <!-- ROW 2: Mission Control (full width) -->
+        <Button
+            android:id="@+id/btnMissionControl"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Mission Control"
+            android:textSize="15sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#552D82"
+            android:layout_marginBottom="12dp" />
+
+        <!-- ROW 3: Statistics + Hospital -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnStatistics"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="Statistics"
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#552D82"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btnHospital"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:text="Hospital"
+                android:textSize="15sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#552D82"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- ADD CREW MEMBER — green button pinned to bottom -->
+    <Button
+        android:id="@+id/btnAddCrewMember"
+        android:layout_width="220dp"
+        android:layout_height="52dp"
+        android:text="Add Crew Member"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#1DB954"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp" />
+
+</RelativeLayout>
