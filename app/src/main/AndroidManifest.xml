@@ -59,6 +59,10 @@
         <activity
             android:name=".ScientistLabActivity"
             android:exported="false"/>
+
+        <activity
+            android:name=".AsteroidAttackActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

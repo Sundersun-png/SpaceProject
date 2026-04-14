@@ -3,348 +3,148 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/engineerback">
 
-    <!-- Background -->
     <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/inventory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:contentDescription="@null"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#66000000"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:alpha="0.3"
+        android:src="@drawable/engineerback"
+        android:contentDescription="@null"/>
 
     <!-- Back button -->
     <TextView
-        android:id="@+id/btnBackInventory"
+        android:id="@+id/btnBack"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="34dp"
         android:text="← Back"
         android:textColor="#FFFFFF"
-        android:textSize="12sp"
+        android:textSize="13sp"
         android:gravity="center_vertical"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:background="@drawable/coin_display_bg"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="16dp"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- Engineer info bar (centered below back button) -->
+    <!-- Coin display -->
+    <LinearLayout
+        android:id="@+id/coinDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/coin_display_bg"
+        android:paddingStart="10dp"
+        android:paddingEnd="14dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <View android:layout_width="18dp" android:layout_height="18dp" android:background="@drawable/coin_bg"/>
+        <TextView android:id="@+id/tvCoins" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="0" android:textColor="#FFD700" android:textSize="14sp" android:textStyle="bold" android:layout_marginStart="6dp"/>
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tvEngineerInfo"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="⚙️ Engineer  |  Skill: –"
-        android:textColor="#FFDD88"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:background="#CC001020"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="54dp"
+        android:text="Engineer: - | Skill: -"
+        android:textColor="#AADDFF"
+        android:layout_marginTop="60dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         MISSILE  —  upper-right  (Skill req: 8)
-         ═══════════════════════════════════════════════════════════ -->
-    <LinearLayout
-        android:id="@+id/panelMissile"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:background="#DD0D0D1A"
-        android:padding="7dp"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/tvEngineerInfo"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="6dp">
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🚀 Missile"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/tvSkillReqMissile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Required Skill: 8"
-            android:textColor="#FF4444"
-            android:textSize="10sp"
-            android:layout_marginTop="2dp"/>
-
-        <TextView
-            android:id="@+id/tvStatusMissile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="⛔ Not enough skill"
-            android:textColor="#FF3333"
-            android:textSize="10sp"
-            android:layout_marginTop="2dp"/>
-
-        <Button
-            android:id="@+id/btnRepairMissile"
+        <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="REPAIR"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#AA2200"
-            android:layout_marginTop="4dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:alpha="0.45"/>
-
-        <Button
-            android:id="@+id/btnSendMissile"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="SEND TO MISSION"
-            android:textSize="9sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#1E90FF"
-            android:visibility="gone"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"/>
-    </LinearLayout>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         SPACESHIP  —  left-centre  (Skill req: 2)
-         ═══════════════════════════════════════════════════════════ -->
-    <LinearLayout
-        android:id="@+id/panelSpaceship"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:background="#DD0D0D1A"
-        android:padding="7dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.42"
-        android:layout_marginStart="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="🛸 Spaceship"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
+            android:columnCount="2"
+            android:padding="8dp">
 
-        <TextView
-            android:id="@+id/tvSkillReqSpaceship"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Required Skill: 2"
-            android:textColor="#44DD44"
-            android:textSize="10sp"
-            android:layout_marginTop="2dp"/>
+            <!-- Torpedo -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#CC1A1A2E">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp" android:gravity="center">
+                    <ImageView android:layout_width="60dp" android:layout_height="60dp" android:src="@drawable/torpedo"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Torpedo" android:textColor="#FFFFFF" android:textStyle="bold"/>
+                    <TextView android:id="@+id/tvTorpedoStatus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not Added" android:textColor="#FF6666" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnPurchaseTorpedo" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Purchase (5🪙)" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnAddTorpedo" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (Skill: 5)" android:textSize="10sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/tvStatusSpaceship"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🔧 Ready to Repair"
-            android:textColor="#FF8800"
-            android:textSize="10sp"
-            android:layout_marginTop="2dp"/>
+            <!-- Grenade -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#CC1A1A2E">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp" android:gravity="center">
+                    <ImageView android:layout_width="60dp" android:layout_height="60dp" android:src="@drawable/grenade"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Grenade" android:textColor="#FFFFFF" android:textStyle="bold"/>
+                    <TextView android:id="@+id/tvGrenadeStatus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not Added" android:textColor="#FF6666" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnPurchaseGrenade" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Purchase (5🪙)" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnAddGrenade" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (Skill: 3)" android:textSize="10sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/btnRepairSpaceship"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="REPAIR"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#AA2200"
-            android:layout_marginTop="4dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"/>
+            <!-- Gun -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#CC1A1A2E">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp" android:gravity="center">
+                    <ImageView android:layout_width="60dp" android:layout_height="60dp" android:src="@drawable/gun"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Gun" android:textColor="#FFFFFF" android:textStyle="bold"/>
+                    <TextView android:id="@+id/tvGunStatus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not Added" android:textColor="#FF6666" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnPurchaseGun" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Purchase (5🪙)" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnAddGun" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (Skill: 4)" android:textSize="10sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/btnSendSpaceship"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="SEND TO MISSION"
-            android:textSize="9sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#1E90FF"
-            android:visibility="gone"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"/>
-    </LinearLayout>
+            <!-- Rocketship -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#CC1A1A2E">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp" android:gravity="center">
+                    <ImageView android:layout_width="60dp" android:layout_height="60dp" android:src="@drawable/rocketship"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rocketship" android:textColor="#FFFFFF" android:textStyle="bold"/>
+                    <TextView android:id="@+id/tvRocketshipStatus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not Added" android:textColor="#FF6666" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnPurchaseRocketship" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Purchase (5🪙)" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnAddRocketship" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (Skill: 6)" android:textSize="10sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         GRENADE  —  right-centre  (Skill req: 4)
-         ═══════════════════════════════════════════════════════════ -->
-    <LinearLayout
-        android:id="@+id/panelGrenade"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:background="#DD0D0D1A"
-        android:padding="7dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.44"
-        android:layout_marginEnd="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="💣 Grenade"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/tvSkillReqGrenade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Required Skill: 4"
-            android:textColor="#44DD44"
-            android:textSize="10sp"
-            android:layout_marginTop="2dp"/>
-
-        <TextView
-            android:id="@+id/tvStatusGrenade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🔧 Ready to Repair"
-            android:textColor="#FF8800"
-            android:textSize="10sp"
-            android:layout_marginTop="2dp"/>
-
-        <Button
-            android:id="@+id/btnRepairGrenade"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="REPAIR"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#AA2200"
-            android:layout_marginTop="4dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"/>
-
-        <Button
-            android:id="@+id/btnSendGrenade"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="SEND TO MISSION"
-            android:textSize="9sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#1E90FF"
-            android:visibility="gone"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"/>
-    </LinearLayout>
-
-    <!-- ═══════════════════════════════════════════════════════════
-         GUN  —  lower-centre  (Skill req: 6)
-         ═══════════════════════════════════════════════════════════ -->
-    <LinearLayout
-        android:id="@+id/panelGun"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:background="#DD0D0D1A"
-        android:padding="7dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.62"
-        app:layout_constraintHorizontal_bias="0.46">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🔫 Gun"
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/tvSkillReqGun"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Required Skill: 6"
-            android:textColor="#FF4444"
-            android:textSize="10sp"
-            android:layout_marginTop="2dp"/>
-
-        <TextView
-            android:id="@+id/tvStatusGun"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="⛔ Not enough skill"
-            android:textColor="#FF3333"
-            android:textSize="10sp"
-            android:layout_marginTop="2dp"/>
-
-        <Button
-            android:id="@+id/btnRepairGun"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="REPAIR"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#AA2200"
-            android:layout_marginTop="4dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:alpha="0.45"/>
-
-        <Button
-            android:id="@+id/btnSendGun"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="SEND TO MISSION"
-            android:textSize="9sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#1E90FF"
-            android:visibility="gone"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"/>
-    </LinearLayout>
+        </GridLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

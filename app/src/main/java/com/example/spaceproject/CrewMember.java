@@ -23,7 +23,11 @@ public class CrewMember {
     }
 
     public void train(int bonus) {
-        experience += 1 + bonus;
+        if (isScientist()) {
+            experience += 1 + bonus;
+        } else {
+            experience += 2 + bonus;
+        }
     }
 
     @Override

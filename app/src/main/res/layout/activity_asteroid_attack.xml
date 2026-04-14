@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/gameContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/asteroid_bg"
     android:clipChildren="false">
 
-    <!-- ── Top Left: Coin Display ─────────────────────────────── -->
+    <!-- Top Left: Coin Display -->
     <LinearLayout
         android:id="@+id/coinDisplay"
         android:layout_width="wrap_content"
@@ -32,14 +33,14 @@
             android:id="@+id/tvCoins"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="100"
+            android:text="0"
             android:textColor="#FFD700"
             android:textSize="14sp"
             android:textStyle="bold"
             android:layout_marginStart="6dp"/>
     </LinearLayout>
 
-    <!-- ── Top Right: Energy & Stats ───────────────────────────── -->
+    <!-- Top Right: Energy & Stats -->
     <LinearLayout
         android:id="@+id/statsContainer"
         android:layout_width="wrap_content"
@@ -55,7 +56,7 @@
             android:id="@+id/tvEnergyLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Current Energy Level: 100"
+            android:text="PILOT ENERGY: 100"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"/>
@@ -64,10 +65,20 @@
             android:id="@+id/tvDamage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Damage Taken: 0/5"
+            android:text="HULL DAMAGE: 0/5"
             android:textColor="#FF5555"
             android:textSize="12sp"
             android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvUfoEnergy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="THREAT ENERGY: 100"
+            android:textColor="#FFD700"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp"/>
 
         <TextView
             android:id="@+id/tvPowerBoostCountdown"
@@ -80,7 +91,7 @@
             android:layout_marginTop="4dp"/>
     </LinearLayout>
 
-    <!-- ── Enemies & Player ────────────────────────────────────── -->
+    <!-- Enemies & Player -->
     <ImageView
         android:id="@+id/ivUfo"
         android:layout_width="120dp"
@@ -89,7 +100,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="100dp"
+        android:contentDescription="UFO"/>
 
     <ImageView
         android:id="@+id/ivRocketship"
@@ -99,9 +111,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="140dp"/>
+        android:layout_marginBottom="140dp"
+        android:contentDescription="Rocketship"/>
 
-    <!-- ── Control Row ─────────────────────────────────────────── -->
+    <!-- Control Row -->
     <LinearLayout
         android:id="@+id/controlRow"
         android:layout_width="wrap_content"
@@ -142,7 +155,7 @@
             android:textColor="#000000"/>
     </LinearLayout>
 
-    <!-- ── Action Buttons ─────────────────────────────────────── -->
+    <!-- Action Buttons -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -153,8 +166,30 @@
         android:layout_marginBottom="16dp">
 
         <Button
+            android:id="@+id/btnUseWeakness"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="Weak Enemy"
+            android:textSize="10sp"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="8dp"
+            android:enabled="false"/>
+
+        <Button
+            android:id="@+id/btnUseTorpedo"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:text="Use Torpedo"
+            android:textSize="10sp"
+            android:backgroundTint="#F44336"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="8dp"
+            android:enabled="false"/>
+
+        <Button
             android:id="@+id/btnPowerBoost"
-            android:layout_width="110dp"
+            android:layout_width="120dp"
             android:layout_height="50dp"
             android:text="Power Boost\n(5🪙)"
             android:textSize="10sp"
@@ -162,14 +197,6 @@
             android:textColor="#000000"
             android:layout_marginBottom="8dp"/>
 
-        <Button
-            android:id="@+id/btnEvade"
-            android:layout_width="110dp"
-            android:layout_height="50dp"
-            android:text="Evade"
-            android:textSize="10sp"
-            android:backgroundTint="#2196F3"
-            android:visibility="gone"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
