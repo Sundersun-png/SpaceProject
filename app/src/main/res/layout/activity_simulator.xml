@@ -56,113 +56,42 @@
             android:layout_marginStart="6dp"/>
     </LinearLayout>
 
-    <!-- ── Crew A card ──────────────────────────────────────────── -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardCrewA"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="6dp"
-        android:backgroundTint="#CCFFFFFF"
-        app:layout_constraintBottom_toTopOf="@id/cardCrewB"
+    <!-- ── Training Area (Circle with Images) ───────────────────── -->
+    <FrameLayout
+        android:id="@+id/trainingArea"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/training_circle"
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:padding="10dp"
+            android:id="@+id/selectedCrewImages"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical">
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="10dp"/>
+    </FrameLayout>
 
-            <View
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@android:color/holo_blue_light"/>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_marginStart="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tvCrewAName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CREW A"
-                    android:textStyle="bold"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/tvCrewARole"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Engineer"/>
-
-                <TextView
-                    android:id="@+id/tvCrewAStats"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="XP: 0    Skill: 8"/>
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!-- ── Crew B card ──────────────────────────────────────────── -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardCrewB"
+    <!-- ── Crew Selection Container ────────────────────────────── -->
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="0dp"
         android:layout_margin="16dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="6dp"
-        android:backgroundTint="#CCFFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/trainingArea"
         app:layout_constraintBottom_toTopOf="@id/tvTrainStatus"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:padding="10dp"
+            android:id="@+id/crewContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@android:color/holo_blue_light"/>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_marginStart="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/tvCrewBName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="CREW B"
-                    android:textStyle="bold"
-                    android:textSize="14sp"/>
-
-                <TextView
-                    android:id="@+id/tvCrewBRole"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pilot"/>
-
-                <TextView
-                    android:id="@+id/tvCrewBStats"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="XP: 0    Skill: 7"/>
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+    </ScrollView>
 
     <!-- ── Training status / countdown ─────────────────────────── -->
     <TextView

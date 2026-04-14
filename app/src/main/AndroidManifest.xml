@@ -61,7 +61,7 @@
             android:exported="false"/>
 
         <activity
-            android:name=".AsteroidAttackActivity"
+            android:name=".SoldierMissionActivity"
             android:exported="false"/>
     </application>
 
