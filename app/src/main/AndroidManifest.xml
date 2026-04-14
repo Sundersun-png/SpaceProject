@@ -11,7 +11,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SpaceProject">
-
         <activity
             android:name=".MainScreenActivity"
             android:exported="true">
@@ -21,17 +20,45 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".NavigationActivity" android:exported="false" />
-        <activity android:name=".MainActivity" android:exported="false" />
-        <activity android:name=".MissionControlActivity" android:exported="false" />
-        <activity android:name=".QuartersActivity" android:exported="false" />
-        <activity android:name=".RecruitActivity" android:exported="false" />
-        <activity android:name=".HospitalActivity" android:exported="false" />
-        <activity android:name=".InventoryActivity" android:exported="false" />
-        <activity android:name=".StatisticsActivity" android:exported="false" />
-        <activity android:name=".EngineerMissionActivity" android:exported="false" />
-        <activity android:name=".AsteroidAttackActivity" android:exported="false" />
+        <activity
+            android:name=".NavigationActivity"
+            android:exported="false"/>
 
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".MissionControlActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".QuartersActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".HospitalActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".StatisticsActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".RecruitActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".EngineerMissionActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".InventoryActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".ScientistLabActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

@@ -105,20 +105,13 @@ public class EngineerMissionActivity extends AppCompatActivity {
             StatisticsActivity.missionsWon++;
             GameData.addCoins(GameData.MISSION_WIN_REWARD);
 
-            // Repair the pending item if one was selected
-            if (GameData.pendingRepairIndex >= 0 && GameData.pendingRepairIndex < 4) {
-                GameData.inventoryItemState[GameData.pendingRepairIndex] = GameData.ITEM_REPAIRED;
-                GameData.pendingRepairIndex = -1;
-            }
-
             // Go straight to inventory on win — no result card
             startActivity(new Intent(this, InventoryActivity.class));
             finish();
             return;
         }
 
-        // Lost — clear pending repair and show result card
-        GameData.pendingRepairIndex = -1;
+        // Lost — show result card
 
         tvResultIcon.setText("💥");
         tvResultTitle.setText("REACTOR EXPLODED");

@@ -1,6 +1,7 @@
 package com.example.spaceproject;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,11 +26,9 @@ public class HospitalActivity extends AppCompatActivity {
         String name;
         PatientStatus status;
         long statusStartTime; // ms when they entered current status
-        CrewMember crewMember; // Reference to the actual crew member
 
-        Patient(CrewMember crewMember, PatientStatus status) {
-            this.crewMember      = crewMember;
-            this.name            = crewMember.name;
+        Patient(String name, PatientStatus status) {
+            this.name            = name;
             this.status          = status;
             this.statusStartTime = System.currentTimeMillis();
         }
@@ -66,6 +66,7 @@ public class HospitalActivity extends AppCompatActivity {
     private TextView     tvNoPatients, tvCoins;
     private LinearLayout patientList;
     private View         patientListScroll;
+    private Button       btnMedicHelp;
 
     // ── 1-second ticker ──────────────────────────────────────────────────────
     private final Handler  timerHandler  = new Handler();
@@ -94,6 +95,7 @@ public class HospitalActivity extends AppCompatActivity {
         tvCoins              = findViewById(R.id.tvCoins);
         patientList          = findViewById(R.id.patientList);
         patientListScroll    = findViewById(R.id.patientListScroll);
+        btnMedicHelp         = findViewById(R.id.btnMedicHelp);
 
         // Back arrow → NavigationActivity
         findViewById(R.id.btnBack).setOnClickListener(v -> {
@@ -102,10 +104,28 @@ public class HospitalActivity extends AppCompatActivity {
         });
 
         // Bottom nav
-        findViewById(R.id.navQuarters).setOnClickListener(v -> { startActivity(new Intent(this, QuartersActivity.class)); finish(); });
-        findViewById(R.id.navSimulator).setOnClickListener(v -> { startActivity(new Intent(this, MainActivity.class)); finish(); });
-        findViewById(R.id.navMission).setOnClickListener(v -> { startActivity(new Intent(this, MissionControlActivity.class)); finish(); });
-        findViewById(R.id.navStats).setOnClickListener(v -> { startActivity(new Intent(this, StatisticsActivity.class)); finish(); });
+        LinearLayout navQuarters  = findViewById(R.id.navQuarters);
+        LinearLayout navSimulator = findViewById(R.id.navSimulator);
+        LinearLayout navMission   = findViewById(R.id.navMission);
+
+        navQuarters.setOnClickListener(v -> {
+            startActivity(new Intent(this, QuartersActivity.class));
+            finish();
+        });
+        navSimulator.setOnClickListener(v -> {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
+        navMission.setOnClickListener(v -> {
+            startActivity(new Intent(this, MissionControlActivity.class));
+            finish();
+        });
+
+        LinearLayout navStats = findViewById(R.id.navStats);
+        navStats.setOnClickListener(v -> {
+            startActivity(new Intent(this, StatisticsActivity.class));
+            finish();
+        });
 
         refreshUI();
     }
@@ -149,6 +169,8 @@ public class HospitalActivity extends AppCompatActivity {
         tvRecovering.setText(String.valueOf(recovering));
         tvHealed.setText(String.valueOf(healed));
 
+        refreshMedicButton();
+
         if (patients.isEmpty()) {
             tvNoPatients.setVisibility(View.VISIBLE);
             patientListScroll.setVisibility(View.GONE);
@@ -159,10 +181,60 @@ public class HospitalActivity extends AppCompatActivity {
         }
     }
 
+    private void refreshMedicButton() {
+        CrewMember medic = findMedic();
+
+        // Find first patient who still needs healing
+        Patient target = null;
+        for (Patient p : patients) {
+            if (p.status != PatientStatus.HEALED) { target = p; break; }
+        }
+
+        if (medic == null) {
+            btnMedicHelp.setText("⚕️  Medic Help  (No Medic in crew)");
+            btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
+            btnMedicHelp.setOnClickListener(v ->
+                    Toast.makeText(this, "No Medic in the crew!", Toast.LENGTH_SHORT).show());
+
+        } else if (medic.getSkill() < 10) {
+            btnMedicHelp.setText("⚕️  Medic Help  (Skill " + medic.getSkill() + " / 10)");
+            btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
+            btnMedicHelp.setOnClickListener(v ->
+                    Toast.makeText(this,
+                            medic.name + " needs Skill 10 to help.\nTrain in the Simulator first!",
+                            Toast.LENGTH_SHORT).show());
+
+        } else if (target == null) {
+            btnMedicHelp.setText("⚕️  Medic Help  (No patients)");
+            btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
+            btnMedicHelp.setOnClickListener(v ->
+                    Toast.makeText(this, "No patients to recover.", Toast.LENGTH_SHORT).show());
+
+        } else {
+            // Ready — purple and active
+            final Patient finalTarget = target;
+            btnMedicHelp.setText("⚕️  Medic Help");
+            btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF7B1FA2));
+            btnMedicHelp.setOnClickListener(v -> {
+                finalTarget.status = PatientStatus.HEALED;
+                finalTarget.statusStartTime = System.currentTimeMillis();
+                medic.experience++;
+                Toast.makeText(this,
+                        "✅ " + finalTarget.name + " recovered!\n⚕️ " + medic.name
+                                + " +1 XP  (Skill " + medic.getSkill() + ")",
+                        Toast.LENGTH_SHORT).show();
+                refreshUI();
+            });
+        }
+    }
+
     /** Inflate item_patient.xml for each patient and bind their data. */
     private void buildPatientRows() {
         patientList.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(this);
+
+        CrewMember medic       = findMedic();
+        boolean    medicReady  = medic != null && medic.getSkill() >= 10;
 
         for (Patient p : patients) {
             View row = inflater.inflate(R.layout.item_patient, patientList, false);
@@ -172,6 +244,7 @@ public class HospitalActivity extends AppCompatActivity {
             View circleRecovering = row.findViewById(R.id.circleRecovering);
             View circleHealed     = row.findViewById(R.id.circleHealed);
             TextView tvCountdown  = row.findViewById(R.id.tvCountdown);
+            Button btnMedicHelp   = row.findViewById(R.id.btnMedicHelp);
             Button btnSend        = row.findViewById(R.id.btnSendToMission);
 
             tvName.setText(p.name);
@@ -184,13 +257,49 @@ public class HospitalActivity extends AppCompatActivity {
             circleHealed.setBackgroundResource(
                 p.status == PatientStatus.HEALED     ? R.drawable.circle_filled_green  : R.drawable.circle_empty);
 
-            // Countdown label + Send button visibility
+            // ── Medic Help button ─────────────────────────────────────────
+            if (p.status != PatientStatus.HEALED) {
+                btnMedicHelp.setVisibility(View.VISIBLE);
+                btnMedicHelp.setEnabled(true);   // always tappable — logic handled in click
+
+                if (medic == null) {
+                    btnMedicHelp.setText("⚕️  Medic Help  (No Medic in crew)");
+                    btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
+                    btnMedicHelp.setOnClickListener(v ->
+                            Toast.makeText(this, "No Medic in the crew!", Toast.LENGTH_SHORT).show());
+
+                } else if (!medicReady) {
+                    btnMedicHelp.setText("⚕️  Medic Help  (Skill " + medic.getSkill() + " / 10)");
+                    btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
+                    btnMedicHelp.setOnClickListener(v ->
+                            Toast.makeText(this,
+                                    "Medic needs Skill 10 to help.\nCurrent skill: " + medic.getSkill(),
+                                    Toast.LENGTH_SHORT).show());
+
+                } else {
+                    btnMedicHelp.setText("⚕️  Medic Help");
+                    btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF7B1FA2));
+                    final CrewMember m = medic;
+                    btnMedicHelp.setOnClickListener(v -> {
+                        p.status = PatientStatus.HEALED;
+                        p.statusStartTime = System.currentTimeMillis();
+                        m.experience++;   // +1 XP for the medic
+                        Toast.makeText(this,
+                                "✅ " + p.name + " recovered!\n⚕️ " + m.name + " gained +1 XP  (Skill " + m.getSkill() + ")",
+                                Toast.LENGTH_SHORT).show();
+                        refreshUI();
+                    });
+                }
+            } else {
+                btnMedicHelp.setVisibility(View.GONE);
+            }
+
+            // ── Countdown + Send button ──────────────────────────────────
             if (p.status == PatientStatus.HEALED) {
                 tvCountdown.setText("Done");
                 tvCountdown.setTextColor(0xFF90EE90);
                 btnSend.setVisibility(View.VISIBLE);
                 btnSend.setOnClickListener(v -> {
-                    if (p.crewMember != null) p.crewMember.location = "Quarters";
                     patients.remove(p);
                     startActivity(new Intent(this, MissionControlActivity.class));
                     finish();
@@ -210,5 +319,12 @@ public class HospitalActivity extends AppCompatActivity {
 
             patientList.addView(row);
         }
+    }
+
+    /** Returns the first Medic found in the crew list, or null. */
+    private CrewMember findMedic() {
+        for (CrewMember m : GameData.crewList)
+            if ("Medic".equalsIgnoreCase(m.role)) return m;
+        return null;
     }
 }

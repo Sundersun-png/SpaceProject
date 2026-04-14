@@ -277,6 +277,23 @@
 
     </LinearLayout>
 
+    <!-- Medic Help button — always visible, state driven by code -->
+    <Button
+        android:id="@+id/btnMedicHelp"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:text="⚕️  Medic Help"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#555566"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/statusRow"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <!-- No patients message (shown when empty) -->
     <TextView
         android:id="@+id/tvNoPatients"
@@ -285,7 +302,7 @@
         android:text="No patients in the medbay"
         android:textColor="#888888"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/statusRow"
+        app:layout_constraintTop_toBottomOf="@id/btnMedicHelp"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -298,8 +315,8 @@
         android:visibility="gone"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/statusRow"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/btnMedicHelp"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">

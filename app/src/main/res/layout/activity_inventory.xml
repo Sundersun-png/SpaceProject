@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Background image -->
+    <!-- Background -->
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -17,289 +17,334 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Slight dark overlay for readability -->
-
-    <!-- Back button (top-left) -->
-
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#55000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="#66000000"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- Back button -->
     <TextView
         android:id="@+id/btnBackInventory"
         android:layout_width="wrap_content"
-        android:layout_height="34dp"
+        android:layout_height="32dp"
         android:text="← Back"
         android:textColor="#FFFFFF"
-        android:textSize="13sp"
+        android:textSize="12sp"
         android:gravity="center_vertical"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:background="@drawable/coin_display_bg"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="14dp"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- ═══════════════════════════════════════════════════════════
-         MISSILE panel — upper-right (item visible in top-right)
-         ═══════════════════════════════════════════════════════════ -->
+    <!-- Engineer info bar (centered below back button) -->
+    <TextView
+        android:id="@+id/tvEngineerInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="⚙️ Engineer  |  Skill: –"
+        android:textColor="#FFDD88"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:background="#CC001020"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="54dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- ═══════════════════════════════════════════════════════════
-         SPACESHIP panel — left, ~45% down
+         MISSILE  —  upper-right  (Skill req: 8)
          ═══════════════════════════════════════════════════════════ -->
-
-    <!-- ═══════════════════════════════════════════════════════════
-         GUN panel — center, ~45% down
-         ═══════════════════════════════════════════════════════════ -->
-
-    <!-- ═══════════════════════════════════════════════════════════
-         GRENADE panel — right, ~43% down
-         ═══════════════════════════════════════════════════════════ -->
-
     <LinearLayout
         android:id="@+id/panelMissile"
-        android:layout_width="130dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="176dp"
-        android:layout_marginEnd="16dp"
-        android:background="#CC0D0D1A"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="6dp"
+        android:gravity="center_horizontal"
+        android:background="#DD0D0D1A"
+        android:padding="7dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/tvEngineerInfo"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="6dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="🚀 Missile"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvSkillReqMissile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Required Skill: 8"
+            android:textColor="#FF4444"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
 
         <TextView
             android:id="@+id/tvStatusMissile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="🔧 Needs Repair"
-            android:textColor="#FF6600"
-            android:textSize="10sp" />
+            android:text="⛔ Not enough skill"
+            android:textColor="#FF3333"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
 
         <Button
             android:id="@+id/btnRepairMissile"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:text="REPAIR"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#AA2200"
             android:layout_marginTop="4dp"
-            android:backgroundTint="#CC2200"
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
-            android:text="REPAIR"
-            android:textColor="#FFFFFF"
-            android:textSize="10sp"
-            android:textStyle="bold" />
+            android:alpha="0.45"/>
 
         <Button
             android:id="@+id/btnSendMissile"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:backgroundTint="#1E90FF"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
             android:text="SEND TO MISSION"
-            android:textColor="#FFFFFF"
             android:textSize="9sp"
             android:textStyle="bold"
-            android:visibility="gone" />
-
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1E90FF"
+            android:visibility="gone"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
     </LinearLayout>
 
+    <!-- ═══════════════════════════════════════════════════════════
+         SPACESHIP  —  left-centre  (Skill req: 2)
+         ═══════════════════════════════════════════════════════════ -->
     <LinearLayout
         android:id="@+id/panelSpaceship"
-        android:layout_width="130dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:background="#CC0D0D1A"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center_horizontal"
+        android:background="#DD0D0D1A"
+        android:padding="7dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.545">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.42"
+        android:layout_marginStart="8dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="🛸 Spaceship"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvSkillReqSpaceship"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Required Skill: 2"
+            android:textColor="#44DD44"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
 
         <TextView
             android:id="@+id/tvStatusSpaceship"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="🔧 Needs Repair"
-            android:textColor="#FF6600"
-            android:textSize="10sp" />
+            android:text="🔧 Ready to Repair"
+            android:textColor="#FF8800"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
 
         <Button
             android:id="@+id/btnRepairSpaceship"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="4dp"
-            android:backgroundTint="#CC2200"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
             android:text="REPAIR"
-            android:textColor="#FFFFFF"
             android:textSize="10sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#AA2200"
+            android:layout_marginTop="4dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
 
         <Button
             android:id="@+id/btnSendSpaceship"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:backgroundTint="#1E90FF"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
             android:text="SEND TO MISSION"
-            android:textColor="#FFFFFF"
             android:textSize="9sp"
             android:textStyle="bold"
-            android:visibility="gone" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/panelGun"
-        android:layout_width="130dp"
-        android:layout_height="wrap_content"
-        android:background="#CC0D0D1A"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.649">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🔫 Gun"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvStatusGun"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="🔧 Needs Repair"
-            android:textColor="#FF6600"
-            android:textSize="10sp" />
-
-        <Button
-            android:id="@+id/btnRepairGun"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="4dp"
-            android:backgroundTint="#CC2200"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:text="REPAIR"
-            android:textColor="#FFFFFF"
-            android:textSize="10sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btnSendGun"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
             android:backgroundTint="#1E90FF"
+            android:visibility="gone"
             android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:text="SEND TO MISSION"
-            android:textColor="#FFFFFF"
-            android:textSize="9sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
+            android:paddingBottom="0dp"/>
     </LinearLayout>
 
+    <!-- ═══════════════════════════════════════════════════════════
+         GRENADE  —  right-centre  (Skill req: 4)
+         ═══════════════════════════════════════════════════════════ -->
     <LinearLayout
         android:id="@+id/panelGrenade"
-        android:layout_width="130dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:background="#CC0D0D1A"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center_horizontal"
+        android:background="#DD0D0D1A"
+        android:padding="7dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.558">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.44"
+        android:layout_marginEnd="8dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="💣 Grenade"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvSkillReqGrenade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Required Skill: 4"
+            android:textColor="#44DD44"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
 
         <TextView
             android:id="@+id/tvStatusGrenade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="🔧 Needs Repair"
-            android:textColor="#FF6600"
-            android:textSize="10sp" />
+            android:text="🔧 Ready to Repair"
+            android:textColor="#FF8800"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
 
         <Button
             android:id="@+id/btnRepairGrenade"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginTop="4dp"
-            android:backgroundTint="#CC2200"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
             android:text="REPAIR"
-            android:textColor="#FFFFFF"
             android:textSize="10sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#AA2200"
+            android:layout_marginTop="4dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
 
         <Button
             android:id="@+id/btnSendGrenade"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:backgroundTint="#1E90FF"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
             android:text="SEND TO MISSION"
-            android:textColor="#FFFFFF"
             android:textSize="9sp"
             android:textStyle="bold"
-            android:visibility="gone" />
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1E90FF"
+            android:visibility="gone"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
+    </LinearLayout>
 
+    <!-- ═══════════════════════════════════════════════════════════
+         GUN  —  lower-centre  (Skill req: 6)
+         ═══════════════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:id="@+id/panelGun"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="#DD0D0D1A"
+        android:padding="7dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.62"
+        app:layout_constraintHorizontal_bias="0.46">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔫 Gun"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvSkillReqGun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Required Skill: 6"
+            android:textColor="#FF4444"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
+
+        <TextView
+            android:id="@+id/tvStatusGun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⛔ Not enough skill"
+            android:textColor="#FF3333"
+            android:textSize="10sp"
+            android:layout_marginTop="2dp"/>
+
+        <Button
+            android:id="@+id/btnRepairGun"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="REPAIR"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#AA2200"
+            android:layout_marginTop="4dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:alpha="0.45"/>
+
+        <Button
+            android:id="@+id/btnSendGun"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="SEND TO MISSION"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1E90FF"
+            android:visibility="gone"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

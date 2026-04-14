@@ -74,16 +74,37 @@ public class QuartersActivity extends AppCompatActivity {
             finish();
         });
 
+        // Send to Hospital
+        findViewById(R.id.btnSendToHospital).setOnClickListener(v -> {
+            if (selectedCrew.isEmpty()) {
+                Toast.makeText(this, "Select a crew member first!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            for (CrewMember m : selectedCrew) {
+                m.location = "Hospital";
+                HospitalActivity.patients.add(
+                        new HospitalActivity.Patient(m.name, HospitalActivity.PatientStatus.CRITICAL));
+            }
+            selectedCrew.clear();
+            startActivity(new Intent(this, HospitalActivity.class));
+            finish();
+        });
+
         findViewById(R.id.btnBack).setOnClickListener(v -> {
             startActivity(new Intent(this, NavigationActivity.class));
             finish();
         });
 
         // Bottom nav
-        findViewById(R.id.navSimulator).setOnClickListener(v -> { startActivity(new Intent(this, MainActivity.class)); finish(); });
-        findViewById(R.id.navMission).setOnClickListener(v   -> { startActivity(new Intent(this, MissionControlActivity.class)); finish(); });
-        findViewById(R.id.navHospital).setOnClickListener(v  -> { startActivity(new Intent(this, HospitalActivity.class)); finish(); });
-        findViewById(R.id.navStats).setOnClickListener(v     -> { startActivity(new Intent(this, StatisticsActivity.class)); finish(); });
+        LinearLayout navSimulator = findViewById(R.id.navSimulator);
+        LinearLayout navMission   = findViewById(R.id.navMission);
+        LinearLayout navHospital  = findViewById(R.id.navHospital);
+        LinearLayout navStats     = findViewById(R.id.navStats);
+
+        navSimulator.setOnClickListener(v -> { startActivity(new Intent(this, MainActivity.class)); finish(); });
+        navMission.setOnClickListener(v   -> { startActivity(new Intent(this, MissionControlActivity.class)); finish(); });
+        navHospital.setOnClickListener(v  -> { startActivity(new Intent(this, HospitalActivity.class)); finish(); });
+        navStats.setOnClickListener(v     -> { startActivity(new Intent(this, StatisticsActivity.class)); finish(); });
     }
 
     @Override
@@ -98,10 +119,8 @@ public class QuartersActivity extends AppCompatActivity {
     private void buildCrewList() {
         crewListContainer.removeAllViews();
 
-        // Always show all crew members created in Quarters
-        List<CrewMember> allCrew = GameData.crewList;
-
-        if (allCrew.isEmpty()) {
+        // Show ALL crew members regardless of location
+        if (GameData.crewList.isEmpty()) {
             tvNoCrewInQuarters.setVisibility(View.VISIBLE);
             crewListScroll.setVisibility(View.GONE);
             return;
@@ -110,7 +129,7 @@ public class QuartersActivity extends AppCompatActivity {
         tvNoCrewInQuarters.setVisibility(View.GONE);
         crewListScroll.setVisibility(View.VISIBLE);
 
-        for (CrewMember m : allCrew) {
+        for (CrewMember m : GameData.crewList) {
             boolean isSelected = selectedCrew.contains(m);
 
             // ── Card ──────────────────────────────────────────────
@@ -154,7 +173,7 @@ public class QuartersActivity extends AppCompatActivity {
             tvName.setTypeface(null, Typeface.BOLD);
 
             TextView tvRole = new TextView(this);
-            tvRole.setText(m.role + " (" + m.location + ")");
+            tvRole.setText(m.role);
             tvRole.setTextColor(0xFFAADDFF);
             tvRole.setTextSize(13f);
 
@@ -163,9 +182,15 @@ public class QuartersActivity extends AppCompatActivity {
             tvStats.setTextColor(0xFFAAAAAA);
             tvStats.setTextSize(12f);
 
+            TextView tvLocation = new TextView(this);
+            tvLocation.setText(locationLabel(m.location));
+            tvLocation.setTextColor(locationColor(m.location));
+            tvLocation.setTextSize(11f);
+
             info.addView(tvName);
             info.addView(tvRole);
             info.addView(tvStats);
+            info.addView(tvLocation);
 
             // Selected badge
             TextView tvBadge = new TextView(this);
@@ -198,6 +223,26 @@ public class QuartersActivity extends AppCompatActivity {
             case "Scientist": return "🔬";
             case "Soldier":   return "🛡️";
             default:          return "👤";
+        }
+    }
+
+    private String locationLabel(String location) {
+        if (location == null) return "📍 Quarters";
+        switch (location) {
+            case "Simulator":      return "📍 Simulator";
+            case "MissionControl": return "📍 Mission Control";
+            case "Hospital":       return "📍 Hospital";
+            default:               return "📍 Quarters";
+        }
+    }
+
+    private int locationColor(String location) {
+        if (location == null) return 0xFF90EE90;
+        switch (location) {
+            case "Simulator":      return 0xFFFFDD00;
+            case "MissionControl": return 0xFF3399FF;
+            case "Hospital":       return 0xFFFF6666;
+            default:               return 0xFF90EE90;
         }
     }
 }

@@ -68,19 +68,19 @@ public class RecruitActivity extends AppCompatActivity {
 
         switch (spec) {
             case "Pilot":
-                tvSkillValue.setText("7"); tvResilienceValue.setText("6");
+                tvSkillValue.setText("0"); tvResilienceValue.setText("6");
                 tvAbilityValue.setText("Evade"); break;
             case "Medic":
-                tvSkillValue.setText("4"); tvResilienceValue.setText("8");
+                tvSkillValue.setText("0"); tvResilienceValue.setText("8");
                 tvAbilityValue.setText("Heal Teammate"); break;
             case "Scientist":
-                tvSkillValue.setText("6"); tvResilienceValue.setText("5");
+                tvSkillValue.setText("0"); tvResilienceValue.setText("5");
                 tvAbilityValue.setText("Boost Attack"); break;
             case "Engineer":
-                tvSkillValue.setText("5"); tvResilienceValue.setText("9");
+                tvSkillValue.setText("0"); tvResilienceValue.setText("9");
                 tvAbilityValue.setText("Repair"); break;
             case "Soldier":
-                tvSkillValue.setText("9"); tvResilienceValue.setText("7");
+                tvSkillValue.setText("0"); tvResilienceValue.setText("7");
                 tvAbilityValue.setText("Heavy Attack"); break;
         }
         tvEnergyValue.setText("100");

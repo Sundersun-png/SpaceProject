@@ -1,53 +1,37 @@
 package com.example.spaceproject;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+
 public class MissionControlActivity extends AppCompatActivity {
 
-    private CrewMember selectedCrewMember = null;
+    private final Set<CrewMember> selectedCrew = new HashSet<>();
     private String selectedMission = null;
 
     private TextView tvCoins;
-    private CardView cardSelectCrewA, cardSelectCrewB;
-    private TextView tvCrewABadge, tvCrewBBadge;
-    private TextView tvCrewAName, tvCrewARole, tvCrewAStats;
-    private TextView tvCrewBName, tvCrewBRole, tvCrewBStats;
+    private LinearLayout crewSelectionContainer;
 
     private CardView cardMissionPilot, cardMissionEngineer, cardMissionMedic, cardMissionSoldier, cardMissionScientist;
     private TextView tvCheckPilot, tvCheckEngineer, tvCheckMedic, tvCheckSoldier, tvCheckScientist;
-
-    private List<CrewMember> inMissionControl = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission_control);
 
-        tvCoins = findViewById(R.id.tvCoins);
-
-        // Crew cards
-        cardSelectCrewA = findViewById(R.id.cardSelectCrewA);
-        cardSelectCrewB = findViewById(R.id.cardSelectCrewB);
-        tvCrewABadge    = findViewById(R.id.tvCrewABadge);
-        tvCrewBBadge    = findViewById(R.id.tvCrewBBadge);
-
-        tvCrewAName = findViewById(R.id.tvMissionCrewAName);
-        tvCrewARole = findViewById(R.id.tvMissionCrewARole);
-        tvCrewAStats = findViewById(R.id.tvMissionCrewAStats);
-        tvCrewBName = findViewById(R.id.tvMissionCrewBName);
-        tvCrewBRole = findViewById(R.id.tvMissionCrewBRole);
-        tvCrewBStats = findViewById(R.id.tvMissionCrewBStats);
+        tvCoins               = findViewById(R.id.tvCoins);
+        crewSelectionContainer = findViewById(R.id.crewSelectionContainer);
 
         // Mission type cards
         cardMissionPilot      = findViewById(R.id.cardMissionPilot);
@@ -62,22 +46,6 @@ public class MissionControlActivity extends AppCompatActivity {
         tvCheckSoldier   = findViewById(R.id.tvCheckSoldier);
         tvCheckScientist = findViewById(R.id.tvCheckScientist);
 
-        setupCrew();
-
-        // Crew selection toggles
-        cardSelectCrewA.setOnClickListener(v -> {
-            if (inMissionControl.size() > 0) {
-                selectedCrewMember = inMissionControl.get(0);
-                refreshCrewUI();
-            }
-        });
-        cardSelectCrewB.setOnClickListener(v -> {
-            if (inMissionControl.size() > 1) {
-                selectedCrewMember = inMissionControl.get(1);
-                refreshCrewUI();
-            }
-        });
-
         // Mission type selection
         cardMissionPilot.setOnClickListener(v     -> selectMission("Asteroid Field Navigation"));
         cardMissionEngineer.setOnClickListener(v  -> selectMission("Reactor Meltdown"));
@@ -87,8 +55,8 @@ public class MissionControlActivity extends AppCompatActivity {
 
         // Launch button
         findViewById(R.id.btnLaunchMission).setOnClickListener(v -> {
-            if (selectedCrewMember == null) {
-                Toast.makeText(this, "Select a crew member!", Toast.LENGTH_SHORT).show();
+            if (selectedCrew.isEmpty()) {
+                Toast.makeText(this, "Select at least one crew member!", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (selectedMission == null) {
@@ -96,30 +64,28 @@ public class MissionControlActivity extends AppCompatActivity {
                 return;
             }
 
-            // Logic for Asteroid Field Navigation
-            if ("Asteroid Field Navigation".equals(selectedMission)) {
-                if (!"Pilot".equals(selectedCrewMember.role)) {
-                    Toast.makeText(this, "Only a Pilot can navigate asteroid fields!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (selectedCrewMember.getSkill() < 9) {
-                    Toast.makeText(this, "Pilot skill level must be at least 9!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                startActivity(new Intent(this, AsteroidAttackActivity.class));
-                return;
-            }
-
-            // Route Engineer mission to the Engineering Inventory screen
             if ("Reactor Meltdown".equals(selectedMission)) {
                 startActivity(new Intent(this, InventoryActivity.class));
                 finish();
                 return;
             }
 
-            // Determine outcome — skill + luck
-            int crewSkill = selectedCrewMember.getSkill();
-            int luck = new Random().nextInt(10); // 0–9
+            if ("Potion Making".equals(selectedMission)) {
+                startActivity(new Intent(this, ScientistLabActivity.class));
+                finish();
+                return;
+            }
+
+            // Build crew name string and sum skill
+            StringBuilder names = new StringBuilder();
+            int crewSkill = 0;
+            for (CrewMember m : selectedCrew) {
+                if (names.length() > 0) names.append(" & ");
+                names.append(m.name);
+                crewSkill += m.getSkill();
+            }
+
+            int luck = new Random().nextInt(10);
             boolean won = (crewSkill + luck) >= 10;
 
             StatisticsActivity.totalMissions++;
@@ -128,21 +94,40 @@ public class MissionControlActivity extends AppCompatActivity {
                 GameData.addCoins(GameData.MISSION_WIN_REWARD);
                 tvCoins.setText(String.valueOf(GameData.coins));
                 Toast.makeText(this,
-                    "🏆 MISSION WON!\n" + selectedCrewMember.name + " → " + selectedMission
+                    "🏆 MISSION WON!\n" + names + " → " + selectedMission
                     + "\n+5🪙  Coins: " + GameData.coins,
                     Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this,
-                    "💀 MISSION FAILED\n" + selectedCrewMember.name + " → " + selectedMission,
+                    "💀 MISSION FAILED\n" + names + " → " + selectedMission,
                     Toast.LENGTH_LONG).show();
             }
         });
 
         // Bottom nav
-        findViewById(R.id.navSimulator).setOnClickListener(v -> { startActivity(new Intent(this, MainActivity.class)); finish(); });
-        findViewById(R.id.navQuarters).setOnClickListener(v -> { startActivity(new Intent(this, QuartersActivity.class)); finish(); });
-        findViewById(R.id.navHospital).setOnClickListener(v -> { startActivity(new Intent(this, HospitalActivity.class)); finish(); });
-        findViewById(R.id.navStats).setOnClickListener(v -> { startActivity(new Intent(this, StatisticsActivity.class)); finish(); });
+        LinearLayout navSimulator = findViewById(R.id.navSimulator);
+        LinearLayout navQuarters  = findViewById(R.id.navQuarters);
+
+        navSimulator.setOnClickListener(v -> {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
+        navQuarters.setOnClickListener(v -> {
+            startActivity(new Intent(this, QuartersActivity.class));
+            finish();
+        });
+
+        LinearLayout navHospital = findViewById(R.id.navHospital);
+        navHospital.setOnClickListener(v -> {
+            startActivity(new Intent(this, HospitalActivity.class));
+            finish();
+        });
+
+        LinearLayout navStats = findViewById(R.id.navStats);
+        navStats.setOnClickListener(v -> {
+            startActivity(new Intent(this, StatisticsActivity.class));
+            finish();
+        });
 
         findViewById(R.id.btnBack).setOnClickListener(v -> {
             startActivity(new Intent(this, NavigationActivity.class));
@@ -150,64 +135,120 @@ public class MissionControlActivity extends AppCompatActivity {
         });
     }
 
-    private void setupCrew() {
-        inMissionControl.clear();
-        for (CrewMember m : GameData.crewList) {
-            if ("MissionControl".equals(m.location)) inMissionControl.add(m);
-        }
-
-        if (inMissionControl.size() > 0) {
-            cardSelectCrewA.setVisibility(View.VISIBLE);
-            CrewMember m = inMissionControl.get(0);
-            tvCrewAName.setText(m.name);
-            tvCrewARole.setText(m.role);
-            tvCrewAStats.setText("Skill: " + m.getSkill());
-        } else {
-            cardSelectCrewA.setVisibility(View.GONE);
-        }
-
-        if (inMissionControl.size() > 1) {
-            cardSelectCrewB.setVisibility(View.VISIBLE);
-            CrewMember m = inMissionControl.get(1);
-            tvCrewBName.setText(m.name);
-            tvCrewBRole.setText(m.role);
-            tvCrewBStats.setText("Skill: " + m.getSkill());
-        } else {
-            cardSelectCrewB.setVisibility(View.GONE);
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         if (tvCoins != null) tvCoins.setText(String.valueOf(GameData.coins));
-        setupCrew();
-        refreshCrewUI();
+        buildCrewCards();
     }
 
-    private void refreshCrewUI() {
-        cardSelectCrewA.setCardBackgroundColor(0xCCFFFFFF);
-        tvCrewABadge.setText("TAP TO SELECT");
-        tvCrewABadge.setTextColor(0xFF666666);
-        cardSelectCrewB.setCardBackgroundColor(0xCCFFFFFF);
-        tvCrewBBadge.setText("TAP TO SELECT");
-        tvCrewBBadge.setTextColor(0xFF666666);
+    // ── Build one card per crew member ────────────────────────────────────────
 
-        if (selectedCrewMember != null) {
-            if (inMissionControl.size() > 0 && selectedCrewMember == inMissionControl.get(0)) {
-                cardSelectCrewA.setCardBackgroundColor(0xFF90EE90);
-                tvCrewABadge.setText("✓ SELECTED");
-                tvCrewABadge.setTextColor(0xFF2E7D32);
-            } else if (inMissionControl.size() > 1 && selectedCrewMember == inMissionControl.get(1)) {
-                cardSelectCrewB.setCardBackgroundColor(0xFF90EE90);
-                tvCrewBBadge.setText("✓ SELECTED");
-                tvCrewBBadge.setTextColor(0xFF2E7D32);
-            }
+    private void buildCrewCards() {
+        crewSelectionContainer.removeAllViews();
+
+        if (GameData.crewList.isEmpty()) {
+            TextView empty = new TextView(this);
+            empty.setText("No crew recruited yet");
+            empty.setTextColor(0xFF888888);
+            empty.setTextSize(14f);
+            empty.setPadding(0, 8, 0, 8);
+            crewSelectionContainer.addView(empty);
+            return;
+        }
+
+        for (CrewMember m : GameData.crewList) {
+            boolean isSelected = selectedCrew.contains(m);
+
+            CardView card = new CardView(this);
+            LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            cardParams.setMargins(0, 0, 0, 8);
+            card.setLayoutParams(cardParams);
+            card.setRadius(24f);
+            card.setCardElevation(6f);
+            card.setCardBackgroundColor(isSelected ? 0xFF90EE90 : 0xCCFFFFFF);
+
+            LinearLayout inner = new LinearLayout(this);
+            inner.setOrientation(LinearLayout.HORIZONTAL);
+            inner.setPadding(24, 20, 24, 20);
+            inner.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            inner.setGravity(android.view.Gravity.CENTER_VERTICAL);
+
+            // Role icon
+            TextView tvIcon = new TextView(this);
+            tvIcon.setTextSize(26f);
+            tvIcon.setText(roleIcon(m.role));
+            LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            iconParams.setMarginEnd(16);
+            tvIcon.setLayoutParams(iconParams);
+
+            // Info column
+            LinearLayout info = new LinearLayout(this);
+            info.setOrientation(LinearLayout.VERTICAL);
+            info.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+            TextView tvName = new TextView(this);
+            tvName.setText(m.name);
+            tvName.setTextColor(0xFF111111);
+            tvName.setTextSize(14f);
+            tvName.setTypeface(null, Typeface.BOLD);
+
+            TextView tvRole = new TextView(this);
+            tvRole.setText(m.role);
+            tvRole.setTextColor(0xFF444444);
+            tvRole.setTextSize(12f);
+
+            TextView tvStats = new TextView(this);
+            tvStats.setText("Skill: " + m.getSkill());
+            tvStats.setTextColor(0xFF666666);
+            tvStats.setTextSize(11f);
+
+            info.addView(tvName);
+            info.addView(tvRole);
+            info.addView(tvStats);
+
+            // Badge
+            TextView tvBadge = new TextView(this);
+            tvBadge.setText(isSelected ? "✓ SELECTED" : "TAP TO SELECT");
+            tvBadge.setTextSize(10f);
+            tvBadge.setTextColor(isSelected ? 0xFF2E7D32 : 0xFF666666);
+            tvBadge.setTypeface(null, isSelected ? Typeface.BOLD : Typeface.NORMAL);
+
+            inner.addView(tvIcon);
+            inner.addView(info);
+            inner.addView(tvBadge);
+            card.addView(inner);
+
+            card.setOnClickListener(v -> {
+                if (selectedCrew.contains(m)) selectedCrew.remove(m);
+                else selectedCrew.add(m);
+                buildCrewCards();
+            });
+
+            crewSelectionContainer.addView(card);
+        }
+    }
+
+    private String roleIcon(String role) {
+        switch (role) {
+            case "Pilot":     return "✈️";
+            case "Engineer":  return "⚙️";
+            case "Medic":     return "⚕️";
+            case "Scientist": return "🔬";
+            case "Soldier":   return "🛡️";
+            default:          return "👤";
         }
     }
 
     private void selectMission(String mission) {
         selectedMission = mission;
+
         tvCheckPilot.setText(mission.equals("Asteroid Field Navigation") ? "✓" : "");
         tvCheckEngineer.setText(mission.equals("Reactor Meltdown")       ? "✓" : "");
         tvCheckMedic.setText(mission.equals("Virus Outbreak")            ? "✓" : "");
