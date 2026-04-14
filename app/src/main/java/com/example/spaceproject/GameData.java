@@ -8,6 +8,7 @@ public class GameData {
     public static List<CrewMember> crewList = new ArrayList<>();
     public static final int MAX_COINS = 100;
     public static final int INSTANT_TRAIN_COST = 5;
+    public static final int MISSION_WIN_REWARD = 20;
     public static int coins = 25;
 
     public static void addCoins(int amount) {
@@ -55,6 +56,10 @@ public class GameData {
     public static boolean skillBoostAdded     = false;
 
     public static boolean allCrewSkillBoosted = false;
+
+    // New Lab Potions levels/counts
+    public static int enemySkillReduction = 0;
+    public static int powerBoostLevel     = 0;
 
     // ── Mission types ─────────────────────────────────────────────
     public static final String MISSION_ASTEROID = "Asteroid Field Navigation";
