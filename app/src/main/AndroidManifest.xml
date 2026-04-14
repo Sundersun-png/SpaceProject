@@ -59,6 +59,10 @@
         <activity
             android:name=".ScientistLabActivity"
             android:exported="false"/>
+
+        <activity
+            android:name=".SoldierMissionActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

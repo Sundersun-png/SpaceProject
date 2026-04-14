@@ -76,6 +76,12 @@ public class MissionControlActivity extends AppCompatActivity {
                 return;
             }
 
+            if ("Alien Attack".equals(selectedMission)) {
+                startActivity(new Intent(this, SoldierMissionActivity.class));
+                finish();
+                return;
+            }
+
             // Build crew name string and sum skill
             StringBuilder names = new StringBuilder();
             int crewSkill = 0;

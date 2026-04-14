@@ -1,27 +1,30 @@
 package com.example.spaceproject;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CrewMember crewA;
-    private CrewMember crewB;
-
-    private TextView tvCrewAName, tvCrewARole, tvCrewAStats;
-    private TextView tvCrewBName, tvCrewBRole, tvCrewBStats;
+    private final Set<CrewMember> selectedCrew = new HashSet<>();
+    private LinearLayout crewContainer, selectedCrewImages;
     private TextView tvTrainStatus, tvCoins;
-    private Button   btnTrain, btnInstantTrain;
+    private Button btnTrain, btnInstantTrain;
 
     private CountDownTimer countDownTimer;
     private boolean isTraining = false;
@@ -31,47 +34,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simulator);
 
-        // Use crew assigned to Simulator, fall back to any available crew, then defaults
-        List<CrewMember> inSim = new ArrayList<>();
-        for (CrewMember m : GameData.crewList) {
-            if ("Simulator".equals(m.location)) inSim.add(m);
-        }
-        if (inSim.size() >= 2) {
-            crewA = inSim.get(0);
-            crewB = inSim.get(1);
-        } else if (inSim.size() == 1) {
-            crewA = inSim.get(0);
-            crewB = GameData.crewList.size() >= 2 ? GameData.crewList.get(1) : new CrewMember("Blake", "Pilot", 7);
-        } else if (GameData.crewList.size() >= 2) {
-            crewA = GameData.crewList.get(0);
-            crewB = GameData.crewList.get(1);
-        } else {
-            crewA = new CrewMember("Alex", "Engineer", 8);
-            crewB = new CrewMember("Blake", "Pilot", 7);
-        }
+        crewContainer = findViewById(R.id.crewContainer);
+        selectedCrewImages = findViewById(R.id.selectedCrewImages);
+        tvTrainStatus = findViewById(R.id.tvTrainStatus);
+        tvCoins = findViewById(R.id.tvCoins);
+        btnTrain = findViewById(R.id.btnTrain);
+        btnInstantTrain = findViewById(R.id.btnInstantTrain);
 
-        tvCrewAName    = findViewById(R.id.tvCrewAName);
-        tvCrewARole    = findViewById(R.id.tvCrewARole);
-        tvCrewAStats   = findViewById(R.id.tvCrewAStats);
-        tvCrewBName    = findViewById(R.id.tvCrewBName);
-        tvCrewBRole    = findViewById(R.id.tvCrewBRole);
-        tvCrewBStats   = findViewById(R.id.tvCrewBStats);
-        tvTrainStatus  = findViewById(R.id.tvTrainStatus);
-        tvCoins        = findViewById(R.id.tvCoins);
-        btnTrain       = findViewById(R.id.btnTrain);
-        btnInstantTrain= findViewById(R.id.btnInstantTrain);
-
-        updateCrewUI();
         refreshCoins();
+        buildCrewCards();
 
         // ── Normal train: 30-second timer ────────────────────────
         btnTrain.setOnClickListener(v -> {
             if (isTraining) return;
+            if (selectedCrew.isEmpty()) {
+                Toast.makeText(this, "Select crew members to train!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             startTraining();
         });
 
         // ── Instant train: costs 5 coins ─────────────────────────
         btnInstantTrain.setOnClickListener(v -> {
+            if (selectedCrew.isEmpty()) {
+                Toast.makeText(this, "Select crew members to train!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (GameData.coins < GameData.INSTANT_TRAIN_COST) {
                 Toast.makeText(this,
                     "Not enough coins! Need " + GameData.INSTANT_TRAIN_COST + "🪙",
@@ -85,15 +73,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // ── Bottom nav ────────────────────────────────────────────
-        LinearLayout navMission  = findViewById(R.id.navMission);
-        LinearLayout navQuarters = findViewById(R.id.navQuarters);
-        LinearLayout navHospital = findViewById(R.id.navHospital);
-        LinearLayout navStats    = findViewById(R.id.navStats);
-
-        navMission.setOnClickListener(v  -> startActivity(new Intent(this, MissionControlActivity.class)));
-        navQuarters.setOnClickListener(v -> startActivity(new Intent(this, QuartersActivity.class)));
-        navHospital.setOnClickListener(v -> startActivity(new Intent(this, HospitalActivity.class)));
-        navStats.setOnClickListener(v    -> startActivity(new Intent(this, StatisticsActivity.class)));
+        findViewById(R.id.navMission).setOnClickListener(v -> startActivity(new Intent(this, MissionControlActivity.class)));
+        findViewById(R.id.navQuarters).setOnClickListener(v -> startActivity(new Intent(this, QuartersActivity.class)));
+        findViewById(R.id.navHospital).setOnClickListener(v -> startActivity(new Intent(this, HospitalActivity.class)));
+        findViewById(R.id.navStats).setOnClickListener(v -> startActivity(new Intent(this, StatisticsActivity.class)));
 
         findViewById(R.id.btnBack).setOnClickListener(v -> {
             startActivity(new Intent(this, NavigationActivity.class));
@@ -101,24 +84,113 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        refreshCoins();
+    private void buildCrewCards() {
+        crewContainer.removeAllViews();
+        if (GameData.crewList.isEmpty()) {
+            TextView empty = new TextView(this);
+            empty.setText("No crew members found. Recruitment is needed!");
+            empty.setTextColor(0xFFFFFFFF);
+            empty.setGravity(Gravity.CENTER);
+            crewContainer.addView(empty);
+            return;
+        }
+
+        for (CrewMember m : GameData.crewList) {
+            boolean isSelected = selectedCrew.contains(m);
+            CardView card = new CardView(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 200);
+            params.setMargins(0, 0, 0, 16);
+            card.setLayoutParams(params);
+            card.setRadius(24f);
+            card.setCardBackgroundColor(isSelected ? 0xFF90EE90 : 0xCCFFFFFF);
+
+            LinearLayout inner = new LinearLayout(this);
+            inner.setLayoutParams(new LinearLayout.LayoutParams(-1, -1));
+            inner.setPadding(30, 0, 30, 0);
+            inner.setGravity(Gravity.CENTER_VERTICAL);
+            
+            TextView tvIcon = new TextView(this);
+            tvIcon.setText(roleIcon(m.role));
+            tvIcon.setTextSize(30f);
+            
+            LinearLayout info = new LinearLayout(this);
+            info.setOrientation(LinearLayout.VERTICAL);
+            info.setLayoutParams(new LinearLayout.LayoutParams(0, -2, 1f));
+            info.setPadding(30, 0, 0, 0);
+
+            TextView tvName = new TextView(this);
+            tvName.setText(m.name);
+            tvName.setTextSize(14f);
+            tvName.setTypeface(null, Typeface.BOLD);
+            tvName.setTextColor(0xFF000000);
+
+            TextView tvStats = new TextView(this);
+            tvStats.setText("XP: " + m.experience + "  Skill: " + m.getSkill());
+            tvStats.setTextSize(12f);
+            tvStats.setTextColor(0xFF444444);
+
+            info.addView(tvName);
+            info.addView(tvStats);
+            inner.addView(tvIcon);
+            inner.addView(info);
+            card.addView(inner);
+
+            card.setOnClickListener(v -> {
+                if (isTraining) return;
+                if (selectedCrew.contains(m)) selectedCrew.remove(m);
+                else selectedCrew.add(m);
+                buildCrewCards();
+                updateTrainingImages();
+            });
+
+            crewContainer.addView(card);
+        }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (countDownTimer != null) countDownTimer.cancel();
+    private void updateTrainingImages() {
+        selectedCrewImages.removeAllViews();
+        for (CrewMember m : selectedCrew) {
+            android.widget.ImageView iv = new android.widget.ImageView(this);
+            int resId = getCrewDrawable(m.role);
+            iv.setImageResource(resId);
+            
+            // Layout params for the character image inside the circle
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, -1, 1f);
+            iv.setLayoutParams(lp);
+            iv.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
+            
+            selectedCrewImages.addView(iv);
+        }
     }
 
-    // ── Training logic ────────────────────────────────────────────
+    private int getCrewDrawable(String role) {
+        switch (role) {
+            case "Pilot":     return R.drawable.pilot;
+            case "Engineer":  return R.drawable.engineer;
+            case "Medic":     return R.drawable.medic;
+            case "Scientist": return R.drawable.scientist;
+            case "Soldier":   return R.drawable.soldier;
+            default:          return R.drawable.ic_launcher_foreground;
+        }
+    }
+
+
+    private String roleIcon(String role) {
+        switch (role) {
+            case "Pilot": return "✈️";
+            case "Engineer": return "⚙️";
+            case "Medic": return "⚕️";
+            case "Scientist": return "🔬";
+            case "Soldier": return "🛡️";
+            default: return "👤";
+        }
+    }
 
     private void startTraining() {
         isTraining = true;
         btnTrain.setEnabled(false);
-        btnTrain.setText("TRAINING...");
+        btnInstantTrain.setEnabled(false);
         tvTrainStatus.setText("Training... 30s");
 
         countDownTimer = new CountDownTimer(30_000, 1_000) {
@@ -126,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
             public void onTick(long msLeft) {
                 tvTrainStatus.setText("Training... " + (msLeft / 1000) + "s");
             }
-
             @Override
             public void onFinish() {
                 completeTraining();
@@ -136,25 +207,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void completeTraining() {
         isTraining = false;
-        crewA.train(0);
-        crewB.train(0);
-        updateCrewUI();
+        for (CrewMember m : selectedCrew) {
+            m.train(0);
+        }
+        buildCrewCards();
         refreshCoins();
         tvTrainStatus.setText("✓ Training complete!");
         btnTrain.setEnabled(true);
-        btnTrain.setText("TRAIN  (30s)");
-        Toast.makeText(this, "Training complete!", Toast.LENGTH_SHORT).show();
-    }
-
-    // ── UI helpers ────────────────────────────────────────────────
-
-    private void updateCrewUI() {
-        tvCrewAName.setText(crewA.name);
-        tvCrewARole.setText(crewA.role);
-        tvCrewAStats.setText("XP: " + crewA.experience + "    Skill: " + crewA.getSkill());
-        tvCrewBName.setText(crewB.name);
-        tvCrewBRole.setText(crewB.role);
-        tvCrewBStats.setText("XP: " + crewB.experience + "    Skill: " + crewB.getSkill());
+        btnInstantTrain.setEnabled(true);
+        Toast.makeText(this, "Training complete for selected crew!", Toast.LENGTH_SHORT).show();
     }
 
     private void refreshCoins() {
