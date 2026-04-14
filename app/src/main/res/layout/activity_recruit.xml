@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_recruit">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="48dp"
+            android:paddingBottom="32dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Crew Member"
+                android:textColor="#CCAAAACC"
+                android:textSize="12sp"
+                android:layout_marginBottom="4dp"/>
+
+            <EditText
+                android:id="@+id/etCrewName"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:hint="crew member name..."
+
+
+                android:background="@drawable/bg_crew_card"
+                android:paddingHorizontal="16dp"
+                android:inputType="textPersonName"
+                android:layout_marginBottom="20dp"/>
+
+            <RadioGroup
+                android:id="@+id/rgSpecialization"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="24dp">
+
+                <RadioButton
+                    android:id="@+id/rbPilot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pilot"
+                    android:textColor="#FFFFFF"
+                    android:buttonTint="#EC407A"
+                    android:layout_marginEnd="8dp"/>
+
+                <RadioButton
+                    android:id="@+id/rbMedic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medic"
+                    android:textColor="#FFFFFF"
+                    android:buttonTint="#EC407A"
+                    android:layout_marginEnd="8dp"/>
+
+                <RadioButton
+                    android:id="@+id/rbScientist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Scientist"
+                    android:textColor="#FFFFFF"
+                    android:buttonTint="#EC407A"
+                    android:layout_marginEnd="8dp"/>
+
+                <RadioButton
+                    android:id="@+id/rbEngineer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Engineer"
+                    android:textColor="#FFFFFF"
+                    android:buttonTint="#EC407A"
+                    android:layout_marginEnd="8dp"/>
+
+                <RadioButton
+                    android:id="@+id/rbSoldier"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Soldier"
+                    android:textColor="#FFFFFF"
+                    android:buttonTint="#EC407A"/>
+
+            </RadioGroup>
+
+            <!-- Stats Preview Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_stat_card"
+                android:padding="20dp"
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Stats Preview"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp"/>
+
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="horizontal"
+                    android:layout_marginBottom="6dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Skill"
+                        android:textColor="#AAAACC" android:textSize="14sp"/>
+                    <TextView android:id="@+id/tvSkillPreview" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="..."
+                        android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="horizontal"
+                    android:layout_marginBottom="6dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Resilience"
+                        android:textColor="#AAAACC" android:textSize="14sp"/>
+                    <TextView android:id="@+id/tvResiliencePreview" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="..."
+                        android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="horizontal"
+                    android:layout_marginBottom="6dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Max Energy"
+                        android:textColor="#AAAACC" android:textSize="14sp"/>
+                    <TextView android:id="@+id/tvEnergyPreview" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="..."
+                        android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                </LinearLayout>
+
+                <LinearLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Ability"
+                        android:textColor="#AAAACC" android:textSize="14sp"/>
+                    <TextView android:id="@+id/tvAbilityPreview" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="..."
+                        android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnConfirmRecruit"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="CONFIRM RECRUITMENT"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:backgroundTint="#CCEC407A"
+                android:layout_marginBottom="12dp"/>
+
+            <Button
+                android:id="@+id/btnRecruitBack"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="BACK"
+
+                android:textStyle="bold"
+                android:backgroundTint="#CC3D6B8F"/>
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

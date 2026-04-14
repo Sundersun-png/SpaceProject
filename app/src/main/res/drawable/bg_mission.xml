@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Dark arena -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#050510"
+                android:centerColor="#0A0A25"
+                android:endColor="#050510"
+                android:angle="270"/>
+        </shape>
+    </item>
+    <!-- Neon ring glow center -->
+    <item android:top="250dp" android:bottom="350dp" android:left="20dp" android:right="20dp">
+        <shape android:shape="oval">
+            <stroke android:width="3dp" android:color="#440088FF"/>
+            <solid android:color="#00000000"/>
+        </shape>
+    </item>
+    <!-- Outer ring -->
+    <item android:top="200dp" android:bottom="300dp" android:left="5dp" android:right="5dp">
+        <shape android:shape="oval">
+            <stroke android:width="2dp" android:color="#220066CC"/>
+            <solid android:color="#00000000"/>
+        </shape>
+    </item>
+    <!-- Floor glow -->
+    <item android:top="550dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#00000000"
+                android:endColor="#330022AA"
+                android:angle="270"/>
+        </shape>
+    </item>
+</layer-list>

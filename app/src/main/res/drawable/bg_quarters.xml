@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Floor -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#2A2A3A"
+                android:centerColor="#1E2030"
+                android:endColor="#151520"
+                android:angle="270"/>
+        </shape>
+    </item>
+    <!-- Wall top strip -->
+    <item android:bottom="600dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#1A1A28"/>
+        </shape>
+    </item>
+    <!-- Grid floor lines horizontal -->
+    <item android:top="400dp" android:bottom="350dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#33444466"/>
+        </shape>
+    </item>
+    <item android:top="500dp" android:bottom="250dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#33444466"/>
+        </shape>
+    </item>
+    <item android:top="600dp" android:bottom="150dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#33444466"/>
+        </shape>
+    </item>
+    <!-- Ambient blue glow top -->
+    <item android:bottom="500dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#440A2A4A"
+                android:endColor="#00000000"
+                android:angle="270"/>
+        </shape>
+    </item>
+</layer-list>

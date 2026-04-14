@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#0D0520"
+                android:centerColor="#1A0A3A"
+                android:endColor="#2A1050"
+                android:angle="270"/>
+        </shape>
+    </item>
+    <!-- Purple nebula glow top right -->
+    <item android:bottom="500dp" android:left="150dp">
+        <shape android:shape="oval">
+            <solid android:color="#225B2D8A"/>
+        </shape>
+    </item>
+    <!-- Blue nebula glow bottom left -->
+    <item android:top="500dp" android:right="150dp">
+        <shape android:shape="oval">
+            <solid android:color="#221A3A6A"/>
+        </shape>
+    </item>
+</layer-list>

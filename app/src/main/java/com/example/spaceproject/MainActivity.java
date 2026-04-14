@@ -1,24 +1,41 @@
 package com.example.spaceproject;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        Button btnQuarter     = findViewById(R.id.btnQuarter);
+        Button btnSimulator   = findViewById(R.id.btnSimulator);
+        Button btnMission     = findViewById(R.id.btnMissionControl);
+        Button btnStatistics  = findViewById(R.id.btnStatistics);
+        Button btnHospital    = findViewById(R.id.btnHospital);
+        Button btnAddCrew     = findViewById(R.id.btnAddCrew);
+
+        btnQuarter.setOnClickListener(v ->
+                startActivity(new Intent(this, QuartersActivity.class)));
+
+        btnSimulator.setOnClickListener(v ->
+                startActivity(new Intent(this, SimulatorActivity.class)));
+
+        btnMission.setOnClickListener(v ->
+                startActivity(new Intent(this, MissionControlActivity.class)));
+
+        btnStatistics.setOnClickListener(v ->
+                startActivity(new Intent(this, StatisticsActivity.class)));
+
+        btnHospital.setOnClickListener(v ->
+                startActivity(new Intent(this, HospitalActivity.class)));
+
+        btnAddCrew.setOnClickListener(v ->
+                startActivity(new Intent(this, RecruitActivity.class)));
     }
 }

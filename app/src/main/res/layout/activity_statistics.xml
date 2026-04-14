@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_space">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AA000820"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="48dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="STATISTICS"
+            android:textColor="#FFFFFF"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.2"
+            android:layout_marginBottom="32dp"/>
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            android:layout_marginBottom="16dp" android:background="@drawable/bg_stat_card"
+            android:padding="18dp">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="MISSIONS WON"
+                android:textColor="#AAAACC" android:textSize="14sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/tvMissionsWon" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="0"
+                android:textColor="#FFFFFF" android:textSize="22sp" android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            android:layout_marginBottom="16dp" android:background="@drawable/bg_stat_card"
+            android:padding="18dp">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="MISSIONS LOST"
+                android:textColor="#AAAACC" android:textSize="14sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/tvMissionsLost" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="0"
+                android:textColor="#FFFFFF" android:textSize="22sp" android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            android:layout_marginBottom="16dp" android:background="@drawable/bg_stat_card"
+            android:padding="18dp">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="TOTAL MISSIONS"
+                android:textColor="#AAAACC" android:textSize="14sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/tvTotalMissions" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="0"
+                android:textColor="#FFFFFF" android:textSize="22sp" android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            android:layout_marginBottom="16dp" android:background="@drawable/bg_stat_card"
+            android:padding="18dp">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="COINS EARNED"
+                android:textColor="#AAAACC" android:textSize="14sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/tvCoinsEarned" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="0"
+                android:textColor="#FFD700" android:textSize="22sp" android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:orientation="horizontal"
+            android:layout_marginBottom="32dp" android:background="@drawable/bg_stat_card"
+            android:padding="18dp">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:text="WIN RATE"
+                android:textColor="#AAAACC" android:textSize="14sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/tvWinRate" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="0.0%"
+                android:textColor="#66FF99" android:textSize="22sp" android:textStyle="bold"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="BACK TO BASE"
+
+            android:textStyle="bold"
+            android:backgroundTint="#CC3D6B8F"/>
+
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#0A0A1A"
+                android:centerColor="#1A0A3A"
+                android:endColor="#0D0520"
+                android:angle="270"/>
+        </shape>
+    </item>
+    <!-- Stars layer 1 -->
+    <item android:top="50dp" android:left="30dp" android:right="300dp" android:bottom="700dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF"/>
+            <size android:width="3dp" android:height="3dp"/>
+        </shape>
+    </item>
+    <item android:top="120dp" android:left="150dp" android:right="180dp" android:bottom="620dp">
+        <shape android:shape="oval">
+            <solid android:color="#DDDDFF"/>
+            <size android:width="2dp" android:height="2dp"/>
+        </shape>
+    </item>
+    <item android:top="200dp" android:left="80dp" android:right="240dp" android:bottom="540dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF"/>
+            <size android:width="2dp" android:height="2dp"/>
+        </shape>
+    </item>
+    <item android:top="80dp" android:left="200dp" android:right="100dp" android:bottom="660dp">
+        <shape android:shape="oval">
+            <solid android:color="#FFFFFF"/>
+            <size android:width="3dp" android:height="3dp"/>
+        </shape>
+    </item>
+    <item android:top="300dp" android:left="250dp" android:right="50dp" android:bottom="440dp">
+        <shape android:shape="oval">
+            <solid android:color="#AAAAFF"/>
+            <size android:width="2dp" android:height="2dp"/>
+        </shape>
+    </item>
+</layer-list>

@@ -1,19 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@drawable/bg_space">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SPACE COLONY"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.2"
+            android:shadowColor="#AA6600FF"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="20"
+            android:layout_marginBottom="60dp"/>
+
+        <!-- Row 1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnQuarter"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="52dp"
+                android:text="Quarter"
+                android:textColor="#333333"
+                android:backgroundTint="#FFCCBBCC"
+                android:layout_marginEnd="8dp"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnSimulator"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="52dp"
+                android:text="Simulator"
+                android:textColor="#333333"
+                android:backgroundTint="#FFCCBBCC"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <!-- Row 2 -->
+        <Button
+            android:id="@+id/btnMissionControl"
+            android:layout_width="220dp"
+            android:layout_height="52dp"
+            android:text="Mission Control"
+            android:textColor="#333333"
+            android:backgroundTint="#FFCCBBCC"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Row 3 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnStatistics"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="52dp"
+                android:text="Statistics"
+                android:textColor="#333333"
+                android:backgroundTint="#FFCCBBCC"
+                android:layout_marginEnd="8dp"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnHospital"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="52dp"
+                android:text="Hospital"
+                android:textColor="#333333"
+                android:backgroundTint="#FFCCBBCC"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <!-- Add Crew -->
+        <Button
+            android:id="@+id/btnAddCrew"
+            android:layout_width="220dp"
+            android:layout_height="52dp"
+            android:text="Add Crew Member"
+
+            android:backgroundTint="#FF22AA44"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+</FrameLayout>
