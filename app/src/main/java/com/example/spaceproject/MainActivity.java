@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * MISSION CONTROL ACTIVITY
+ * SIMULATOR ACTIVITY (Single Missions)
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -62,16 +62,18 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btnLaunchMission).setOnClickListener(v -> launchMission());
 
-        // --- Navigation ---
+        // --- Navigation (Simulator mapping) ---
         findViewById(R.id.navQuarters).setOnClickListener(v -> {
             startActivity(new Intent(this, QuartersActivity.class));
             finish();
         });
         findViewById(R.id.navSimulator).setOnClickListener(v -> {
+            // Already here
+        });
+        findViewById(R.id.navMission).setOnClickListener(v -> {
             startActivity(new Intent(this, MissionControlActivity.class));
             finish();
         });
-        findViewById(R.id.navMission).setOnClickListener(v -> {});
         findViewById(R.id.navHospital).setOnClickListener(v -> {
             startActivity(new Intent(this, HospitalActivity.class));
             finish();
@@ -165,15 +167,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void buildCrewCards() {
         crewSelectionContainer.removeAllViews();
-        // Show all crew members who are in Mission Control location
+        // Show all crew members who are in Simulator location
         List<CrewMember> available = new ArrayList<>();
         for (CrewMember m : GameData.crewList) {
-            if ("MissionControl".equals(m.location)) available.add(m);
+            if ("Simulator".equals(m.location)) available.add(m);
         }
 
         if (available.isEmpty()) {
             TextView empty = new TextView(this);
-            empty.setText("No crew in Mission Control. Move them from Quarters.");
+            empty.setText("No crew in Simulator. Move them from Quarters.");
             empty.setTextColor(0xFFBBBBBB);
             empty.setGravity(Gravity.CENTER);
             empty.setPadding(0, 20, 0, 20);

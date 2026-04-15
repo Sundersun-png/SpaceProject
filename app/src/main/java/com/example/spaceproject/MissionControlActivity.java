@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * SIMULATOR activity.
- * Now handles Joint Missions instead of training.
+ * MISSION CONTROL activity. (Swapped from Simulator)
+ * Handles Joint Missions.
  */
 public class MissionControlActivity extends AppCompatActivity {
 
@@ -45,8 +45,12 @@ public class MissionControlActivity extends AppCompatActivity {
 
         setupListeners();
 
-        // ── Bottom nav ──
+        // ── Bottom nav (Swapped mapping) ──
         findViewById(R.id.navMission).setOnClickListener(v -> {
+            // Mission nav button now goes to MissionControlActivity (itself)
+        });
+        findViewById(R.id.navSimulator).setOnClickListener(v -> {
+            // Simulator nav button now goes to MainActivity (Single Missions)
             startActivity(new Intent(this, MainActivity.class));
             finish();
         });
@@ -62,7 +66,6 @@ public class MissionControlActivity extends AppCompatActivity {
             startActivity(new Intent(this, StatisticsActivity.class));
             finish();
         });
-        findViewById(R.id.navSimulator).setOnClickListener(v -> {});
 
         findViewById(R.id.btnBack).setOnClickListener(v -> {
             startActivity(new Intent(this, NavigationActivity.class));
@@ -88,13 +91,13 @@ public class MissionControlActivity extends AppCompatActivity {
         crewContainer.removeAllViews();
         List<CrewMember> availableCrew = new ArrayList<>();
         for (CrewMember m : GameData.crewList) {
-            // Only show crew currently in the Simulator location
-            if ("Simulator".equals(m.location)) availableCrew.add(m);
+            // Now checks for "MissionControl" location
+            if ("MissionControl".equals(m.location)) availableCrew.add(m);
         }
 
         if (availableCrew.isEmpty()) {
             TextView empty = new TextView(this);
-            empty.setText("No crew in Simulator. Move them from Quarters.");
+            empty.setText("No crew in Mission Control. Move them from Quarters.");
             empty.setTextColor(0xFFFFFFFF);
             empty.setGravity(Gravity.CENTER);
             crewContainer.addView(empty);

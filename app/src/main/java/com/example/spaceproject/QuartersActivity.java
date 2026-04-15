@@ -72,7 +72,7 @@ public class QuartersActivity extends AppCompatActivity {
             buildCrewList();
         });
 
-        // Move to Mission Control (Now MainActivity)
+        // Move to Mission Control (Now MissionControlActivity - Joint Missions)
         findViewById(R.id.btnMoveToMissionControl).setOnClickListener(v -> {
             if (selectedCrew.isEmpty()) {
                 Toast.makeText(this, "Select a crew member first!", Toast.LENGTH_SHORT).show();
@@ -81,11 +81,11 @@ public class QuartersActivity extends AppCompatActivity {
             for (CrewMember m : selectedCrew) m.location = "MissionControl";
             selectedCrew.clear();
             Toast.makeText(this, "Crew moved to Mission Control!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, MissionControlActivity.class));
             finish();
         });
 
-        // Move to Simulator (Now MissionControlActivity)
+        // Move to Simulator (Now MainActivity - Single Missions)
         findViewById(R.id.btnMoveToSimulator).setOnClickListener(v -> {
             if (selectedCrew.isEmpty()) {
                 Toast.makeText(this, "Select a crew member first!", Toast.LENGTH_SHORT).show();
@@ -94,7 +94,7 @@ public class QuartersActivity extends AppCompatActivity {
             for (CrewMember m : selectedCrew) m.location = "Simulator";
             selectedCrew.clear();
             Toast.makeText(this, "Crew moved to Simulator!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, MissionControlActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 

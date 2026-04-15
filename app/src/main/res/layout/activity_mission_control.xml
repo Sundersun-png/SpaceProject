@@ -62,7 +62,7 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="STELLAR COLONY"
+                android:text="SIMULATOR"
                 android:textColor="#FFFFFF"
                 android:textSize="22sp"
                 android:textStyle="bold"
@@ -253,11 +253,11 @@
         </LinearLayout>
         <LinearLayout android:id="@+id/navSimulator" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎮" android:textSize="20sp"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Simulator" android:textSize="10sp" android:textColor="#AAAAAA"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Simulator" android:textSize="10sp" android:textColor="#FFFFFF" android:textStyle="bold"/>
         </LinearLayout>
         <LinearLayout android:id="@+id/navMission" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🚀" android:textSize="20sp"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mission" android:textSize="10sp" android:textColor="#FFFFFF" android:textStyle="bold"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mission" android:textSize="10sp" android:textColor="#AAAAAA"/>
         </LinearLayout>
         <LinearLayout android:id="@+id/navStats" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📊" android:textSize="20sp"/>

@@ -77,7 +77,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:backgroundTint="#3A3A6E"
-                android:text="Mission Control"
+                android:text="Simulator"
                 android:textColor="#FFFFFF"
                 android:textSize="15sp" />
 
@@ -92,7 +92,7 @@
             android:layout_height="52dp"
             android:layout_marginBottom="16dp"
             android:backgroundTint="#3A3A6E"
-            android:text="Simulator"
+            android:text="Mission Control"
             android:textColor="#FFFFFF"
             android:textSize="15sp" />
 
