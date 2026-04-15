@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/engineerback">
 
-    <!-- Dark overlay -->
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -16,7 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Back button (top-left) -->
     <TextView
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
@@ -35,7 +33,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- Coin display (top-right) -->
     <LinearLayout
         android:id="@+id/coinDisplay"
         android:layout_width="wrap_content"
@@ -54,7 +51,6 @@
             android:text="25" android:textColor="#FFD700" android:textSize="14sp" android:textStyle="bold" android:layout_marginStart="6dp"/>
     </LinearLayout>
 
-    <!-- Top info bar: mission name + timer -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardTopBar"
         android:layout_width="0dp"
@@ -94,16 +90,24 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/tvInstruction"
+                    android:id="@+id/tvProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Tap the dots in order: 1 → 2 → 3 …"
-                    android:textColor="#AAAAAA"
+                    android:text="Puzzle: 1/5"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:layout_marginTop="2dp"/>
+
+                <TextView
+                    android:id="@+id/tvCrewStats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Skill: 0 | XP: 0"
+                    android:textColor="#00FFFF"
                     android:textSize="12sp"
                     android:layout_marginTop="2dp"/>
             </LinearLayout>
 
-            <!-- Countdown -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -128,11 +132,9 @@
                     android:textSize="28sp"
                     android:textStyle="bold"/>
             </LinearLayout>
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Connect-the-dots game area -->
     <com.example.spaceproject.ConnectDotsView
         android:id="@+id/connectDotsView"
         android:layout_width="0dp"
@@ -143,7 +145,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Result overlay (hidden until mission ends) -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardResult"
         android:layout_width="0dp"
@@ -177,7 +178,7 @@
                 android:id="@+id/tvResultTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MISSION SUCCESS"
+                android:text="MISSION OVER"
                 android:textColor="#90EE90"
                 android:textSize="22sp"
                 android:textStyle="bold"
@@ -187,7 +188,7 @@
                 android:id="@+id/tvResultMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reactor stabilised!"
+                android:text="Stats updated."
                 android:textColor="#AAAAAA"
                 android:textSize="14sp"
                 android:gravity="center"
@@ -202,8 +203,6 @@
                 android:backgroundTint="#1E90FF"
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="20dp"/>
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

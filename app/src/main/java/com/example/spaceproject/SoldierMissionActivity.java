@@ -17,7 +17,8 @@ public class SoldierMissionActivity extends AppCompatActivity {
     private int totalDamage = 0;
     private boolean isBoosted = false;
 
-    private TextView tvEnergy, tvThreatSkill, tvThreatResilience, tvDamage;
+    private TextView tvEnergy, tvThreatSkill, tvThreatResilience, tvDamage, tvCoins, tvCrewStats;
+    private CrewMember soldier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +29,18 @@ public class SoldierMissionActivity extends AppCompatActivity {
         tvThreatSkill = findViewById(R.id.tvThreatSkill);
         tvThreatResilience = findViewById(R.id.tvThreatResilience);
         tvDamage = findViewById(R.id.tvDamage);
+        tvCoins = findViewById(R.id.tvCoins);
+        tvCrewStats = findViewById(R.id.tvCrewStats);
+
+        for (CrewMember m : GameData.crewList) {
+            if ("Soldier".equals(m.role)) {
+                soldier = m;
+                break;
+            }
+        }
 
         findViewById(R.id.btnBack).setOnClickListener(v -> {
-            startActivity(new Intent(this, MissionControlActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 
@@ -41,13 +51,11 @@ public class SoldierMissionActivity extends AppCompatActivity {
         btnTorpedo.setOnClickListener(v -> {
             if (currentEnergy >= 15) {
                 currentEnergy -= 15;
-                int baseDmg = new Random().nextInt(20) + 20; // 20-40 damage
+                int baseDmg = new Random().nextInt(20) + 20;
                 int finalDmg = isBoosted ? baseDmg * 2 : baseDmg;
-                
                 totalDamage += finalDmg;
                 threatResilience -= finalDmg;
-                isBoosted = false; // Boost used up
-                
+                isBoosted = false;
                 updateUI();
                 checkMissionStatus();
             } else {
@@ -59,10 +67,8 @@ public class SoldierMissionActivity extends AppCompatActivity {
             if (currentEnergy >= 10) {
                 currentEnergy -= 10;
                 isBoosted = true;
-                Toast.makeText(this, "Next Torpedo Strike will deal DOUBLE damage!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Boosted!", Toast.LENGTH_SHORT).show();
                 updateUI();
-            } else {
-                Toast.makeText(this, "Not enough energy!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -70,13 +76,9 @@ public class SoldierMissionActivity extends AppCompatActivity {
             if (currentEnergy >= 10) {
                 currentEnergy -= 10;
                 threatSkill = Math.max(0, threatSkill - 15);
-                // Also deal a small amount of "structural" damage
                 threatResilience -= 5;
-                Toast.makeText(this, "Alien weakened!", Toast.LENGTH_SHORT).show();
                 updateUI();
                 checkMissionStatus();
-            } else {
-                Toast.makeText(this, "Not enough energy!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -84,19 +86,28 @@ public class SoldierMissionActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
+        if (tvCoins != null) tvCoins.setText(String.valueOf(GameData.coins));
         tvEnergy.setText("Energy: " + currentEnergy + "%");
         tvThreatSkill.setText("Threat Skill: " + threatSkill);
         tvThreatResilience.setText("Threat Resilience: " + Math.max(0, threatResilience));
         tvDamage.setText("Damage: " + totalDamage);
+        
+        if (soldier != null && tvCrewStats != null) {
+            tvCrewStats.setText("Skill: " + soldier.skillLevel + " | XP: " + soldier.experience);
+        }
     }
 
     private void checkMissionStatus() {
         if (threatResilience <= 0) {
-            Toast.makeText(this, "Mission Successful! Alien defeated!", Toast.LENGTH_LONG).show();
+            if (soldier != null) {
+                soldier.experience += 1;
+                soldier.skillLevel += 1;
+            }
             GameData.addCoins(10);
+            Toast.makeText(this, "Mission Successful! Soldier +1 XP, +1 Skill.", Toast.LENGTH_LONG).show();
             finish();
         } else if (currentEnergy <= 0) {
-            Toast.makeText(this, "Mission Failed! Out of energy!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Mission Failed!", Toast.LENGTH_LONG).show();
             finish();
         }
     }

@@ -16,9 +16,8 @@ public class ScientistLabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scientist_lab);
 
-        // Find the first available Scientist in the crew
         for (CrewMember member : GameData.crewList) {
-            if (member.isScientist()) {
+            if (member.role.equalsIgnoreCase("Scientist")) {
                 activeScientist = member;
                 break;
             }
@@ -33,68 +32,77 @@ public class ScientistLabActivity extends AppCompatActivity {
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
-        // Flask 1: Extra Skill Potion (Costs 10 coins, gives +1 skill to scientist)
-        findViewById(R.id.btnFlaskSkill).setOnClickListener(v -> {
-            if (activeScientist == null) {
-                Toast.makeText(this, "No scientist available!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (GameData.coins >= 10) {
-                GameData.coins -= 10;
-                activeScientist.train(0); // train(0) adds 1 + 0 = 1 experience
-                Toast.makeText(this, "Scientist skill increased!", Toast.LENGTH_SHORT).show();
-                updateUI();
-            } else {
-                Toast.makeText(this, "Not enough coins! (Need 10)", Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Flask 1: Skill Potion (Req XP: 4)
+        findViewById(R.id.btnFlaskSkill).setOnClickListener(v -> brewPotion(4, "Skill Potion", () -> {
+            activeScientist.experience += 1;
+            activeScientist.skillLevel += 1;
+        }));
+        findViewById(R.id.btnBuySkill).setOnClickListener(v -> buyPotion(10, "Skill Potion", () -> {
+            activeScientist.experience += 1;
+            activeScientist.skillLevel += 1;
+        }));
 
-        // Flask 2: Gold Potion (gives 5 coin to user)
-        // User asked for "one that gives 5 coin to user potion"
-        // Let's make it a free brew (or costs 0 coins) but requires a scientist.
-        findViewById(R.id.btnFlaskCoins).setOnClickListener(v -> {
-            if (activeScientist == null) {
-                Toast.makeText(this, "No scientist available to brew gold!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            // Maybe it can only be done once per mission? Or just give 5 coins.
+        // Flask 2: Gold Potion (Req XP: 6)
+        findViewById(R.id.btnFlaskCoins).setOnClickListener(v -> brewPotion(6, "Gold Potion", () -> {
             GameData.addCoins(5);
-            Toast.makeText(this, "Scientist transmuted some gold! (+5 Coins)", Toast.LENGTH_SHORT).show();
+        }));
+        findViewById(R.id.btnBuyCoins).setOnClickListener(v -> buyPotion(15, "Gold Potion", () -> {
+            GameData.addCoins(5);
+        }));
+
+        // Flask 3: Weakness (Req XP: 3)
+        findViewById(R.id.btnFlaskReduce).setOnClickListener(v -> brewPotion(3, "Weakness Potion", () -> {
+            GameData.weaknessPotionAdded = true;
+        }));
+        findViewById(R.id.btnBuyReduce).setOnClickListener(v -> buyPotion(8, "Weakness Potion", () -> {
+            GameData.weaknessPotionAdded = true;
+        }));
+
+        // Flask 4: Power Boost (Req XP: 5)
+        findViewById(R.id.btnFlaskBoost).setOnClickListener(v -> brewPotion(5, "Power Boost", () -> {
+            GameData.powerBoostAdded = true;
+        }));
+        findViewById(R.id.btnBuyBoost).setOnClickListener(v -> buyPotion(12, "Power Boost", () -> {
+            GameData.powerBoostAdded = true;
+        }));
+    }
+
+    private interface PotionAction {
+        void execute();
+    }
+
+    private void brewPotion(int reqXP, String name, PotionAction action) {
+        if (activeScientist == null) {
+            Toast.makeText(this, "No scientist available!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (activeScientist.experience >= reqXP) {
+            action.execute();
+            Toast.makeText(this, name + " brewed successfully!", Toast.LENGTH_SHORT).show();
             updateUI();
-        });
+        } else {
+            Toast.makeText(this, "Scientist XP too low! (Need " + reqXP + ")", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-        // Flask 3: Reduce Enemy Skill Potion (Costs 10 coins)
-        findViewById(R.id.btnFlaskReduce).setOnClickListener(v -> {
-            if (GameData.coins >= 10) {
-                GameData.coins -= 10;
-                GameData.enemySkillReduction++;
-                Toast.makeText(this, "Enemy skill reduced for next mission!", Toast.LENGTH_SHORT).show();
-                updateUI();
-            } else {
-                Toast.makeText(this, "Not enough coins!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Flask 4: Power Boost Potion (Costs 10 coins)
-        findViewById(R.id.btnFlaskBoost).setOnClickListener(v -> {
-            if (GameData.coins >= 10) {
-                GameData.coins -= 10;
-                GameData.powerBoostLevel++;
-                Toast.makeText(this, "Mission power boosted!", Toast.LENGTH_SHORT).show();
-                updateUI();
-            } else {
-                Toast.makeText(this, "Not enough coins!", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void buyPotion(int cost, String name, PotionAction action) {
+        if (GameData.coins >= cost) {
+            GameData.coins -= cost;
+            action.execute();
+            Toast.makeText(this, name + " purchased for " + cost + " coins!", Toast.LENGTH_SHORT).show();
+            updateUI();
+        } else {
+            Toast.makeText(this, "Not enough coins!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateUI() {
-        tvCoins.setText(String.valueOf(GameData.coins));
-        tvEnemyReduction.setText("Enemy Reduction: " + GameData.enemySkillReduction);
-        tvPowerBoost.setText("Power Boost: " + GameData.powerBoostLevel);
+        if (tvCoins != null) tvCoins.setText(String.valueOf(GameData.coins));
+        tvEnemyReduction.setText("Weak Enemy: " + (GameData.weaknessPotionAdded ? "READY" : "OFF"));
+        tvPowerBoost.setText("Power Boost: " + (GameData.powerBoostAdded ? "READY" : "OFF"));
         
         if (activeScientist != null) {
-            tvScientistInfo.setText("🔬 Scientist: " + activeScientist.name + " (Skill: " + activeScientist.getSkill() + ")");
+            tvScientistInfo.setText("🔬 Scientist: " + activeScientist.name + " (XP: " + activeScientist.experience + ")");
         } else {
             tvScientistInfo.setText("🔬 Scientist: NONE FOUND");
         }

@@ -63,6 +63,22 @@
         <activity
             android:name=".SoldierMissionActivity"
             android:exported="false"/>
+
+        <activity
+            android:name=".JointMissionActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".AsteroidAttackActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".ScientistTrainingActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".MedicLabActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

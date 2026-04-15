@@ -79,7 +79,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Flask 1: Extra Skill -->
+        <!-- Potion 1: Skill Potion -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -95,12 +95,13 @@
                 android:gravity="center">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🧪" android:textSize="40sp"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Skill Potion" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="12sp"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+1 Skill Level" android:textColor="#AAAAAA" android:textSize="10sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Req XP points: 4" android:textColor="#AAAAAA" android:textSize="10sp"/>
                 <Button android:id="@+id/btnFlaskSkill" android:layout_width="match_parent" android:layout_height="36dp" android:text="BREW" android:textSize="10sp" android:layout_marginTop="8dp" android:backgroundTint="#CC2D82"/>
+                <Button android:id="@+id/btnBuySkill" android:layout_width="match_parent" android:layout_height="36dp" android:text="BUY (10 🪙)" android:textSize="10sp" android:layout_marginTop="4dp" android:backgroundTint="#FF9800"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Flask 2: 5 Coins -->
+        <!-- Potion 2: Gold Potion -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -116,12 +117,13 @@
                 android:gravity="center">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚗️" android:textSize="40sp"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Gold Potion" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="12sp"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+5 Coins" android:textColor="#AAAAAA" android:textSize="10sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Req XP points: 6" android:textColor="#AAAAAA" android:textSize="10sp"/>
                 <Button android:id="@+id/btnFlaskCoins" android:layout_width="match_parent" android:layout_height="36dp" android:text="BREW" android:textSize="10sp" android:layout_marginTop="8dp" android:backgroundTint="#CC2D82"/>
+                <Button android:id="@+id/btnBuyCoins" android:layout_width="match_parent" android:layout_height="36dp" android:text="BUY (15 🪙)" android:textSize="10sp" android:layout_marginTop="4dp" android:backgroundTint="#FF9800"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Flask 3: Reduce Enemy -->
+        <!-- Potion 3: Weakness -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -137,12 +139,13 @@
                 android:gravity="center">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🧉" android:textSize="40sp"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Weakness" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="12sp"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Reduce Enemy" android:textColor="#AAAAAA" android:textSize="10sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Req XP points: 3" android:textColor="#AAAAAA" android:textSize="10sp"/>
                 <Button android:id="@+id/btnFlaskReduce" android:layout_width="match_parent" android:layout_height="36dp" android:text="BREW" android:textSize="10sp" android:layout_marginTop="8dp" android:backgroundTint="#CC2D82"/>
+                <Button android:id="@+id/btnBuyReduce" android:layout_width="match_parent" android:layout_height="36dp" android:text="BUY (8 🪙)" android:textSize="10sp" android:layout_marginTop="4dp" android:backgroundTint="#FF9800"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Flask 4: Power Boost -->
+        <!-- Potion 4: Power Boost -->
         <androidx.cardview.widget.CardView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -158,8 +161,9 @@
                 android:gravity="center">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🍶" android:textSize="40sp"/>
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Power Boost" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="12sp"/>
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+Mission Power" android:textColor="#AAAAAA" android:textSize="10sp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Req XP points: 5" android:textColor="#AAAAAA" android:textSize="10sp"/>
                 <Button android:id="@+id/btnFlaskBoost" android:layout_width="match_parent" android:layout_height="36dp" android:text="BREW" android:textSize="10sp" android:layout_marginTop="8dp" android:backgroundTint="#CC2D82"/>
+                <Button android:id="@+id/btnBuyBoost" android:layout_width="match_parent" android:layout_height="36dp" android:text="BUY (12 🪙)" android:textSize="10sp" android:layout_marginTop="4dp" android:backgroundTint="#FF9800"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -173,8 +177,8 @@
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="#DD000000">
-        <TextView android:id="@+id/tvEnemyReduction" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Enemy Reduction: 0" android:textColor="#00FF00" android:textSize="12sp"/>
-        <TextView android:id="@+id/tvPowerBoost" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Power Boost: 0" android:textColor="#00FF00" android:textSize="12sp"/>
+        <TextView android:id="@+id/tvEnemyReduction" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Weakness: OFF" android:textColor="#00FF00" android:textSize="12sp"/>
+        <TextView android:id="@+id/tvPowerBoost" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Power Boost: OFF" android:textColor="#00FF00" android:textSize="12sp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,11 +14,16 @@ import androidx.cardview.widget.CardView;
 public class EngineerMissionActivity extends AppCompatActivity {
 
     private boolean missionOver  = false;
-    private TextView tvCountdown, tvCoins;
+    private int puzzleCount = 0;
+    private final int MAX_PUZZLES = 5;
+    private int puzzlesSolved = 0;
+
+    private TextView tvCountdown, tvCoins, tvProgress, tvCrewStats;
     private ConnectDotsView connectDotsView;
     private CardView cardResult;
     private TextView tvResultIcon, tvResultTitle, tvResultMessage;
     private CountDownTimer countDownTimer;
+    private CrewMember engineer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,34 +32,75 @@ public class EngineerMissionActivity extends AppCompatActivity {
 
         tvCountdown     = findViewById(R.id.tvCountdown);
         tvCoins         = findViewById(R.id.tvCoins);
+        tvProgress      = findViewById(R.id.tvProgress);
+        tvCrewStats     = findViewById(R.id.tvCrewStats);
         connectDotsView = findViewById(R.id.connectDotsView);
         cardResult      = findViewById(R.id.cardResult);
         tvResultIcon    = findViewById(R.id.tvResultIcon);
         tvResultTitle   = findViewById(R.id.tvResultTitle);
         tvResultMessage = findViewById(R.id.tvResultMessage);
 
-        tvCoins.setText(String.valueOf(GameData.coins));
+        if (tvCoins != null) tvCoins.setText(String.valueOf(GameData.coins));
         
-        // Randomly generate the puzzle each time
-        connectDotsView.generateRandomPuzzle();
+        for (CrewMember m : GameData.crewList) {
+            if ("Engineer".equals(m.role)) {
+                engineer = m;
+                break;
+            }
+        }
 
         findViewById(R.id.btnBack).setOnClickListener(v -> {
             if (countDownTimer != null) countDownTimer.cancel();
-            startActivity(new Intent(this, MissionControlActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 
-        connectDotsView.setOnAllConnectedListener(() -> endMission(true));
+        connectDotsView.setOnAllConnectedListener(() -> {
+            puzzlesSolved++;
+            nextPuzzle();
+        });
 
         findViewById(R.id.btnResultContinue).setOnClickListener(v -> {
             startActivity(new Intent(this, InventoryActivity.class));
             finish();
         });
 
+        startMission();
+        updateCrewStats();
+    }
+
+    private void updateCrewStats() {
+        if (engineer != null && tvCrewStats != null) {
+            tvCrewStats.setText("Skill: " + engineer.skillLevel + " | XP: " + engineer.experience);
+        }
+    }
+
+    private void startMission() {
+        puzzleCount = 0;
+        puzzlesSolved = 0;
+        // updateProgress(); // Removed to fix starting at 2/5
+        nextPuzzle();
         startCountdown();
     }
 
+    private void updateProgress() {
+        if (tvProgress != null) {
+            tvProgress.setText("Puzzle: " + puzzleCount + "/" + MAX_PUZZLES);
+        }
+    }
+
+    private void nextPuzzle() {
+        if (puzzleCount < MAX_PUZZLES) {
+            puzzleCount++;
+            updateProgress();
+            connectDotsView.generateRandomPuzzle();
+        } else {
+            endMission(true);
+        }
+    }
+
     private void startCountdown() {
+        if (countDownTimer != null) countDownTimer.cancel();
         countDownTimer = new CountDownTimer(60_000, 1_000) {
             @Override
             public void onTick(long msLeft) {
@@ -68,31 +114,28 @@ public class EngineerMissionActivity extends AppCompatActivity {
         }.start();
     }
 
-    private void endMission(boolean won) {
+    private void endMission(boolean completed) {
         missionOver = true;
         if (countDownTimer != null) countDownTimer.cancel();
         connectDotsView.stopGame();
 
-        if (won) {
-            // Give +1 XP to the Engineer
-            for (CrewMember m : GameData.crewList) {
-                if ("Engineer".equals(m.role)) {
-                    m.experience += 1;
-                    break;
-                }
+        if (puzzlesSolved >= 3) {
+            if (engineer != null) {
+                engineer.experience += 1;
+                engineer.skillLevel += 1;
+                Toast.makeText(this, "Mission Successful! +1 XP, +1 Skill.", Toast.LENGTH_LONG).show();
             }
-
-            // Successfully solved -> Inventory
-            Toast.makeText(this, "Reactor Stabilized! Engineer gained +1 XP", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, InventoryActivity.class));
-            finish();
-            return;
+            GameData.addCoins(10);
+            tvResultIcon.setText("⚙️");
+            tvResultTitle.setText("REACTOR STABILIZED");
+            tvResultMessage.setText("You solved " + puzzlesSolved + " puzzles! Accessing inventory...");
+            cardResult.setVisibility(View.VISIBLE);
+        } else {
+            tvResultIcon.setText("💥");
+            tvResultTitle.setText("REACTOR FAILURE");
+            tvResultMessage.setText("Only solved " + puzzlesSolved + ". Ship takes damage!");
+            cardResult.setVisibility(View.VISIBLE);
         }
-
-        tvResultIcon.setText("💥");
-        tvResultTitle.setText("REACTOR EXPLODED");
-        tvResultMessage.setText("Too slow! The ship is damaged.");
-        cardResult.setVisibility(View.VISIBLE);
     }
 
     @Override

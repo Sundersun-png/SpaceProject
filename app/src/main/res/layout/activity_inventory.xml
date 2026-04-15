@@ -89,7 +89,7 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Torpedo" android:textColor="#FFFFFF" android:textStyle="bold"/>
                     <TextView android:id="@+id/tvTorpedoStatus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not Added" android:textColor="#FF6666" android:textSize="10sp"/>
                     <Button android:id="@+id/btnPurchaseTorpedo" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Purchase (5🪙)" android:textSize="10sp"/>
-                    <Button android:id="@+id/btnAddTorpedo" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (Skill: 5)" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnAddTorpedo" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (XP: 5)" android:textSize="10sp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -106,7 +106,7 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Grenade" android:textColor="#FFFFFF" android:textStyle="bold"/>
                     <TextView android:id="@+id/tvGrenadeStatus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not Added" android:textColor="#FF6666" android:textSize="10sp"/>
                     <Button android:id="@+id/btnPurchaseGrenade" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Purchase (5🪙)" android:textSize="10sp"/>
-                    <Button android:id="@+id/btnAddGrenade" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (Skill: 3)" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnAddGrenade" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (XP: 3)" android:textSize="10sp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -123,7 +123,7 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Gun" android:textColor="#FFFFFF" android:textStyle="bold"/>
                     <TextView android:id="@+id/tvGunStatus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not Added" android:textColor="#FF6666" android:textSize="10sp"/>
                     <Button android:id="@+id/btnPurchaseGun" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Purchase (5🪙)" android:textSize="10sp"/>
-                    <Button android:id="@+id/btnAddGun" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (Skill: 4)" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnAddGun" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (XP: 4)" android:textSize="10sp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -140,7 +140,7 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Rocketship" android:textColor="#FFFFFF" android:textStyle="bold"/>
                     <TextView android:id="@+id/tvRocketshipStatus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not Added" android:textColor="#FF6666" android:textSize="10sp"/>
                     <Button android:id="@+id/btnPurchaseRocketship" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Purchase (5🪙)" android:textSize="10sp"/>
-                    <Button android:id="@+id/btnAddRocketship" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (Skill: 6)" android:textSize="10sp"/>
+                    <Button android:id="@+id/btnAddRocketship" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Add (XP: 6)" android:textSize="10sp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

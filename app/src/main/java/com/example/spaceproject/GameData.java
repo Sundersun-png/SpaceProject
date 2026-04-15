@@ -28,7 +28,7 @@ public class GameData {
             case "Soldier":
                 return new Soldier(name);
             default:
-                return new CrewMember(name, specialization, 0);
+                return new CrewMember(name, specialization, 0, 10);
         }
     }
 
@@ -47,19 +47,23 @@ public class GameData {
 
     // ── Scientist lab ─────────────────────────────────────────────
     public static int     weaknessPotionsPurchased = 0;
-    public static boolean weaknessPotionAdded     = false; // If scientist added the effect
+    public static boolean weaknessPotionAdded     = false; 
 
     public static boolean powerBoostPurchased = false;
-    public static boolean powerBoostAdded     = false; // If scientist added for free use
+    public static boolean powerBoostAdded     = false; 
 
     public static boolean skillBoostPurchased = false;
     public static boolean skillBoostAdded     = false;
 
     public static boolean allCrewSkillBoosted = false;
 
-    // New Lab Potions levels/counts
     public static int enemySkillReduction = 0;
     public static int powerBoostLevel     = 0;
+
+    // --- New features ---
+    public static int successfulMissionsCount = 0;
+    public static boolean pillUnlocked = false;
+    public static boolean healPowerUnlocked = false;
 
     // ── Mission types ─────────────────────────────────────────────
     public static final String MISSION_ASTEROID = "Asteroid Field Navigation";

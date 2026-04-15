@@ -88,6 +88,15 @@
                 android:textSize="12sp"
                 android:layout_marginTop="4dp"/>
 
+            <TextView
+                android:id="@+id/tvCrewStats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Skill: 0 | XP: 0"
+                android:textColor="#00FFFF"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp"/>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

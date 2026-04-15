@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,9 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class QuartersActivity extends AppCompatActivity {
@@ -23,6 +22,7 @@ public class QuartersActivity extends AppCompatActivity {
     private TextView     tvCoins, tvNoCrewInQuarters;
     private LinearLayout crewListContainer;
     private View         crewListScroll;
+    private Button       btnAddCrew, btnDeleteCrew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,35 +33,46 @@ public class QuartersActivity extends AppCompatActivity {
         tvNoCrewInQuarters   = findViewById(R.id.tvNoCrewInQuarters);
         crewListContainer    = findViewById(R.id.crewListContainer);
         crewListScroll       = findViewById(R.id.crewListScroll);
+        btnAddCrew           = findViewById(R.id.btnAddCrew);
+        btnDeleteCrew        = findViewById(R.id.btnDeleteCrew);
 
-        // Restore Energy — restores XP bonus for selected crew
+        updateSpecialButtons();
+
+        btnAddCrew.setOnClickListener(v -> {
+            startActivity(new Intent(this, RecruitActivity.class));
+            finish();
+        });
+
+        btnDeleteCrew.setOnClickListener(v -> {
+            if (selectedCrew.isEmpty()) {
+                Toast.makeText(this, "Select a crew member to delete!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (GameData.crewList.size() - selectedCrew.size() < 2) {
+                Toast.makeText(this, "Minimum 2 crew members must remain in quarters!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            GameData.crewList.removeAll(selectedCrew);
+            selectedCrew.clear();
+            Toast.makeText(this, "Crew deleted!", Toast.LENGTH_SHORT).show();
+            buildCrewList();
+            updateSpecialButtons();
+        });
+
+        // Restore Energy — restores currentEnergy back to maxEnergy
         findViewById(R.id.btnRestoreEnergy).setOnClickListener(v -> {
             if (selectedCrew.isEmpty()) {
                 Toast.makeText(this, "Select a crew member first!", Toast.LENGTH_SHORT).show();
                 return;
             }
             for (CrewMember m : selectedCrew) {
-                // Reset experience loss — bring back to base state
-                if (m.experience < 0) m.experience = 0;
+                m.currentEnergy = m.maxEnergy;
             }
             Toast.makeText(this, "Energy restored for " + selectedCrew.size() + " crew member(s)!", Toast.LENGTH_SHORT).show();
             buildCrewList();
         });
 
-        // Move to Simulator
-        findViewById(R.id.btnMoveToSimulator).setOnClickListener(v -> {
-            if (selectedCrew.isEmpty()) {
-                Toast.makeText(this, "Select a crew member first!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            for (CrewMember m : selectedCrew) m.location = "Simulator";
-            selectedCrew.clear();
-            Toast.makeText(this, "Crew moved to Simulator!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        });
-
-        // Move to Mission Control
+        // Move to Mission Control (Now MainActivity)
         findViewById(R.id.btnMoveToMissionControl).setOnClickListener(v -> {
             if (selectedCrew.isEmpty()) {
                 Toast.makeText(this, "Select a crew member first!", Toast.LENGTH_SHORT).show();
@@ -70,6 +81,19 @@ public class QuartersActivity extends AppCompatActivity {
             for (CrewMember m : selectedCrew) m.location = "MissionControl";
             selectedCrew.clear();
             Toast.makeText(this, "Crew moved to Mission Control!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
+
+        // Move to Simulator (Now MissionControlActivity)
+        findViewById(R.id.btnMoveToSimulator).setOnClickListener(v -> {
+            if (selectedCrew.isEmpty()) {
+                Toast.makeText(this, "Select a crew member first!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            for (CrewMember m : selectedCrew) m.location = "Simulator";
+            selectedCrew.clear();
+            Toast.makeText(this, "Crew moved to Simulator!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, MissionControlActivity.class));
             finish();
         });
@@ -95,16 +119,22 @@ public class QuartersActivity extends AppCompatActivity {
             finish();
         });
 
-        // Bottom nav
-        LinearLayout navSimulator = findViewById(R.id.navSimulator);
-        LinearLayout navMission   = findViewById(R.id.navMission);
-        LinearLayout navHospital  = findViewById(R.id.navHospital);
-        LinearLayout navStats     = findViewById(R.id.navStats);
+        // Bottom nav logic
+        findViewById(R.id.navQuarters).setOnClickListener(v -> buildCrewList());
+        findViewById(R.id.navSimulator).setOnClickListener(v -> { startActivity(new Intent(this, MainActivity.class)); finish(); });
+        findViewById(R.id.navMission).setOnClickListener(v -> { startActivity(new Intent(this, MissionControlActivity.class)); finish(); });
+        findViewById(R.id.navHospital).setOnClickListener(v -> { startActivity(new Intent(this, HospitalActivity.class)); finish(); });
+        findViewById(R.id.navStats).setOnClickListener(v -> { startActivity(new Intent(this, StatisticsActivity.class)); finish(); });
+    }
 
-        navSimulator.setOnClickListener(v -> { startActivity(new Intent(this, MainActivity.class)); finish(); });
-        navMission.setOnClickListener(v   -> { startActivity(new Intent(this, MissionControlActivity.class)); finish(); });
-        navHospital.setOnClickListener(v  -> { startActivity(new Intent(this, HospitalActivity.class)); finish(); });
-        navStats.setOnClickListener(v     -> { startActivity(new Intent(this, StatisticsActivity.class)); finish(); });
+    private void updateSpecialButtons() {
+        if (GameData.successfulMissionsCount >= 3) {
+            btnAddCrew.setVisibility(View.VISIBLE);
+            btnDeleteCrew.setVisibility(View.VISIBLE);
+        } else {
+            btnAddCrew.setVisibility(View.GONE);
+            btnDeleteCrew.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -114,12 +144,8 @@ public class QuartersActivity extends AppCompatActivity {
         buildCrewList();
     }
 
-    // ── Build the dynamic crew list ───────────────────────────────
-
     private void buildCrewList() {
         crewListContainer.removeAllViews();
-
-        // Show ALL crew members regardless of location
         if (GameData.crewList.isEmpty()) {
             tvNoCrewInQuarters.setVisibility(View.VISIBLE);
             crewListScroll.setVisibility(View.GONE);
@@ -131,118 +157,76 @@ public class QuartersActivity extends AppCompatActivity {
 
         for (CrewMember m : GameData.crewList) {
             boolean isSelected = selectedCrew.contains(m);
-
-            // ── Card ──────────────────────────────────────────────
             CardView card = new CardView(this);
-            CardView.LayoutParams cardParams = new CardView.LayoutParams(
-                    CardView.LayoutParams.MATCH_PARENT,
-                    CardView.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(-1, -2);
             cardParams.setMargins(0, 0, 0, 12);
             card.setLayoutParams(cardParams);
             card.setRadius(24f);
-            card.setCardElevation(8f);
             card.setCardBackgroundColor(isSelected ? 0xFF2E4A2E : 0xCC1A1A2E);
 
-            // ── Inner layout ──────────────────────────────────────
             LinearLayout inner = new LinearLayout(this);
-            inner.setOrientation(LinearLayout.HORIZONTAL);
             inner.setPadding(32, 24, 32, 24);
-            inner.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            inner.setGravity(android.view.Gravity.CENTER_VERTICAL);
 
-            // Role icon column
             TextView tvIcon = new TextView(this);
             tvIcon.setTextSize(28f);
             tvIcon.setText(roleIcon(m.role));
-            LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            iconParams.setMarginEnd(20);
-            tvIcon.setLayoutParams(iconParams);
 
-            // Info column
             LinearLayout info = new LinearLayout(this);
             info.setOrientation(LinearLayout.VERTICAL);
-            info.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+            info.setLayoutParams(new LinearLayout.LayoutParams(0, -2, 1f));
+            info.setPadding(20, 0, 0, 0);
 
             TextView tvName = new TextView(this);
             tvName.setText(m.name);
             tvName.setTextColor(0xFFFFFFFF);
-            tvName.setTextSize(16f);
             tvName.setTypeface(null, Typeface.BOLD);
 
             TextView tvRole = new TextView(this);
-            tvRole.setText(m.role);
+            tvRole.setText(m.role + " | Skill: " + m.getSkill());
             tvRole.setTextColor(0xFFAADDFF);
-            tvRole.setTextSize(13f);
 
             TextView tvStats = new TextView(this);
-            tvStats.setText("Skill: " + m.getSkill() + "   XP: " + m.experience);
+            tvStats.setText("Energy: " + m.currentEnergy + "/" + m.maxEnergy + " | XP: " + m.experience);
             tvStats.setTextColor(0xFFAAAAAA);
-            tvStats.setTextSize(12f);
 
-            TextView tvLocation = new TextView(this);
-            tvLocation.setText(locationLabel(m.location));
-            tvLocation.setTextColor(locationColor(m.location));
-            tvLocation.setTextSize(11f);
+            TextView tvLoc = new TextView(this);
+            tvLoc.setText("Loc: " + m.location);
+            tvLoc.setTextColor(0xFF888888);
+            tvLoc.setTextSize(10f);
 
             info.addView(tvName);
             info.addView(tvRole);
             info.addView(tvStats);
-            info.addView(tvLocation);
+            info.addView(tvLoc);
 
-            // Selected badge
             TextView tvBadge = new TextView(this);
             tvBadge.setText(isSelected ? "✓" : "");
             tvBadge.setTextColor(0xFF90EE90);
             tvBadge.setTextSize(20f);
-            tvBadge.setTypeface(null, Typeface.BOLD);
 
             inner.addView(tvIcon);
             inner.addView(info);
             inner.addView(tvBadge);
             card.addView(inner);
 
-            // Toggle selection on tap
             card.setOnClickListener(v -> {
                 if (selectedCrew.contains(m)) selectedCrew.remove(m);
                 else selectedCrew.add(m);
                 buildCrewList();
             });
-
             crewListContainer.addView(card);
         }
     }
 
     private String roleIcon(String role) {
         switch (role) {
-            case "Pilot":     return "✈️";
-            case "Engineer":  return "⚙️";
-            case "Medic":     return "⚕️";
+            case "Pilot": return "✈️";
+            case "Engineer": return "⚙️";
+            case "Medic": return "⚕️";
             case "Scientist": return "🔬";
-            case "Soldier":   return "🛡️";
-            default:          return "👤";
-        }
-    }
-
-    private String locationLabel(String location) {
-        if (location == null) return "📍 Quarters";
-        switch (location) {
-            case "Simulator":      return "📍 Simulator";
-            case "MissionControl": return "📍 Mission Control";
-            case "Hospital":       return "📍 Hospital";
-            default:               return "📍 Quarters";
-        }
-    }
-
-    private int locationColor(String location) {
-        if (location == null) return 0xFF90EE90;
-        switch (location) {
-            case "Simulator":      return 0xFFFFDD00;
-            case "MissionControl": return 0xFF3399FF;
-            case "Hospital":       return 0xFFFF6666;
-            default:               return 0xFF90EE90;
+            case "Soldier": return "🛡️";
+            default: return "👤";
         }
     }
 }

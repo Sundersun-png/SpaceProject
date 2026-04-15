@@ -1,26 +1,18 @@
 package com.example.spaceproject;
 
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-// ═══════════════════════════════════════════════════════════════
-// RecruitActivity.java — Add Crew Member Screen
-// Linked to: activity_recruit.xml
-// Creates proper subclass objects (Pilot, Medic, etc.)
-// Adds them to GameData.crewList and sends them to Quarters.
-// ═══════════════════════════════════════════════════════════════
-
 public class RecruitActivity extends AppCompatActivity {
 
     private String selectedSpecialization = "Pilot";
 
     private TextView tvSelectedClass, tvSkillValue, tvResilienceValue;
-    private TextView tvEnergyValue, tvAbilityValue, tvCoins;
+    private TextView tvEnergyValue, tvAbilityValue, tvCoins, tvCurrentCrewList;
 
     private LinearLayout cardPilot, cardMedic, cardScientist;
     private LinearLayout cardEngineer, cardSoldier;
@@ -36,6 +28,7 @@ public class RecruitActivity extends AppCompatActivity {
         tvResilienceValue = findViewById(R.id.tvResilienceValue);
         tvEnergyValue     = findViewById(R.id.tvEnergyValue);
         tvAbilityValue    = findViewById(R.id.tvAbilityValue);
+        tvCurrentCrewList = findViewById(R.id.tvCurrentCrewList);
 
         cardPilot     = findViewById(R.id.cardPilot);
         cardMedic     = findViewById(R.id.cardMedic);
@@ -46,7 +39,7 @@ public class RecruitActivity extends AppCompatActivity {
         tvCoins = findViewById(R.id.tvCoins);
         if (tvCoins != null) tvCoins.setText(String.valueOf(GameData.coins));
 
-        // Back button → NavigationActivity
+        // Back button
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
         // Class card selection
@@ -56,10 +49,27 @@ public class RecruitActivity extends AppCompatActivity {
         cardEngineer.setOnClickListener(v  -> selectSpecialization("Engineer"));
         cardSoldier.setOnClickListener(v   -> selectSpecialization("Soldier"));
 
-        selectSpecialization("Pilot"); // default
+        selectSpecialization("Pilot"); 
+        updateCurrentCrewDisplay();
 
         // Recruit button
         findViewById(R.id.btnConfirmRecruit).setOnClickListener(v -> recruitCrewMember());
+    }
+
+    private void updateCurrentCrewDisplay() {
+        if (GameData.crewList.isEmpty()) {
+            tvCurrentCrewList.setText("No crew members yet.");
+        } else {
+            StringBuilder sb = new StringBuilder();
+            for (CrewMember m : GameData.crewList) {
+                sb.append("• ").append(m.name)
+                  .append(" (").append(m.role).append(")")
+                  .append(" - Skill: ").append(m.skillLevel)
+                  .append(", XP: ").append(m.experience)
+                  .append("\n");
+            }
+            tvCurrentCrewList.setText(sb.toString().trim());
+        }
     }
 
     private void selectSpecialization(String spec) {
@@ -68,22 +78,21 @@ public class RecruitActivity extends AppCompatActivity {
 
         switch (spec) {
             case "Pilot":
-                tvSkillValue.setText("0"); tvResilienceValue.setText("6");
+                tvSkillValue.setText("5"); tvResilienceValue.setText("4"); tvEnergyValue.setText("20");
                 tvAbilityValue.setText("Evade"); break;
             case "Medic":
-                tvSkillValue.setText("0"); tvResilienceValue.setText("8");
+                tvSkillValue.setText("7"); tvResilienceValue.setText("2"); tvEnergyValue.setText("18");
                 tvAbilityValue.setText("Heal Teammate"); break;
             case "Scientist":
-                tvSkillValue.setText("0"); tvResilienceValue.setText("5");
+                tvSkillValue.setText("8"); tvResilienceValue.setText("1"); tvEnergyValue.setText("17");
                 tvAbilityValue.setText("Boost Attack"); break;
             case "Engineer":
-                tvSkillValue.setText("0"); tvResilienceValue.setText("9");
+                tvSkillValue.setText("6"); tvResilienceValue.setText("3"); tvEnergyValue.setText("19");
                 tvAbilityValue.setText("Repair"); break;
             case "Soldier":
-                tvSkillValue.setText("0"); tvResilienceValue.setText("7");
+                tvSkillValue.setText("9"); tvResilienceValue.setText("0"); tvEnergyValue.setText("16");
                 tvAbilityValue.setText("Heavy Attack"); break;
         }
-        tvEnergyValue.setText("100");
         resetAllCards();
         highlightCard(spec);
     }
@@ -115,22 +124,17 @@ public class RecruitActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a crew member name.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (GameData.crewList.size() >= 2) {
-            Toast.makeText(this,
-                    "Max limit reached. Complete 5 missions to recruit more.",
-                    Toast.LENGTH_LONG).show();
+        if (GameData.crewList.size() >= 5) { // Increased limit for easier testing/play
+            Toast.makeText(this, "Max crew limit reached.", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Create the correct subclass and add to GameData
         CrewMember newMember = GameData.createCrew(name, selectedSpecialization);
         newMember.location = "Quarters";
         GameData.crewList.add(newMember);
 
-        Toast.makeText(this,
-                "✓ " + name + " (" + selectedSpecialization + ") added! They are in Quarters.",
-                Toast.LENGTH_LONG).show();
-
-        finish(); // back to NavigationActivity
+        Toast.makeText(this, "✓ " + name + " (" + selectedSpecialization + ") recruited!", Toast.LENGTH_LONG).show();
+        updateCurrentCrewDisplay();
+        etCrewName.setText("");
     }
 }

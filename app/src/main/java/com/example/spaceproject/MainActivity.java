@@ -3,7 +3,6 @@ package com.example.spaceproject;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -19,101 +18,186 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * MISSION CONTROL ACTIVITY
+ */
 public class MainActivity extends AppCompatActivity {
 
     private final Set<CrewMember> selectedCrew = new HashSet<>();
-    private LinearLayout crewContainer, selectedCrewImages;
-    private TextView tvTrainStatus, tvCoins;
-    private Button btnTrain, btnInstantTrain;
+    private String selectedMission = null;
 
-    private CountDownTimer countDownTimer;
-    private boolean isTraining = false;
+    private TextView tvCoins;
+    private LinearLayout crewSelectionContainer;
+
+    private CardView cardMissionPilot, cardMissionEngineer, cardMissionMedic, cardMissionSoldier, cardMissionScientist;
+    private TextView tvCheckPilot, tvCheckEngineer, tvCheckMedic, tvCheckSoldier, tvCheckScientist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_simulator);
+        setContentView(R.layout.activity_mission_control);
 
-        crewContainer = findViewById(R.id.crewContainer);
-        selectedCrewImages = findViewById(R.id.selectedCrewImages);
-        tvTrainStatus = findViewById(R.id.tvTrainStatus);
-        tvCoins = findViewById(R.id.tvCoins);
-        btnTrain = findViewById(R.id.btnTrain);
-        btnInstantTrain = findViewById(R.id.btnInstantTrain);
+        // Find all views
+        tvCoins               = findViewById(R.id.tvCoins);
+        crewSelectionContainer = findViewById(R.id.crewSelectionContainer);
 
-        refreshCoins();
-        buildCrewCards();
+        cardMissionPilot      = findViewById(R.id.cardMissionPilot);
+        cardMissionEngineer   = findViewById(R.id.cardMissionEngineer);
+        cardMissionMedic      = findViewById(R.id.cardMissionMedic);
+        cardMissionSoldier    = findViewById(R.id.cardMissionSoldier);
+        cardMissionScientist  = findViewById(R.id.cardMissionScientist);
 
-        // ── Normal train: 30-second timer ────────────────────────
-        btnTrain.setOnClickListener(v -> {
-            if (isTraining) return;
-            if (selectedCrew.isEmpty()) {
-                Toast.makeText(this, "Select crew members to train!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            startTraining();
+        tvCheckPilot     = findViewById(R.id.tvCheckPilot);
+        tvCheckEngineer  = findViewById(R.id.tvCheckEngineer);
+        tvCheckMedic     = findViewById(R.id.tvCheckMedic);
+        tvCheckSoldier   = findViewById(R.id.tvCheckSoldier);
+        tvCheckScientist = findViewById(R.id.tvCheckScientist);
+
+        // Mission selection listeners
+        cardMissionPilot.setOnClickListener(v     -> selectMission(GameData.MISSION_ASTEROID));
+        cardMissionEngineer.setOnClickListener(v  -> selectMission(GameData.MISSION_REACTOR));
+        cardMissionMedic.setOnClickListener(v     -> selectMission(GameData.MISSION_VIRUS));
+        cardMissionSoldier.setOnClickListener(v   -> selectMission(GameData.MISSION_ALIEN));
+        cardMissionScientist.setOnClickListener(v -> selectMission(GameData.MISSION_POTION));
+
+        findViewById(R.id.btnLaunchMission).setOnClickListener(v -> launchMission());
+
+        // --- Navigation ---
+        findViewById(R.id.navQuarters).setOnClickListener(v -> {
+            startActivity(new Intent(this, QuartersActivity.class));
+            finish();
         });
-
-        // ── Instant train: costs 5 coins ─────────────────────────
-        btnInstantTrain.setOnClickListener(v -> {
-            if (selectedCrew.isEmpty()) {
-                Toast.makeText(this, "Select crew members to train!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (GameData.coins < GameData.INSTANT_TRAIN_COST) {
-                Toast.makeText(this,
-                    "Not enough coins! Need " + GameData.INSTANT_TRAIN_COST + "🪙",
-                    Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (countDownTimer != null) countDownTimer.cancel();
-            isTraining = false;
-            GameData.coins -= GameData.INSTANT_TRAIN_COST;
-            completeTraining();
+        findViewById(R.id.navSimulator).setOnClickListener(v -> {
+            startActivity(new Intent(this, MissionControlActivity.class));
+            finish();
         });
-
-        // ── Bottom nav ────────────────────────────────────────────
-        findViewById(R.id.navMission).setOnClickListener(v -> startActivity(new Intent(this, MissionControlActivity.class)));
-        findViewById(R.id.navQuarters).setOnClickListener(v -> startActivity(new Intent(this, QuartersActivity.class)));
-        findViewById(R.id.navHospital).setOnClickListener(v -> startActivity(new Intent(this, HospitalActivity.class)));
-        findViewById(R.id.navStats).setOnClickListener(v -> startActivity(new Intent(this, StatisticsActivity.class)));
-
+        findViewById(R.id.navMission).setOnClickListener(v -> {});
+        findViewById(R.id.navHospital).setOnClickListener(v -> {
+            startActivity(new Intent(this, HospitalActivity.class));
+            finish();
+        });
+        findViewById(R.id.navStats).setOnClickListener(v -> {
+            startActivity(new Intent(this, StatisticsActivity.class));
+            finish();
+        });
+        
         findViewById(R.id.btnBack).setOnClickListener(v -> {
             startActivity(new Intent(this, NavigationActivity.class));
             finish();
         });
     }
 
-    private void buildCrewCards() {
-        crewContainer.removeAllViews();
-        if (GameData.crewList.isEmpty()) {
-            TextView empty = new TextView(this);
-            empty.setText("No crew members found. Recruitment is needed!");
-            empty.setTextColor(0xFFFFFFFF);
-            empty.setGravity(Gravity.CENTER);
-            crewContainer.addView(empty);
+    private void selectMission(String mission) {
+        selectedMission = mission;
+        if (tvCheckPilot != null) tvCheckPilot.setText(GameData.MISSION_ASTEROID.equals(mission) ? "✓" : "");
+        if (tvCheckEngineer != null) tvCheckEngineer.setText(GameData.MISSION_REACTOR.equals(mission) ? "✓" : "");
+        if (tvCheckMedic != null) tvCheckMedic.setText(GameData.MISSION_VIRUS.equals(mission) ? "✓" : "");
+        if (tvCheckSoldier != null) tvCheckSoldier.setText(GameData.MISSION_ALIEN.equals(mission) ? "✓" : "");
+        if (tvCheckScientist != null) tvCheckScientist.setText(GameData.MISSION_POTION.equals(mission) ? "✓" : "");
+
+        if (cardMissionPilot != null) cardMissionPilot.setCardBackgroundColor(GameData.MISSION_ASTEROID.equals(mission) ? 0xFF90EE90 : 0xCCFFFFFF);
+        if (cardMissionEngineer != null) cardMissionEngineer.setCardBackgroundColor(GameData.MISSION_REACTOR.equals(mission) ? 0xFF90EE90 : 0xCCFFFFFF);
+        if (cardMissionMedic != null) cardMissionMedic.setCardBackgroundColor(GameData.MISSION_VIRUS.equals(mission) ? 0xFF90EE90 : 0xCCFFFFFF);
+        if (cardMissionSoldier != null) cardMissionSoldier.setCardBackgroundColor(GameData.MISSION_ALIEN.equals(mission) ? 0xFF90EE90 : 0xCCFFFFFF);
+        if (cardMissionScientist != null) cardMissionScientist.setCardBackgroundColor(GameData.MISSION_POTION.equals(mission) ? 0xFF90EE90 : 0xCCFFFFFF);
+    }
+
+    private void launchMission() {
+        if (selectedCrew.isEmpty()) {
+            Toast.makeText(this, "Select at least one crew member!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (selectedMission == null) {
+            Toast.makeText(this, "Select a mission type!", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        if (GameData.MISSION_ASTEROID.equals(selectedMission)) {
+            if (!hasRole("Pilot")) {
+                Toast.makeText(this, "Only a Pilot can launch this mission!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            startActivity(new Intent(this, AsteroidAttackActivity.class));
+        } else if (GameData.MISSION_ALIEN.equals(selectedMission)) {
+            if (!hasRole("Soldier")) {
+                Toast.makeText(this, "Only a Soldier can launch this mission!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            startActivity(new Intent(this, SoldierMissionActivity.class));
+        } else if (GameData.MISSION_REACTOR.equals(selectedMission)) {
+            if (!hasRole("Engineer")) {
+                Toast.makeText(this, "Only an Engineer can launch this mission!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            startActivity(new Intent(this, EngineerMissionActivity.class));
+        } else if (GameData.MISSION_POTION.equals(selectedMission)) {
+            if (!hasRole("Scientist")) {
+                Toast.makeText(this, "Only a Scientist can launch this mission!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Go to training first
+            startActivity(new Intent(this, ScientistTrainingActivity.class));
+        } else if (GameData.MISSION_VIRUS.equals(selectedMission)) {
+            if (!hasRole("Medic")) {
+                Toast.makeText(this, "Only a Medic can launch this mission!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Go to Medic Lab (was MedicTrainingActivity)
+            startActivity(new Intent(this, MedicLabActivity.class));
+        } else {
+            Toast.makeText(this, "Mission started: " + selectedMission, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean hasRole(String role) {
+        for (CrewMember m : selectedCrew) {
+            if (role.equalsIgnoreCase(m.role)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (tvCoins != null) tvCoins.setText(String.valueOf(GameData.coins));
+        buildCrewCards();
+    }
+
+    private void buildCrewCards() {
+        crewSelectionContainer.removeAllViews();
+        // Show all crew members who are in Mission Control location
+        List<CrewMember> available = new ArrayList<>();
         for (CrewMember m : GameData.crewList) {
+            if ("MissionControl".equals(m.location)) available.add(m);
+        }
+
+        if (available.isEmpty()) {
+            TextView empty = new TextView(this);
+            empty.setText("No crew in Mission Control. Move them from Quarters.");
+            empty.setTextColor(0xFFBBBBBB);
+            empty.setGravity(Gravity.CENTER);
+            empty.setPadding(0, 20, 0, 20);
+            crewSelectionContainer.addView(empty);
+            return;
+        }
+
+        for (CrewMember m : available) {
             boolean isSelected = selectedCrew.contains(m);
             CardView card = new CardView(this);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, 200);
-            params.setMargins(0, 0, 0, 16);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -2);
+            params.setMargins(0, 0, 0, 12);
             card.setLayoutParams(params);
             card.setRadius(24f);
             card.setCardBackgroundColor(isSelected ? 0xFF90EE90 : 0xCCFFFFFF);
 
             LinearLayout inner = new LinearLayout(this);
-            inner.setLayoutParams(new LinearLayout.LayoutParams(-1, -1));
-            inner.setPadding(30, 0, 30, 0);
-            inner.setGravity(Gravity.CENTER_VERTICAL);
-            
+            inner.setPadding(30, 20, 30, 20);
+            inner.setGravity(android.view.Gravity.CENTER_VERTICAL);
+
             TextView tvIcon = new TextView(this);
             tvIcon.setText(roleIcon(m.role));
-            tvIcon.setTextSize(30f);
-            
+            tvIcon.setTextSize(26f);
+
             LinearLayout info = new LinearLayout(this);
             info.setOrientation(LinearLayout.VERTICAL);
             info.setLayoutParams(new LinearLayout.LayoutParams(0, -2, 1f));
@@ -121,13 +205,12 @@ public class MainActivity extends AppCompatActivity {
 
             TextView tvName = new TextView(this);
             tvName.setText(m.name);
-            tvName.setTextSize(14f);
             tvName.setTypeface(null, Typeface.BOLD);
             tvName.setTextColor(0xFF000000);
 
             TextView tvStats = new TextView(this);
-            tvStats.setText("XP: " + m.experience + "  Skill: " + m.getSkill());
-            tvStats.setTextSize(12f);
+            tvStats.setText(m.role + " | Skill: " + m.getSkill() + " | Energy: " + m.currentEnergy);
+            tvStats.setTextSize(11f);
             tvStats.setTextColor(0xFF444444);
 
             info.addView(tvName);
@@ -137,46 +220,16 @@ public class MainActivity extends AppCompatActivity {
             card.addView(inner);
 
             card.setOnClickListener(v -> {
-                if (isTraining) return;
                 if (selectedCrew.contains(m)) selectedCrew.remove(m);
                 else selectedCrew.add(m);
                 buildCrewCards();
-                updateTrainingImages();
             });
-
-            crewContainer.addView(card);
+            crewSelectionContainer.addView(card);
         }
     }
-
-    private void updateTrainingImages() {
-        selectedCrewImages.removeAllViews();
-        for (CrewMember m : selectedCrew) {
-            android.widget.ImageView iv = new android.widget.ImageView(this);
-            int resId = getCrewDrawable(m.role);
-            iv.setImageResource(resId);
-            
-            // Layout params for the character image inside the circle
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, -1, 1f);
-            iv.setLayoutParams(lp);
-            iv.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
-            
-            selectedCrewImages.addView(iv);
-        }
-    }
-
-    private int getCrewDrawable(String role) {
-        switch (role) {
-            case "Pilot":     return R.drawable.pilot;
-            case "Engineer":  return R.drawable.engineer;
-            case "Medic":     return R.drawable.medic;
-            case "Scientist": return R.drawable.scientist;
-            case "Soldier":   return R.drawable.soldier;
-            default:          return R.drawable.ic_launcher_foreground;
-        }
-    }
-
 
     private String roleIcon(String role) {
+        if (role == null) return "👤";
         switch (role) {
             case "Pilot": return "✈️";
             case "Engineer": return "⚙️";
@@ -185,40 +238,5 @@ public class MainActivity extends AppCompatActivity {
             case "Soldier": return "🛡️";
             default: return "👤";
         }
-    }
-
-    private void startTraining() {
-        isTraining = true;
-        btnTrain.setEnabled(false);
-        btnInstantTrain.setEnabled(false);
-        tvTrainStatus.setText("Training... 30s");
-
-        countDownTimer = new CountDownTimer(30_000, 1_000) {
-            @Override
-            public void onTick(long msLeft) {
-                tvTrainStatus.setText("Training... " + (msLeft / 1000) + "s");
-            }
-            @Override
-            public void onFinish() {
-                completeTraining();
-            }
-        }.start();
-    }
-
-    private void completeTraining() {
-        isTraining = false;
-        for (CrewMember m : selectedCrew) {
-            m.train(0);
-        }
-        buildCrewCards();
-        refreshCoins();
-        tvTrainStatus.setText("✓ Training complete!");
-        btnTrain.setEnabled(true);
-        btnInstantTrain.setEnabled(true);
-        Toast.makeText(this, "Training complete for selected crew!", Toast.LENGTH_SHORT).show();
-    }
-
-    private void refreshCoins() {
-        tvCoins.setText(String.valueOf(GameData.coins));
     }
 }

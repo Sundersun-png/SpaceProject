@@ -43,7 +43,6 @@
         <TextView android:id="@+id/tvCoins" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="25" android:textColor="#FFD700" android:textSize="14sp" android:textStyle="bold" android:layout_marginStart="6dp"/>
     </LinearLayout>
 
-    <!-- Scrollable content area — starts below the back/coin button row -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollContent"
         android:layout_width="0dp"
@@ -59,7 +58,6 @@
             android:layout_height="wrap_content"
             android:paddingBottom="16dp">
 
-            <!-- Header -->
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
@@ -84,7 +82,6 @@
                 app:layout_constraintTop_toBottomOf="@id/tvTitle"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <!-- Section: Select Crew -->
             <TextView
                 android:id="@+id/tvSelectCrewLabel"
                 android:layout_width="wrap_content"
@@ -98,7 +95,6 @@
                 app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <!-- Dynamic crew cards container -->
             <LinearLayout
                 android:id="@+id/crewSelectionContainer"
                 android:layout_width="0dp"
@@ -111,7 +107,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <!-- Section: Mission Type -->
             <TextView
                 android:id="@+id/tvMissionTypeLabel"
                 android:layout_width="wrap_content"
@@ -125,7 +120,6 @@
                 app:layout_constraintTop_toBottomOf="@id/crewSelectionContainer"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <!-- Mission Cards -->
             <LinearLayout
                 android:id="@+id/missionTypeLayout"
                 android:layout_width="0dp"
@@ -143,16 +137,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
                     app:cardCornerRadius="10dp"
-                    app:cardElevation="4dp"
                     app:cardBackgroundColor="#CCFFFFFF">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🚀" android:textSize="22sp"/>
                         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Asteroid Field Navigation" android:textStyle="bold" android:textSize="14sp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pilot — Requires maneuvering" android:textSize="11sp" android:textColor="#555555"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pilot Exclusive" android:textSize="11sp" android:textColor="#555555"/>
                         </LinearLayout>
                         <TextView android:id="@+id/tvCheckPilot" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:textSize="20sp" android:textColor="#2E7D32"/>
                     </LinearLayout>
@@ -163,38 +154,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
                     app:cardCornerRadius="10dp"
-                    app:cardElevation="4dp"
                     app:cardBackgroundColor="#CCFFFFFF">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚙️" android:textSize="22sp"/>
                         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Reactor Meltdown" android:textStyle="bold" android:textSize="14sp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Engineer — Fix before explosion" android:textSize="11sp" android:textColor="#555555"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Engineer Exclusive" android:textSize="11sp" android:textColor="#555555"/>
                         </LinearLayout>
                         <TextView android:id="@+id/tvCheckEngineer" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:textSize="20sp" android:textColor="#2E7D32"/>
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardMissionMedic"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardCornerRadius="10dp"
-                    app:cardElevation="4dp"
-                    app:cardBackgroundColor="#CCFFFFFF">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚕️" android:textSize="22sp"/>
-                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Virus Outbreak" android:textStyle="bold" android:textSize="14sp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Medic — Cure infected crew" android:textSize="11sp" android:textColor="#555555"/>
-                        </LinearLayout>
-                        <TextView android:id="@+id/tvCheckMedic" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:textSize="20sp" android:textColor="#2E7D32"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -203,18 +171,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
                     app:cardCornerRadius="10dp"
-                    app:cardElevation="4dp"
                     app:cardBackgroundColor="#CCFFFFFF">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚔️" android:textSize="22sp"/>
                         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Alien Attack" android:textStyle="bold" android:textSize="14sp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Soldier — Straight combat" android:textSize="11sp" android:textColor="#555555"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Soldier Exclusive" android:textSize="11sp" android:textColor="#555555"/>
                         </LinearLayout>
                         <TextView android:id="@+id/tvCheckSoldier" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:textSize="20sp" android:textColor="#2E7D32"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardMissionMedic"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="8dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardBackgroundColor="#CCFFFFFF">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚕️" android:textSize="22sp"/>
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Virus Outbreak" android:textStyle="bold" android:textSize="14sp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Medic Special" android:textSize="11sp" android:textColor="#555555"/>
+                        </LinearLayout>
+                        <TextView android:id="@+id/tvCheckMedic" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:textSize="20sp" android:textColor="#2E7D32"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -223,16 +205,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
                     app:cardCornerRadius="10dp"
-                    app:cardElevation="4dp"
                     app:cardBackgroundColor="#CCFFFFFF">
                     <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="12dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🔬" android:textSize="22sp"/>
                         <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="12dp">
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Potion Making" android:textStyle="bold" android:textSize="14sp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Scientist — Debuff enemy skill" android:textSize="11sp" android:textColor="#555555"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Scientist Special" android:textSize="11sp" android:textColor="#555555"/>
                         </LinearLayout>
                         <TextView android:id="@+id/tvCheckScientist" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:textSize="20sp" android:textColor="#2E7D32"/>
                     </LinearLayout>
@@ -243,7 +222,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- Launch Mission button — fixed above bottom nav, always fully visible -->
     <Button
         android:id="@+id/btnLaunchMission"
         android:layout_width="0dp"
@@ -260,7 +238,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Bottom Navigation Bar -->
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="0dp"
@@ -270,32 +247,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-
-        <LinearLayout android:id="@+id/navQuarters" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏠" android:textSize="20sp" android:gravity="center"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Quarters" android:textSize="10sp" android:textColor="#AAAAAA" android:gravity="center"/>
+        <LinearLayout android:id="@+id/navQuarters" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏠" android:textSize="20sp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Quarters" android:textSize="10sp" android:textColor="#AAAAAA"/>
         </LinearLayout>
-
-        <LinearLayout android:id="@+id/navSimulator" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎮" android:textSize="20sp" android:gravity="center"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Simulator" android:textSize="10sp" android:textColor="#AAAAAA" android:gravity="center"/>
+        <LinearLayout android:id="@+id/navSimulator" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🎮" android:textSize="20sp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Simulator" android:textSize="10sp" android:textColor="#AAAAAA"/>
         </LinearLayout>
-
-        <LinearLayout android:id="@+id/navMission" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🚀" android:textSize="20sp" android:gravity="center"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mission" android:textSize="10sp" android:textColor="#FFFFFF" android:textStyle="bold" android:gravity="center"/>
+        <LinearLayout android:id="@+id/navMission" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🚀" android:textSize="20sp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mission" android:textSize="10sp" android:textColor="#FFFFFF" android:textStyle="bold"/>
         </LinearLayout>
-
-        <LinearLayout android:id="@+id/navStats" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📊" android:textSize="20sp" android:gravity="center"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Statistics" android:textSize="10sp" android:textColor="#AAAAAA" android:gravity="center"/>
+        <LinearLayout android:id="@+id/navStats" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="📊" android:textSize="20sp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Statistics" android:textSize="10sp" android:textColor="#AAAAAA"/>
         </LinearLayout>
-
-        <LinearLayout android:id="@+id/navHospital" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center" android:clickable="true" android:focusable="true">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚕️" android:textSize="20sp" android:gravity="center"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hospital" android:textSize="10sp" android:textColor="#AAAAAA" android:gravity="center"/>
+        <LinearLayout android:id="@+id/navHospital" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚕️" android:textSize="20sp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hospital" android:textSize="10sp" android:textColor="#AAAAAA"/>
         </LinearLayout>
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

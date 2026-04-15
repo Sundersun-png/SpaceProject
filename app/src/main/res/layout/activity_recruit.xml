@@ -11,25 +11,19 @@
         android:layout_height="wrap_content"
         android:minHeight="800dp">
 
-        <!-- ══════════════════════════════════════════
-             BACKGROUND IMAGE — fills entire screen
-             ══════════════════════════════════════════ -->
         <ImageView
             android:id="@+id/imgBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            android:src="@drawable/background"
             android:contentDescription="@null" />
 
-        <!-- Dark gradient overlay so form stays readable -->
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#B0000010" />
 
-        <!-- ══════════════════════════════════════════
-             TOP BAR — Back button + Screen title
-             ══════════════════════════════════════════ -->
         <RelativeLayout
             android:id="@+id/layoutTopBar"
             android:layout_width="match_parent"
@@ -61,9 +55,6 @@
 
         </RelativeLayout>
 
-        <!-- ══════════════════════════════════════════
-             MAIN FORM CARD — sits below top bar
-             ══════════════════════════════════════════ -->
         <LinearLayout
             android:id="@+id/layoutMainCard"
             android:layout_width="match_parent"
@@ -74,9 +65,7 @@
             android:layout_marginTop="16dp"
             android:orientation="vertical">
 
-            <!-- ─────────────────────────────────────
-                 SECTION 1 — Crew Name Input
-                 ───────────────────────────────────── -->
+            <!-- Current Crew Status -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,7 +74,35 @@
                 android:padding="16dp"
                 android:layout_marginBottom="12dp">
 
-                <!-- Section label -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="▸  CURRENT CREW"
+                    android:textColor="#00FFFF"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.2"
+                    android:layout_marginBottom="10dp" />
+
+                <TextView
+                    android:id="@+id/tvCurrentCrewList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No crew members yet."
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:lineSpacingExtra="4dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#CC0A0A1E"
+                android:padding="16dp"
+                android:layout_marginBottom="12dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -96,7 +113,6 @@
                     android:letterSpacing="0.2"
                     android:layout_marginBottom="10dp" />
 
-                <!-- Name input field -->
                 <EditText
                     android:id="@+id/etCrewName"
                     android:layout_width="match_parent"
@@ -112,13 +128,6 @@
 
             </LinearLayout>
 
-            <!-- ─────────────────────────────────────
-                 SECTION 2 — Specialization Selector
-                 Each class gets its own tall card with
-                 icon emoji + name + ability label.
-                 Only ONE can be selected at a time.
-                 Selected = bright, others = dim.
-                 ───────────────────────────────────── -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -127,7 +136,6 @@
                 android:padding="16dp"
                 android:layout_marginBottom="12dp">
 
-                <!-- Section label -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -138,14 +146,12 @@
                     android:letterSpacing="0.2"
                     android:layout_marginBottom="12dp" />
 
-                <!-- ROW 1 of class cards: Pilot | Medic | Scientist -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginBottom="10dp">
 
-                    <!-- PILOT CARD (default selected — bright purple) -->
                     <LinearLayout
                         android:id="@+id/cardPilot"
                         android:layout_width="0dp"
@@ -156,32 +162,10 @@
                         android:background="#BB2D82"
                         android:layout_marginEnd="6dp"
                         android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="28sp"
-                            android:layout_marginBottom="4dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="PILOT"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.1" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Evade"
-                            android:textColor="#FFD6F0"
-                            android:textSize="10sp" />
-
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="👨‍🚀" android:textSize="28sp" android:layout_marginBottom="4dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PILOT" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- MEDIC CARD (unselected — dark) -->
                     <LinearLayout
                         android:id="@+id/cardMedic"
                         android:layout_width="0dp"
@@ -192,33 +176,10 @@
                         android:background="#331A3A5C"
                         android:layout_marginEnd="6dp"
                         android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="⚕"
-                            android:textSize="28sp"
-                            android:layout_marginBottom="4dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="MEDIC"
-                            android:textColor="#AAAACC"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.1" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Heal Teammate"
-                            android:textColor="#666688"
-                            android:textSize="10sp" />
-
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚕" android:textSize="28sp" android:layout_marginBottom="4dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MEDIC" android:textColor="#AAAACC" android:textSize="12sp" android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- SCIENTIST CARD (unselected — dark) -->
                     <LinearLayout
                         android:id="@+id/cardScientist"
                         android:layout_width="0dp"
@@ -228,42 +189,17 @@
                         android:gravity="center"
                         android:background="#331A3A5C"
                         android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🔬"
-                            android:textSize="28sp"
-                            android:layout_marginBottom="4dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="SCIENTIST"
-                            android:textColor="#AAAACC"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.1" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Boost Attack"
-                            android:textColor="#666688"
-                            android:textSize="10sp" />
-
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🔬" android:textSize="28sp" android:layout_marginBottom="4dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SCIENTIST" android:textColor="#AAAACC" android:textSize="12sp" android:textStyle="bold" />
                     </LinearLayout>
-
                 </LinearLayout>
 
-                <!-- ROW 2 of class cards: Engineer | Soldier (centered) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center">
 
-                    <!-- ENGINEER CARD -->
                     <LinearLayout
                         android:id="@+id/cardEngineer"
                         android:layout_width="0dp"
@@ -274,33 +210,10 @@
                         android:background="#331A3A5C"
                         android:layout_marginEnd="6dp"
                         android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="⚙"
-                            android:textSize="28sp"
-                            android:layout_marginBottom="4dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ENGINEER"
-                            android:textColor="#AAAACC"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.1" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Repair"
-                            android:textColor="#666688"
-                            android:textSize="10sp" />
-
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚙" android:textSize="28sp" android:layout_marginBottom="4dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ENGINEER" android:textColor="#AAAACC" android:textSize="12sp" android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- SOLDIER CARD -->
                     <LinearLayout
                         android:id="@+id/cardSoldier"
                         android:layout_width="0dp"
@@ -311,47 +224,14 @@
                         android:background="#331A3A5C"
                         android:layout_marginEnd="6dp"
                         android:padding="8dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="🛡"
-                            android:textSize="28sp"
-                            android:layout_marginBottom="4dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="SOLDIER"
-                            android:textColor="#AAAACC"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:letterSpacing="0.1" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Heavy Attack"
-                            android:textColor="#666688"
-                            android:textSize="10sp" />
-
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🛡" android:textSize="28sp" android:layout_marginBottom="4dp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="SOLDIER" android:textColor="#AAAACC" android:textSize="12sp" android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- Empty spacer to keep row balanced -->
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
+                    <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1" />
                 </LinearLayout>
-
             </LinearLayout>
 
-            <!-- ─────────────────────────────────────
-                 SECTION 3 — Stats Preview Panel
-                 Updates dynamically in Java when
-                 a different class card is tapped.
-                 ───────────────────────────────────── -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -360,7 +240,6 @@
                 android:padding="16dp"
                 android:layout_marginBottom="16dp">
 
-                <!-- Section label -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -371,7 +250,6 @@
                     android:letterSpacing="0.2"
                     android:layout_marginBottom="14dp" />
 
-                <!-- Selected class name banner -->
                 <TextView
                     android:id="@+id/tvSelectedClass"
                     android:layout_width="match_parent"
@@ -385,166 +263,32 @@
                     android:background="#66BB2D82"
                     android:layout_marginBottom="14dp" />
 
-                <!-- SKILL stat row -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="34dp"
-                    android:layout_marginBottom="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="⚔  SKILL"
-                        android:textColor="#AAAACC"
-                        android:textSize="13sp" />
-
-                    <!-- Stat bar background -->
-                    <View
-                        android:id="@+id/barSkillBg"
-                        android:layout_width="160dp"
-                        android:layout_height="10dp"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:background="#33FFFFFF" />
-
-                    <!-- Stat bar fill — width controlled in Java -->
-                    <View
-                        android:id="@+id/barSkillFill"
-                        android:layout_width="80dp"
-                        android:layout_height="10dp"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:background="#CC2D82" />
-
-                    <TextView
-                        android:id="@+id/tvSkillValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:text="5"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
+                <!-- SKILL -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="34dp" android:layout_marginBottom="10dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:text="⚔  SKILL" android:textColor="#AAAACC" android:textSize="13sp" />
+                    <TextView android:id="@+id/tvSkillValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentEnd="true" android:text="5" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold" />
                 </RelativeLayout>
 
-                <!-- RESILIENCE stat row -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="34dp"
-                    android:layout_marginBottom="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="🛡  RESILIENCE"
-                        android:textColor="#AAAACC"
-                        android:textSize="13sp" />
-
-                    <View
-                        android:layout_width="160dp"
-                        android:layout_height="10dp"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:background="#33FFFFFF" />
-
-                    <View
-                        android:id="@+id/barResilienceFill"
-                        android:layout_width="100dp"
-                        android:layout_height="10dp"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:background="#2D82CC" />
-
-                    <TextView
-                        android:id="@+id/tvResilienceValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:text="8"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
+                <!-- RESILIENCE -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="34dp" android:layout_marginBottom="10dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:text="🛡  RESILIENCE" android:textColor="#AAAACC" android:textSize="13sp" />
+                    <TextView android:id="@+id/tvResilienceValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentEnd="true" android:text="8" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold" />
                 </RelativeLayout>
 
-                <!-- MAX ENERGY stat row -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="34dp"
-                    android:layout_marginBottom="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="⚡  MAX ENERGY"
-                        android:textColor="#AAAACC"
-                        android:textSize="13sp" />
-
-                    <View
-                        android:layout_width="160dp"
-                        android:layout_height="10dp"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:background="#33FFFFFF" />
-
-                    <View
-                        android:id="@+id/barEnergyFill"
-                        android:layout_width="160dp"
-                        android:layout_height="10dp"
-                        android:layout_centerVertical="true"
-                        android:layout_centerHorizontal="true"
-                        android:background="#2DCC82" />
-
-                    <TextView
-                        android:id="@+id/tvEnergyValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:text="100"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
+                <!-- MAX ENERGY -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="34dp" android:layout_marginBottom="10dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:text="⚡  MAX ENERGY" android:textColor="#AAAACC" android:textSize="13sp" />
+                    <TextView android:id="@+id/tvEnergyValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentEnd="true" android:text="100" android:textColor="#FFFFFF" android:textSize="14sp" android:textStyle="bold" />
                 </RelativeLayout>
 
-                <!-- ABILITY row — no bar, just text -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="34dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="✨  ABILITY"
-                        android:textColor="#AAAACC"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/tvAbilityValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:text="Evade"
-                        android:textColor="#FFD700"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
+                <!-- ABILITY -->
+                <RelativeLayout android:layout_width="match_parent" android:layout_height="34dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:text="✨  ABILITY" android:textColor="#AAAACC" android:textSize="13sp" />
+                    <TextView android:id="@+id/tvAbilityValue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_alignParentEnd="true" android:text="Evade" android:textColor="#FFD700" android:textSize="14sp" android:textStyle="bold" />
                 </RelativeLayout>
 
             </LinearLayout>
 
-            <!-- ─────────────────────────────────────
-                 RECRUIT BUTTON — full width at bottom
-                 ───────────────────────────────────── -->
             <Button
                 android:id="@+id/btnConfirmRecruit"
                 android:layout_width="match_parent"
@@ -560,5 +304,4 @@
         </LinearLayout>
 
     </RelativeLayout>
-
 </ScrollView>

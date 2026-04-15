@@ -85,7 +85,7 @@ public class InventoryActivity extends AppCompatActivity {
         }
     }
 
-    private void addItem(boolean purchased, int reqSkill, Runnable action) {
+    private void addItem(boolean purchased, int reqXP, Runnable action) {
         if (!purchased) {
             Toast.makeText(this, "Purchase the weapon first!", Toast.LENGTH_SHORT).show();
             return;
@@ -94,19 +94,19 @@ public class InventoryActivity extends AppCompatActivity {
             Toast.makeText(this, "No Engineer in crew! Recruit one first.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (engineer.getSkill() >= reqSkill) {
+        if (engineer.experience >= reqXP) {
             action.run();
             refreshUI();
             Toast.makeText(this, "Weapon Added by Engineer!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Engineer skill too low! (Requires " + reqSkill + ")", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Engineer XP too low! (Requires " + reqXP + ")", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void refreshUI() {
         tvCoins.setText(String.valueOf(GameData.coins));
         if (engineer != null) {
-            tvEngineerInfo.setText("Engineer: " + engineer.name + " | Skill: " + engineer.getSkill());
+            tvEngineerInfo.setText("Engineer: " + engineer.name + " | XP: " + engineer.experience);
         } else {
             tvEngineerInfo.setText("No Engineer in crew!");
         }
@@ -125,8 +125,6 @@ public class InventoryActivity extends AppCompatActivity {
         tvGunStatus.setTextColor(GameData.gunAdded ? green : (GameData.gunPurchased ? yellow : red));
         tvRocketshipStatus.setTextColor(GameData.rocketshipAdded ? green : (GameData.rocketshipPurchased ? yellow : red));
 
-        // Always keep buttons enabled unless already added/purchased
-        // This ensures the user can see the feedback (Toast) for why it's not working
         btnPurchaseTorpedo.setEnabled(!GameData.torpedoPurchased);
         btnPurchaseGrenade.setEnabled(!GameData.grenadePurchased);
         btnPurchaseGun.setEnabled(!GameData.gunPurchased);

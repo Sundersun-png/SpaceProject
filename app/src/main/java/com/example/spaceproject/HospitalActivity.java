@@ -196,22 +196,36 @@ public class HospitalActivity extends AppCompatActivity {
             btnMedicHelp.setOnClickListener(v ->
                     Toast.makeText(this, "No Medic in the crew!", Toast.LENGTH_SHORT).show());
 
-        } else if (medic.getSkill() < 10) {
-            btnMedicHelp.setText("⚕️  Medic Help  (Skill " + medic.getSkill() + " / 10)");
-            btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
-            btnMedicHelp.setOnClickListener(v ->
-                    Toast.makeText(this,
-                            medic.name + " needs Skill 10 to help.\nTrain in the Simulator first!",
-                            Toast.LENGTH_SHORT).show());
-
         } else if (target == null) {
             btnMedicHelp.setText("⚕️  Medic Help  (No patients)");
             btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
             btnMedicHelp.setOnClickListener(v ->
                     Toast.makeText(this, "No patients to recover.", Toast.LENGTH_SHORT).show());
 
+        } else if (GameData.healPowerUnlocked) {
+            // SUPER HEAL - Unlocked via Medic Lab
+            final Patient finalTarget = target;
+            btnMedicHelp.setText("💖  INSTANT HEAL (Unlocked)");
+            btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFFE91E63));
+            btnMedicHelp.setOnClickListener(v -> {
+                finalTarget.status = PatientStatus.HEALED;
+                finalTarget.statusStartTime = System.currentTimeMillis();
+                medic.experience++;
+                Toast.makeText(this,
+                        "💖 Super Healing! " + finalTarget.name + " recovered immediately!",
+                        Toast.LENGTH_SHORT).show();
+                refreshUI();
+            });
+        } else if (medic.getSkill() < 10) {
+            btnMedicHelp.setText("⚕️  Medic Help  (Skill " + medic.getSkill() + " / 10)");
+            btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
+            btnMedicHelp.setOnClickListener(v ->
+                    Toast.makeText(this,
+                            medic.name + " needs Skill 10 to help.\nTrain in the Medic Lab first!",
+                            Toast.LENGTH_SHORT).show());
+
         } else {
-            // Ready — purple and active
+            // Normal heal — purple and active
             final Patient finalTarget = target;
             btnMedicHelp.setText("⚕️  Medic Help");
             btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF7B1FA2));
@@ -234,7 +248,7 @@ public class HospitalActivity extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
 
         CrewMember medic       = findMedic();
-        boolean    medicReady  = medic != null && medic.getSkill() >= 10;
+        boolean    medicReady  = medic != null && (medic.getSkill() >= 10 || GameData.healPowerUnlocked);
 
         for (Patient p : patients) {
             View row = inflater.inflate(R.layout.item_patient, patientList, false);
@@ -244,7 +258,7 @@ public class HospitalActivity extends AppCompatActivity {
             View circleRecovering = row.findViewById(R.id.circleRecovering);
             View circleHealed     = row.findViewById(R.id.circleHealed);
             TextView tvCountdown  = row.findViewById(R.id.tvCountdown);
-            Button btnMedicHelp   = row.findViewById(R.id.btnMedicHelp);
+            Button btnMedicRowHelp = row.findViewById(R.id.btnMedicHelp);
             Button btnSend        = row.findViewById(R.id.btnSendToMission);
 
             tvName.setText(p.name);
@@ -259,39 +273,35 @@ public class HospitalActivity extends AppCompatActivity {
 
             // ── Medic Help button ─────────────────────────────────────────
             if (p.status != PatientStatus.HEALED) {
-                btnMedicHelp.setVisibility(View.VISIBLE);
-                btnMedicHelp.setEnabled(true);   // always tappable — logic handled in click
+                btnMedicRowHelp.setVisibility(View.VISIBLE);
+                btnMedicRowHelp.setEnabled(true);
 
                 if (medic == null) {
-                    btnMedicHelp.setText("⚕️  Medic Help  (No Medic in crew)");
-                    btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
-                    btnMedicHelp.setOnClickListener(v ->
-                            Toast.makeText(this, "No Medic in the crew!", Toast.LENGTH_SHORT).show());
-
-                } else if (!medicReady) {
-                    btnMedicHelp.setText("⚕️  Medic Help  (Skill " + medic.getSkill() + " / 10)");
-                    btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
-                    btnMedicHelp.setOnClickListener(v ->
-                            Toast.makeText(this,
-                                    "Medic needs Skill 10 to help.\nCurrent skill: " + medic.getSkill(),
-                                    Toast.LENGTH_SHORT).show());
-
-                } else {
-                    btnMedicHelp.setText("⚕️  Medic Help");
-                    btnMedicHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF7B1FA2));
-                    final CrewMember m = medic;
-                    btnMedicHelp.setOnClickListener(v -> {
+                    btnMedicRowHelp.setText("⚕️ Medic (None)");
+                    btnMedicRowHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
+                } else if (GameData.healPowerUnlocked) {
+                    btnMedicRowHelp.setText("💖 INSTANT");
+                    btnMedicRowHelp.setBackgroundTintList(ColorStateList.valueOf(0xFFE91E63));
+                    btnMedicRowHelp.setOnClickListener(v -> {
                         p.status = PatientStatus.HEALED;
                         p.statusStartTime = System.currentTimeMillis();
-                        m.experience++;   // +1 XP for the medic
-                        Toast.makeText(this,
-                                "✅ " + p.name + " recovered!\n⚕️ " + m.name + " gained +1 XP  (Skill " + m.getSkill() + ")",
-                                Toast.LENGTH_SHORT).show();
+                        refreshUI();
+                    });
+                } else if (!medicReady) {
+                    btnMedicRowHelp.setText("⚕️ (Need Skill 10)");
+                    btnMedicRowHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF555566));
+                } else {
+                    btnMedicRowHelp.setText("⚕️ Help");
+                    btnMedicRowHelp.setBackgroundTintList(ColorStateList.valueOf(0xFF7B1FA2));
+                    btnMedicRowHelp.setOnClickListener(v -> {
+                        p.status = PatientStatus.HEALED;
+                        p.statusStartTime = System.currentTimeMillis();
+                        medic.experience++;
                         refreshUI();
                     });
                 }
             } else {
-                btnMedicHelp.setVisibility(View.GONE);
+                btnMedicRowHelp.setVisibility(View.GONE);
             }
 
             // ── Countdown + Send button ──────────────────────────────────

@@ -1,6 +1,5 @@
 package com.example.spaceproject;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -45,7 +44,6 @@ public class AsteroidAttackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_asteroid_attack);
 
-        // 1. Find all views
         gameContainer = findViewById(R.id.gameContainer);
         tvCoins = findViewById(R.id.tvCoins);
         tvEnergyLevel = findViewById(R.id.tvEnergyLevel);
@@ -59,7 +57,6 @@ public class AsteroidAttackActivity extends AppCompatActivity {
         btnUseTorpedo = findViewById(R.id.btnUseTorpedo);
         btnUseWeakness = findViewById(R.id.btnUseWeakness);
 
-        // 2. Set up button listeners
         findViewById(R.id.btnAttack).setOnClickListener(v -> launchMeteor());
         findViewById(R.id.btnLeft).setOnClickListener(v -> moveRocket(-50));
         findViewById(R.id.btnRight).setOnClickListener(v -> moveRocket(50));
@@ -68,24 +65,15 @@ public class AsteroidAttackActivity extends AppCompatActivity {
         btnUseTorpedo.setOnClickListener(v -> useTorpedo());
         btnUseWeakness.setOnClickListener(v -> useWeakness());
 
-        // 3. Get pilot data
         for (CrewMember m : GameData.crewList) {
             if ("Pilot".equals(m.role)) {
                 pilot = m;
                 break;
             }
         }
-        if (pilot == null) pilot = new Pilot("Default Pilot");
 
-        // 4. Initial UI update and start game
         updateUI();
         startGameLoop();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateUI();
     }
 
     private void updateUI() {
@@ -98,7 +86,6 @@ public class AsteroidAttackActivity extends AppCompatActivity {
             btnPowerBoost.setText(GameData.powerBoostAdded ? "Power Boost (FREE)" : "Power Boost (5🪙)");
         }
 
-        // The button is enabled if the torpedo was added in the inventory
         if (btnUseTorpedo != null) {
             btnUseTorpedo.setEnabled(GameData.torpedoAdded);
         }
@@ -109,58 +96,35 @@ public class AsteroidAttackActivity extends AppCompatActivity {
     }
 
     private void useTorpedo() {
-        if (!GameData.torpedoAdded) {
-            Toast.makeText(this, "Torpedo not equipped in Inventory!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // 1. Immediate damage to UFO: reduce by 50 as requested
+        if (!GameData.torpedoAdded) return;
         ufoEnergy -= 50;
         if (ufoEnergy < 0) ufoEnergy = 0;
-
-        // 2. Consume the torpedo from global state
         GameData.torpedoAdded = false;
-        
-        // 3. Update UI (this also disables the button)
         updateUI();
 
-        // 4. Visual effect: Launch a large torpedo image and hit UFO
         ImageView torpedoImg = new ImageView(this);
-        torpedoImg.setImageResource(R.drawable.meteor); // Reuse meteor for torpedo visual
+        torpedoImg.setImageResource(R.drawable.meteor);
         torpedoImg.setLayoutParams(new ViewGroup.LayoutParams(180, 180));
         torpedoImg.setX(ivRocketship.getX() + (ivRocketship.getWidth() / 2f) - 90);
         torpedoImg.setY(ivRocketship.getY() - 180);
         gameContainer.addView(torpedoImg);
         
-        torpedoImg.animate()
-                .y(ivUfo.getY())
-                .setDuration(400)
-                .withEndAction(() -> {
-                    gameContainer.removeView(torpedoImg);
-                    // Shake UFO or some feedback
-                    ivUfo.animate().scaleX(1.2f).scaleY(1.2f).setDuration(100).withEndAction(() -> 
-                        ivUfo.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
-                    ).start();
-                })
-                .start();
+        torpedoImg.animate().y(ivUfo.getY()).setDuration(400).withEndAction(() -> {
+            gameContainer.removeView(torpedoImg);
+            ivUfo.animate().scaleX(1.2f).scaleY(1.2f).setDuration(100).withEndAction(() -> 
+                ivUfo.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
+            ).start();
+        }).start();
 
-        Toast.makeText(this, "TORPEDO IMPACT! UFO Energy -50", Toast.LENGTH_SHORT).show();
-
-        // 5. Check for win immediately after damage
-        if (ufoEnergy <= 0) {
-            checkWin();
-        }
+        if (ufoEnergy <= 0) checkWin();
     }
 
     private void useWeakness() {
         if (GameData.weaknessPotionAdded || GameData.weaknessPotionsPurchased > 0) {
-            if (!GameData.weaknessPotionAdded) {
-                GameData.weaknessPotionsPurchased--;
-            }
+            if (!GameData.weaknessPotionAdded) GameData.weaknessPotionsPurchased--;
             ufoEnergy -= 10;
             if (ufoEnergy < 0) ufoEnergy = 0;
             ufoSpeedMultiplier = 0.5f;
-            Toast.makeText(this, "Weakness Potion Applied!", Toast.LENGTH_SHORT).show();
             updateUI();
             checkWin();
             btnUseWeakness.setEnabled(false);
@@ -186,15 +150,10 @@ public class AsteroidAttackActivity extends AppCompatActivity {
 
     private void activatePowerBoost() {
         if (isPowerBoostActive) return;
-        
         if (!GameData.powerBoostAdded) {
-            if (GameData.coins < 5) {
-                Toast.makeText(this, "Not enough coins!", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            if (GameData.coins < 5) return;
             GameData.coins -= 5;
         }
-
         isPowerBoostActive = true;
         updateUI();
         startAutoFire();
@@ -204,7 +163,6 @@ public class AsteroidAttackActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 tvPowerBoostCountdown.setText("Boost: " + (millisUntilFinished / 1000.0) + "s");
             }
-
             @Override
             public void onFinish() {
                 isPowerBoostActive = false;
@@ -258,7 +216,6 @@ public class AsteroidAttackActivity extends AppCompatActivity {
         if (choice == 0) targetX = 50; 
         else if (choice == 1) targetX = (screenWidth / 2f) - (ivUfo.getWidth() / 2f);
         else targetX = screenWidth - ivUfo.getWidth() - 50;
-
         ivUfo.animate().x(targetX).setDuration((long)(800 / ufoSpeedMultiplier)).start();
     }
 
@@ -275,12 +232,10 @@ public class AsteroidAttackActivity extends AppCompatActivity {
     private void updateGame() {
         float speedMeteor = isPowerBoostActive ? 25f : 15f;
         float speedAsteroid = 10f;
-
         Iterator<ImageView> mIter = meteors.iterator();
         while (mIter.hasNext()) {
             ImageView m = mIter.next();
             m.setY(m.getY() - speedMeteor);
-
             boolean hitAsteroid = false;
             Iterator<ImageView> aIterInner = asteroids.iterator();
             while (aIterInner.hasNext()) {
@@ -292,13 +247,11 @@ public class AsteroidAttackActivity extends AppCompatActivity {
                     break;
                 }
             }
-
             if (hitAsteroid) {
                 gameContainer.removeView(m);
                 mIter.remove();
                 continue;
             }
-
             if (checkCollision(m, ivUfo)) {
                 ufoEnergy -= 5;
                 if (ufoEnergy < 0) ufoEnergy = 0;
@@ -343,9 +296,12 @@ public class AsteroidAttackActivity extends AppCompatActivity {
     private void checkWin() {
         if (ufoEnergy <= 0) {
             gameHandler.removeCallbacksAndMessages(null);
-            if (pilot != null) pilot.experience += 2;
+            if (pilot != null) {
+                pilot.experience += 1;
+                pilot.skillLevel += 1;
+            }
             GameData.addCoins(20);
-            Toast.makeText(this, "Mission Accomplished! UFO Destroyed.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Mission Accomplished! Pilot +1 XP, +1 Skill.", Toast.LENGTH_LONG).show();
             finish();
         }
     }
@@ -353,11 +309,7 @@ public class AsteroidAttackActivity extends AppCompatActivity {
     private void checkGameOver() {
         if (pilotEnergy <= 0 || damageTaken >= 5) {
             gameHandler.removeCallbacksAndMessages(null);
-            if (pilot != null) {
-                pilot.location = "Hospital";
-                HospitalActivity.patients.add(new HospitalActivity.Patient(pilot.name, HospitalActivity.PatientStatus.CRITICAL));
-            }
-            Toast.makeText(this, "Mission Failed! Pilot Injured.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Mission Failed!", Toast.LENGTH_LONG).show();
             finish();
         }
     }

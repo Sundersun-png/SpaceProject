@@ -24,14 +24,14 @@ public class NavigationActivity extends AppCompatActivity {
             startActivity(new Intent(this, QuartersActivity.class));
         });
 
-        // Simulator Button (MainActivity handles Simulator)
+        // Simulator Button (Now points to MissionControlActivity per swap request)
         findViewById(R.id.btnSimulator).setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, MissionControlActivity.class));
         });
 
-        // Mission Control Button
+        // Mission Control Button (Now points to MainActivity per swap request)
         findViewById(R.id.btnMissionControl).setOnClickListener(v -> {
-            startActivity(new Intent(this, MissionControlActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         });
 
         // Statistics Button
