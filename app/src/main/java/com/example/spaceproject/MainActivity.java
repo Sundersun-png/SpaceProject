@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private final Set<CrewMember> selectedCrew = new HashSet<>();
     private LinearLayout crewContainer, selectedCrewImages;
     private TextView tvTrainStatus, tvCoins;
-    private Button btnTrain, btnInstantTrain;
+    private Button btnTrain, btnInstantTrain, btnJointMission;
 
     private CountDownTimer countDownTimer;
     private boolean isTraining = false;
@@ -40,6 +40,35 @@ public class MainActivity extends AppCompatActivity {
         tvCoins = findViewById(R.id.tvCoins);
         btnTrain = findViewById(R.id.btnTrain);
         btnInstantTrain = findViewById(R.id.btnInstantTrain);
+
+        // Dynamic Joint Mission Button creation
+        btnJointMission = new Button(this);
+        btnJointMission.setText("JOIN MISSION");
+        btnJointMission.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFF1DB954));
+        btnJointMission.setTextColor(0xFFFFFFFF);
+        // Calculate 56dp for height to match existing buttons
+        int heightInPx = (int) (56 * getResources().getDisplayMetrics().density);
+        btnJointMission.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 
+                heightInPx));
+        btnJointMission.setOnClickListener(v -> {
+            boolean allHighSkill = true;
+            for (CrewMember m : selectedCrew) {
+                if (m.getSkill() < 5) {
+                    allHighSkill = false;
+                    break;
+                }
+            }
+            if (allHighSkill) {
+                List<CrewMember> list = new ArrayList<>(selectedCrew);
+                Intent intent = new Intent(this, JointMissionActivity.class);
+                intent.putExtra("name1", list.get(0).name);
+                intent.putExtra("name2", list.get(1).name);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Both crew members must have skill level >= 5!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         refreshCoins();
         buildCrewCards();
@@ -161,6 +190,21 @@ public class MainActivity extends AppCompatActivity {
             iv.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
             
             selectedCrewImages.addView(iv);
+        }
+
+        // Toggle Joint Mission button visibility
+        LinearLayout btnRow = findViewById(R.id.btnRow);
+        if (selectedCrew.size() == 2) {
+            btnTrain.setVisibility(View.GONE);
+            btnInstantTrain.setVisibility(View.GONE);
+            if (btnJointMission.getParent() == null) {
+                btnRow.addView(btnJointMission);
+            }
+            btnJointMission.setVisibility(View.VISIBLE);
+        } else {
+            btnTrain.setVisibility(View.VISIBLE);
+            btnInstantTrain.setVisibility(View.VISIBLE);
+            btnJointMission.setVisibility(View.GONE);
         }
     }
 
