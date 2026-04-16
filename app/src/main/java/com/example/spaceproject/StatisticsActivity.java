@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class StatisticsActivity extends AppCompatActivity {
 
@@ -21,6 +23,7 @@ public class StatisticsActivity extends AppCompatActivity {
     private TextView tvTotalMissions, tvTotalCrew, tvMissionsWon, tvCrewLost;
     private TextView tvWinRate, tvCoins;
     private View     winRateBar;
+    private RecyclerView crewStatsRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,11 @@ public class StatisticsActivity extends AppCompatActivity {
         tvWinRate       = findViewById(R.id.tvWinRate);
         winRateBar      = findViewById(R.id.winRateBar);
         tvCoins         = findViewById(R.id.tvCoins);
+        crewStatsRecycler = findViewById(R.id.crewStatsRecycler);
+
+        // Setup RecyclerView
+        crewStatsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        crewStatsRecycler.setAdapter(new CrewStatsAdapter(GameData.crewList));
 
         // Bottom nav
         LinearLayout navQuarters  = findViewById(R.id.navQuarters);
@@ -57,8 +65,6 @@ public class StatisticsActivity extends AppCompatActivity {
             startActivity(new Intent(this, HospitalActivity.class));
             finish();
         });
-
-        // navStats is the current screen — no action needed
 
         findViewById(R.id.btnBack).setOnClickListener(v -> {
             startActivity(new Intent(this, NavigationActivity.class));
@@ -88,10 +94,17 @@ public class StatisticsActivity extends AppCompatActivity {
         // Animate the win-rate bar width as a fraction of its parent
         winRateBar.post(() -> {
             ViewGroup parent = (ViewGroup) winRateBar.getParent();
-            int fullWidth = parent.getWidth();
-            ViewGroup.LayoutParams params = winRateBar.getLayoutParams();
-            params.width = (int) (fullWidth * (rate / 100f));
-            winRateBar.setLayoutParams(params);
+            if (parent != null) {
+                int fullWidth = parent.getWidth();
+                ViewGroup.LayoutParams params = winRateBar.getLayoutParams();
+                params.width = (int) (fullWidth * (rate / 100f));
+                winRateBar.setLayoutParams(params);
+            }
         });
+
+        // Update recycler if adapter exists
+        if (crewStatsRecycler.getAdapter() != null) {
+            crewStatsRecycler.getAdapter().notifyDataSetChanged();
+        }
     }
 }

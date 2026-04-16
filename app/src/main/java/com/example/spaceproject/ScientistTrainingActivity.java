@@ -4,14 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ScientistTrainingActivity extends AppCompatActivity {
 
-    private TextView tvCountdown, tvStatus;
+    private TextView tvCountdown, tvStatus, tvCoins;
     private Button btnTrain, btnInstantTrain;
     private CrewMember activeScientist;
 
@@ -22,8 +22,11 @@ public class ScientistTrainingActivity extends AppCompatActivity {
 
         tvCountdown = findViewById(R.id.tvCountdown);
         tvStatus = findViewById(R.id.tvStatus);
+        tvCoins = findViewById(R.id.tvCoins);
         btnTrain = findViewById(R.id.btnTrain);
         btnInstantTrain = findViewById(R.id.btnInstantTrain);
+
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
         // Find the scientist
         for (CrewMember member : GameData.crewList) {
@@ -33,13 +36,7 @@ public class ScientistTrainingActivity extends AppCompatActivity {
             }
         }
 
-        if (activeScientist == null) {
-            tvStatus.setText("No scientist found in crew!");
-            btnTrain.setEnabled(false);
-            btnInstantTrain.setEnabled(false);
-        } else {
-            tvStatus.setText("Training: " + activeScientist.name + " (Skill: " + activeScientist.getSkill() + ")");
-        }
+        updateUI();
 
         btnTrain.setOnClickListener(v -> startTraining());
         
@@ -51,6 +48,17 @@ public class ScientistTrainingActivity extends AppCompatActivity {
                 Toast.makeText(this, "Not enough coins!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void updateUI() {
+        if (tvCoins != null) tvCoins.setText(String.valueOf(GameData.coins));
+        if (activeScientist == null) {
+            tvStatus.setText("No scientist found in crew!");
+            btnTrain.setEnabled(false);
+            btnInstantTrain.setEnabled(false);
+        } else {
+            tvStatus.setText("Training: " + activeScientist.name + " (Skill: " + activeScientist.getSkill() + ")");
+        }
     }
 
     private void startTraining() {
@@ -74,8 +82,7 @@ public class ScientistTrainingActivity extends AppCompatActivity {
 
     private void completeTraining() {
         if (activeScientist != null) {
-            activeScientist.experience += 1; 
-            activeScientist.skillLevel += 1; // Update skill level as requested
+            activeScientist.train(0); // Use the train method to increment session count
             Toast.makeText(ScientistTrainingActivity.this, "Training Complete! +1 Skill & +1 XP", Toast.LENGTH_SHORT).show();
         }
         startActivity(new Intent(ScientistTrainingActivity.this, ScientistLabActivity.class));

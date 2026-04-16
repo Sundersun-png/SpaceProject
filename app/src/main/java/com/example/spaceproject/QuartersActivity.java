@@ -22,7 +22,7 @@ public class QuartersActivity extends AppCompatActivity {
     private TextView     tvCoins, tvNoCrewInQuarters;
     private LinearLayout crewListContainer;
     private View         crewListScroll;
-    private Button       btnAddCrew, btnDeleteCrew;
+    private Button       btnAddCrew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,29 +34,14 @@ public class QuartersActivity extends AppCompatActivity {
         crewListContainer    = findViewById(R.id.crewListContainer);
         crewListScroll       = findViewById(R.id.crewListScroll);
         btnAddCrew           = findViewById(R.id.btnAddCrew);
-        btnDeleteCrew        = findViewById(R.id.btnDeleteCrew);
-
-        updateSpecialButtons();
+        
+        // Hide the old bulk delete button if it exists in layout
+        View oldDeleteBtn = findViewById(R.id.btnDeleteCrew);
+        if (oldDeleteBtn != null) oldDeleteBtn.setVisibility(View.GONE);
 
         btnAddCrew.setOnClickListener(v -> {
             startActivity(new Intent(this, RecruitActivity.class));
             finish();
-        });
-
-        btnDeleteCrew.setOnClickListener(v -> {
-            if (selectedCrew.isEmpty()) {
-                Toast.makeText(this, "Select a crew member to delete!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (GameData.crewList.size() - selectedCrew.size() < 2) {
-                Toast.makeText(this, "Minimum 2 crew members must remain in quarters!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            GameData.crewList.removeAll(selectedCrew);
-            selectedCrew.clear();
-            Toast.makeText(this, "Crew deleted!", Toast.LENGTH_SHORT).show();
-            buildCrewList();
-            updateSpecialButtons();
         });
 
         // Restore Energy — restores currentEnergy back to maxEnergy
@@ -72,7 +57,7 @@ public class QuartersActivity extends AppCompatActivity {
             buildCrewList();
         });
 
-        // Move to Mission Control (Now MissionControlActivity - Joint Missions)
+        // Move to Mission Control
         findViewById(R.id.btnMoveToMissionControl).setOnClickListener(v -> {
             if (selectedCrew.isEmpty()) {
                 Toast.makeText(this, "Select a crew member first!", Toast.LENGTH_SHORT).show();
@@ -85,7 +70,7 @@ public class QuartersActivity extends AppCompatActivity {
             finish();
         });
 
-        // Move to Simulator (Now MainActivity - Single Missions)
+        // Move to Simulator
         findViewById(R.id.btnMoveToSimulator).setOnClickListener(v -> {
             if (selectedCrew.isEmpty()) {
                 Toast.makeText(this, "Select a crew member first!", Toast.LENGTH_SHORT).show();
@@ -125,16 +110,6 @@ public class QuartersActivity extends AppCompatActivity {
         findViewById(R.id.navMission).setOnClickListener(v -> { startActivity(new Intent(this, MissionControlActivity.class)); finish(); });
         findViewById(R.id.navHospital).setOnClickListener(v -> { startActivity(new Intent(this, HospitalActivity.class)); finish(); });
         findViewById(R.id.navStats).setOnClickListener(v -> { startActivity(new Intent(this, StatisticsActivity.class)); finish(); });
-    }
-
-    private void updateSpecialButtons() {
-        if (GameData.successfulMissionsCount >= 3) {
-            btnAddCrew.setVisibility(View.VISIBLE);
-            btnDeleteCrew.setVisibility(View.VISIBLE);
-        } else {
-            btnAddCrew.setVisibility(View.GONE);
-            btnDeleteCrew.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -190,24 +165,32 @@ public class QuartersActivity extends AppCompatActivity {
             tvStats.setText("Energy: " + m.currentEnergy + "/" + m.maxEnergy + " | XP: " + m.experience);
             tvStats.setTextColor(0xFFAAAAAA);
 
-            TextView tvLoc = new TextView(this);
-            tvLoc.setText("Loc: " + m.location);
-            tvLoc.setTextColor(0xFF888888);
-            tvLoc.setTextSize(10f);
-
             info.addView(tvName);
             info.addView(tvRole);
             info.addView(tvStats);
-            info.addView(tvLoc);
 
-            TextView tvBadge = new TextView(this);
-            tvBadge.setText(isSelected ? "✓" : "");
-            tvBadge.setTextColor(0xFF90EE90);
-            tvBadge.setTextSize(20f);
+            // "Remove" button for each member
+            Button btnRemove = new Button(this);
+            btnRemove.setText("REMOVE");
+            btnRemove.setTextSize(10f); // Use float instead of sp in code
+            btnRemove.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFFFF6666));
+            btnRemove.setTextColor(0xFFFFFFFF);
+            
+            // Only enabled if 3+ joint missions won
+            boolean canRemove = GameData.successfulMissionsCount >= 3;
+            btnRemove.setEnabled(canRemove);
+            if (!canRemove) btnRemove.setAlpha(0.5f);
+
+            btnRemove.setOnClickListener(v -> {
+                GameData.crewList.remove(m);
+                selectedCrew.remove(m);
+                Toast.makeText(this, m.name + " removed from crew.", Toast.LENGTH_SHORT).show();
+                buildCrewList();
+            });
 
             inner.addView(tvIcon);
             inner.addView(info);
-            inner.addView(tvBadge);
+            inner.addView(btnRemove);
             card.addView(inner);
 
             card.setOnClickListener(v -> {

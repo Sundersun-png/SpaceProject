@@ -78,19 +78,19 @@ public class RecruitActivity extends AppCompatActivity {
 
         switch (spec) {
             case "Pilot":
-                tvSkillValue.setText("5"); tvResilienceValue.setText("4"); tvEnergyValue.setText("20");
+                tvSkillValue.setText("3"); tvResilienceValue.setText("4"); tvEnergyValue.setText("20");
                 tvAbilityValue.setText("Evade"); break;
             case "Medic":
-                tvSkillValue.setText("7"); tvResilienceValue.setText("2"); tvEnergyValue.setText("18");
+                tvSkillValue.setText("2"); tvResilienceValue.setText("2"); tvEnergyValue.setText("18");
                 tvAbilityValue.setText("Heal Teammate"); break;
             case "Scientist":
-                tvSkillValue.setText("8"); tvResilienceValue.setText("1"); tvEnergyValue.setText("17");
+                tvSkillValue.setText("4"); tvResilienceValue.setText("1"); tvEnergyValue.setText("17");
                 tvAbilityValue.setText("Boost Attack"); break;
             case "Engineer":
-                tvSkillValue.setText("6"); tvResilienceValue.setText("3"); tvEnergyValue.setText("19");
+                tvSkillValue.setText("2"); tvResilienceValue.setText("3"); tvEnergyValue.setText("19");
                 tvAbilityValue.setText("Repair"); break;
             case "Soldier":
-                tvSkillValue.setText("9"); tvResilienceValue.setText("0"); tvEnergyValue.setText("16");
+                tvSkillValue.setText("4"); tvResilienceValue.setText("0"); tvEnergyValue.setText("16");
                 tvAbilityValue.setText("Heavy Attack"); break;
         }
         resetAllCards();
@@ -124,14 +124,24 @@ public class RecruitActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter a crew member name.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (GameData.crewList.size() >= 5) { // Increased limit for easier testing/play
-            Toast.makeText(this, "Max crew limit reached.", Toast.LENGTH_LONG).show();
+
+        int maxAllowed = (GameData.successfulMissionsCount >= 3) ? 3 : 2;
+
+        if (GameData.crewList.size() >= maxAllowed) {
+            if (maxAllowed == 2) {
+                Toast.makeText(this, "Max 2 crew members allowed! Win 3 Joint Missions to unlock 1 more.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Max crew limit reached (3).", Toast.LENGTH_LONG).show();
+            }
             return;
         }
 
         CrewMember newMember = GameData.createCrew(name, selectedSpecialization);
         newMember.location = "Quarters";
         GameData.crewList.add(newMember);
+        
+        // Increment colony-wide total crew
+        StatisticsActivity.totalCrew++;
 
         Toast.makeText(this, "✓ " + name + " (" + selectedSpecialization + ") recruited!", Toast.LENGTH_LONG).show();
         updateCurrentCrewDisplay();

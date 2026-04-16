@@ -29,7 +29,7 @@ public class AsteroidAttackActivity extends AppCompatActivity {
     private TextView tvCoins, tvEnergyLevel, tvDamage, tvPowerBoostCountdown, tvUfoEnergy;
     private ImageView ivUfo, ivRocketship;
     private ConstraintLayout gameContainer;
-    private Button btnPowerBoost, btnUseTorpedo, btnUseWeakness;
+    private Button btnPowerBoost;
     private CrewMember pilot;
 
     private final List<ImageView> asteroids = new ArrayList<>();
@@ -54,26 +54,31 @@ public class AsteroidAttackActivity extends AppCompatActivity {
         ivRocketship = findViewById(R.id.ivRocketship);
 
         btnPowerBoost = findViewById(R.id.btnPowerBoost);
-        btnUseTorpedo = findViewById(R.id.btnUseTorpedo);
-        btnUseWeakness = findViewById(R.id.btnUseWeakness);
 
         findViewById(R.id.btnAttack).setOnClickListener(v -> launchMeteor());
         findViewById(R.id.btnLeft).setOnClickListener(v -> moveRocket(-50));
         findViewById(R.id.btnRight).setOnClickListener(v -> moveRocket(50));
         
         btnPowerBoost.setOnClickListener(v -> activatePowerBoost());
-        btnUseTorpedo.setOnClickListener(v -> useTorpedo());
-        btnUseWeakness.setOnClickListener(v -> useWeakness());
 
-        for (CrewMember m : GameData.crewList) {
-            if ("Pilot".equals(m.role)) {
-                pilot = m;
-                break;
-            }
+        findPilot();
+        
+        if (pilot != null) {
+            pilot.setMissionsParticipated(pilot.getMissionsParticipated() + 1);
         }
 
         updateUI();
         startGameLoop();
+    }
+
+    private void findPilot() {
+        pilot = null;
+        for (CrewMember m : GameData.crewList) {
+            if ("Pilot".equalsIgnoreCase(m.role)) {
+                pilot = m;
+                break;
+            }
+        }
     }
 
     private void updateUI() {
@@ -84,50 +89,6 @@ public class AsteroidAttackActivity extends AppCompatActivity {
         
         if (btnPowerBoost != null) {
             btnPowerBoost.setText(GameData.powerBoostAdded ? "Power Boost (FREE)" : "Power Boost (5🪙)");
-        }
-
-        if (btnUseTorpedo != null) {
-            btnUseTorpedo.setEnabled(GameData.torpedoAdded);
-        }
-
-        if (btnUseWeakness != null) {
-            btnUseWeakness.setEnabled(GameData.weaknessPotionAdded || GameData.weaknessPotionsPurchased > 0);
-        }
-    }
-
-    private void useTorpedo() {
-        if (!GameData.torpedoAdded) return;
-        ufoEnergy -= 50;
-        if (ufoEnergy < 0) ufoEnergy = 0;
-        GameData.torpedoAdded = false;
-        updateUI();
-
-        ImageView torpedoImg = new ImageView(this);
-        torpedoImg.setImageResource(R.drawable.meteor);
-        torpedoImg.setLayoutParams(new ViewGroup.LayoutParams(180, 180));
-        torpedoImg.setX(ivRocketship.getX() + (ivRocketship.getWidth() / 2f) - 90);
-        torpedoImg.setY(ivRocketship.getY() - 180);
-        gameContainer.addView(torpedoImg);
-        
-        torpedoImg.animate().y(ivUfo.getY()).setDuration(400).withEndAction(() -> {
-            gameContainer.removeView(torpedoImg);
-            ivUfo.animate().scaleX(1.2f).scaleY(1.2f).setDuration(100).withEndAction(() -> 
-                ivUfo.animate().scaleX(1.0f).scaleY(1.0f).setDuration(100).start()
-            ).start();
-        }).start();
-
-        if (ufoEnergy <= 0) checkWin();
-    }
-
-    private void useWeakness() {
-        if (GameData.weaknessPotionAdded || GameData.weaknessPotionsPurchased > 0) {
-            if (!GameData.weaknessPotionAdded) GameData.weaknessPotionsPurchased--;
-            ufoEnergy -= 10;
-            if (ufoEnergy < 0) ufoEnergy = 0;
-            ufoSpeedMultiplier = 0.5f;
-            updateUI();
-            checkWin();
-            btnUseWeakness.setEnabled(false);
         }
     }
 
@@ -299,6 +260,7 @@ public class AsteroidAttackActivity extends AppCompatActivity {
             if (pilot != null) {
                 pilot.experience += 1;
                 pilot.skillLevel += 1;
+                pilot.setMissionsWon(pilot.getMissionsWon() + 1);
             }
             GameData.addCoins(20);
             Toast.makeText(this, "Mission Accomplished! Pilot +1 XP, +1 Skill.", Toast.LENGTH_LONG).show();
@@ -309,7 +271,7 @@ public class AsteroidAttackActivity extends AppCompatActivity {
     private void checkGameOver() {
         if (pilotEnergy <= 0 || damageTaken >= 5) {
             gameHandler.removeCallbacksAndMessages(null);
-            Toast.makeText(this, "Mission Failed!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Mission Failed!", Toast.LENGTH_SHORT).show();
             finish();
         }
     }

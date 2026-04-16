@@ -310,6 +310,14 @@ public class HospitalActivity extends AppCompatActivity {
                 tvCountdown.setTextColor(0xFF90EE90);
                 btnSend.setVisibility(View.VISIBLE);
                 btnSend.setOnClickListener(v -> {
+                    // Update crew location back to MissionControl
+                    for (CrewMember m : GameData.crewList) {
+                        if (m.name.equals(p.name)) {
+                            m.location = "MissionControl";
+                            m.currentEnergy = m.maxEnergy; // Fully restore energy on recovery
+                            break;
+                        }
+                    }
                     patients.remove(p);
                     startActivity(new Intent(this, MissionControlActivity.class));
                     finish();

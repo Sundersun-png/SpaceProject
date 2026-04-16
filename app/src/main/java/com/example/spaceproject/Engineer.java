@@ -3,5 +3,6 @@ package com.example.spaceproject;
 public class Engineer extends CrewMember {
     public Engineer(String name) {
         super(name, "Engineer", 3, 19);
+        this.skillLevel = 2;
     }
 }

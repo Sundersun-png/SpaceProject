@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MedicLabActivity extends AppCompatActivity {
 
     private TextView tvCountdown, tvStatus, tvPillLabel, tvHealLabel, tvCoins;
-    private Button btnTrain, btnInstantTrain, btnUnlockPill, btnUnlockHeal;
+    private Button btnTrain, btnInstantTrain, btnBuyPill, btnUnlockPill, btnBuyHeal, btnUnlockHeal;
+    private View layoutPillButtons, layoutHealButtons;
     private CrewMember activeMedic;
 
     @Override
@@ -25,8 +25,15 @@ public class MedicLabActivity extends AppCompatActivity {
         tvStatus = findViewById(R.id.tvStatus);
         btnTrain = findViewById(R.id.btnTrain);
         btnInstantTrain = findViewById(R.id.btnInstantTrain);
+        
+        btnBuyPill = findViewById(R.id.btnBuyPill);
         btnUnlockPill = findViewById(R.id.btnUnlockPill);
+        btnBuyHeal = findViewById(R.id.btnBuyHeal);
         btnUnlockHeal = findViewById(R.id.btnUnlockHeal);
+        
+        layoutPillButtons = findViewById(R.id.layoutPillButtons);
+        layoutHealButtons = findViewById(R.id.layoutHealButtons);
+
         tvPillLabel = findViewById(R.id.tvPillLabel);
         tvHealLabel = findViewById(R.id.tvHealLabel);
         tvCoins = findViewById(R.id.tvCoins);
@@ -43,27 +50,38 @@ public class MedicLabActivity extends AppCompatActivity {
         btnTrain.setOnClickListener(v -> startTraining());
         btnInstantTrain.setOnClickListener(v -> instantTrain());
         
-        // UNLOCK PILL (Req XP: 9, Cost: 10 coins)
-        btnUnlockPill.setOnClickListener(v -> unlockFeature(9, 10, "Pill Power", () -> GameData.pillUnlocked = true));
+        // PILL POWER
+        btnBuyPill.setOnClickListener(v -> buyFeature(5, "Pill Power", () -> GameData.pillUnlocked = true));
+        btnUnlockPill.setOnClickListener(v -> unlockFeature(9, "Pill Power", () -> GameData.pillUnlocked = true));
         
-        // UNLOCK HEAL (Req XP: 12, Cost: 15 coins)
-        btnUnlockHeal.setOnClickListener(v -> unlockFeature(12, 15, "Heal Feature", () -> GameData.healPowerUnlocked = true));
+        // HEAL FEATURE
+        btnBuyHeal.setOnClickListener(v -> buyFeature(5, "Heal Feature", () -> GameData.healPowerUnlocked = true));
+        btnUnlockHeal.setOnClickListener(v -> unlockFeature(12, "Heal Feature", () -> GameData.healPowerUnlocked = true));
     }
 
-    private void unlockFeature(int reqXP, int cost, String name, Runnable action) {
-        if (activeMedic == null) return;
-        if (activeMedic.experience < reqXP) {
-            Toast.makeText(this, name + " requires XP: " + reqXP, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (GameData.coins < cost) {
+    private void buyFeature(int cost, String name, Runnable action) {
+        if (GameData.coins >= cost) {
+            GameData.coins -= cost;
+            action.run();
+            Toast.makeText(this, name + " bought with coins!", Toast.LENGTH_SHORT).show();
+            updateUI();
+        } else {
             Toast.makeText(this, "Not enough coins! (Need " + cost + ")", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void unlockFeature(int reqXP, String name, Runnable action) {
+        if (activeMedic == null) {
+            Toast.makeText(this, "No Medic in crew!", Toast.LENGTH_SHORT).show();
             return;
         }
-        GameData.coins -= cost;
-        action.run();
-        Toast.makeText(this, name + " unlocked!", Toast.LENGTH_SHORT).show();
-        updateUI();
+        if (activeMedic.experience >= reqXP) {
+            action.run();
+            Toast.makeText(this, name + " unlocked with XP!", Toast.LENGTH_SHORT).show();
+            updateUI();
+        } else {
+            Toast.makeText(this, name + " requires XP: " + reqXP, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -90,28 +108,26 @@ public class MedicLabActivity extends AppCompatActivity {
             tvStatus.setText("No medic found in crew!");
             btnTrain.setEnabled(false);
             btnInstantTrain.setEnabled(false);
-            btnUnlockPill.setVisibility(View.GONE);
-            btnUnlockHeal.setVisibility(View.GONE);
         } else {
             tvStatus.setText("Medic: " + activeMedic.name + " | XP: " + activeMedic.experience);
-            
-            // Pill logic (Req XP: 9)
-            if (GameData.pillUnlocked) {
-                tvPillLabel.setText("💊 Pill Power: UNLOCKED");
-                btnUnlockPill.setVisibility(View.GONE);
-            } else {
-                tvPillLabel.setText("💊 Pill Power (Req XP: 9, Cost: 10)");
-                btnUnlockPill.setVisibility(activeMedic.experience >= 9 ? View.VISIBLE : View.GONE);
-            }
+        }
 
-            // Heal logic (Req XP: 12)
-            if (GameData.healPowerUnlocked) {
-                tvHealLabel.setText("💖 Heal Feature: UNLOCKED");
-                btnUnlockHeal.setVisibility(View.GONE);
-            } else {
-                tvHealLabel.setText("💖 Heal Feature (Req XP: 12, Cost: 15)");
-                btnUnlockHeal.setVisibility(activeMedic.experience >= 12 ? View.VISIBLE : View.GONE);
-            }
+        // Pill logic
+        if (GameData.pillUnlocked) {
+            tvPillLabel.setText("💊 Pill Power: UNLOCKED");
+            layoutPillButtons.setVisibility(View.GONE);
+        } else {
+            tvPillLabel.setText("💊 Pill Power");
+            layoutPillButtons.setVisibility(View.VISIBLE);
+        }
+
+        // Heal logic
+        if (GameData.healPowerUnlocked) {
+            tvHealLabel.setText("💖 Heal Feature: UNLOCKED");
+            layoutHealButtons.setVisibility(View.GONE);
+        } else {
+            tvHealLabel.setText("💖 Heal Feature");
+            layoutHealButtons.setVisibility(View.VISIBLE);
         }
     }
 

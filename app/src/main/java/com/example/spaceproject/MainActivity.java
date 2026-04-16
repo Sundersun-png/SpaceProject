@@ -114,6 +114,14 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // Check if any selected crew is in Hospital
+        for (CrewMember m : selectedCrew) {
+            if ("Hospital".equalsIgnoreCase(m.location)) {
+                Toast.makeText(this, m.name + " is in Hospital and cannot join missions!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
         if (GameData.MISSION_ASTEROID.equals(selectedMission)) {
             if (!hasRole("Pilot")) {
                 Toast.makeText(this, "Only a Pilot can launch this mission!", Toast.LENGTH_SHORT).show();
@@ -137,14 +145,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Only a Scientist can launch this mission!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            // Go to training first
             startActivity(new Intent(this, ScientistTrainingActivity.class));
         } else if (GameData.MISSION_VIRUS.equals(selectedMission)) {
             if (!hasRole("Medic")) {
                 Toast.makeText(this, "Only a Medic can launch this mission!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            // Go to Medic Lab (was MedicTrainingActivity)
             startActivity(new Intent(this, MedicLabActivity.class));
         } else {
             Toast.makeText(this, "Mission started: " + selectedMission, Toast.LENGTH_SHORT).show();
@@ -167,9 +173,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void buildCrewCards() {
         crewSelectionContainer.removeAllViews();
-        // Show all crew members who are in Simulator location
         List<CrewMember> available = new ArrayList<>();
         for (CrewMember m : GameData.crewList) {
+            // Simulator location check remains, but logic will block starting if they moved to Hospital
             if ("Simulator".equals(m.location)) available.add(m);
         }
 

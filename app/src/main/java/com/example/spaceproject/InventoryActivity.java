@@ -2,6 +2,7 @@ package com.example.spaceproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,17 +62,17 @@ public class InventoryActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        btnPurchaseTorpedo.setOnClickListener(v -> purchaseItem(() -> GameData.torpedoPurchased = true));
-        btnAddTorpedo.setOnClickListener(v -> addItem(GameData.torpedoPurchased, 5, () -> GameData.torpedoAdded = true));
+        btnPurchaseTorpedo.setOnClickListener(v -> purchaseItem(() -> GameData.torpedoAdded = true));
+        btnAddTorpedo.setOnClickListener(v -> addItem(5, () -> GameData.torpedoAdded = true));
 
-        btnPurchaseGrenade.setOnClickListener(v -> purchaseItem(() -> GameData.grenadePurchased = true));
-        btnAddGrenade.setOnClickListener(v -> addItem(GameData.grenadePurchased, 3, () -> GameData.grenadeAdded = true));
+        btnPurchaseGrenade.setOnClickListener(v -> purchaseItem(() -> GameData.grenadeAdded = true));
+        btnAddGrenade.setOnClickListener(v -> addItem(3, () -> GameData.grenadeAdded = true));
 
-        btnPurchaseGun.setOnClickListener(v -> purchaseItem(() -> GameData.gunPurchased = true));
-        btnAddGun.setOnClickListener(v -> addItem(GameData.gunPurchased, 4, () -> GameData.gunAdded = true));
+        btnPurchaseGun.setOnClickListener(v -> purchaseItem(() -> GameData.gunAdded = true));
+        btnAddGun.setOnClickListener(v -> addItem(4, () -> GameData.gunAdded = true));
 
-        btnPurchaseRocketship.setOnClickListener(v -> purchaseItem(() -> GameData.rocketshipPurchased = true));
-        btnAddRocketship.setOnClickListener(v -> addItem(GameData.rocketshipPurchased, 6, () -> GameData.rocketshipAdded = true));
+        btnPurchaseRocketship.setOnClickListener(v -> purchaseItem(() -> GameData.rocketshipAdded = true));
+        btnAddRocketship.setOnClickListener(v -> addItem(6, () -> GameData.rocketshipAdded = true));
     }
 
     private void purchaseItem(Runnable action) {
@@ -79,17 +80,13 @@ public class InventoryActivity extends AppCompatActivity {
             GameData.coins -= 5;
             action.run();
             refreshUI();
-            Toast.makeText(this, "Weapon Purchased!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Weapon Purchased with Coins!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Not enough coins! (Need 5🪙)", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void addItem(boolean purchased, int reqXP, Runnable action) {
-        if (!purchased) {
-            Toast.makeText(this, "Purchase the weapon first!", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    private void addItem(int reqXP, Runnable action) {
         if (engineer == null) {
             Toast.makeText(this, "No Engineer in crew! Recruit one first.", Toast.LENGTH_SHORT).show();
             return;
@@ -97,7 +94,7 @@ public class InventoryActivity extends AppCompatActivity {
         if (engineer.experience >= reqXP) {
             action.run();
             refreshUI();
-            Toast.makeText(this, "Weapon Added by Engineer!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Weapon Unlocked via XP!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Engineer XP too low! (Requires " + reqXP + ")", Toast.LENGTH_SHORT).show();
         }
@@ -111,28 +108,29 @@ public class InventoryActivity extends AppCompatActivity {
             tvEngineerInfo.setText("No Engineer in crew!");
         }
 
-        tvTorpedoStatus.setText(GameData.torpedoAdded ? "Added" : (GameData.torpedoPurchased ? "Purchased" : "Not Owned"));
-        tvGrenadeStatus.setText(GameData.grenadeAdded ? "Added" : (GameData.grenadePurchased ? "Purchased" : "Not Owned"));
-        tvGunStatus.setText(GameData.gunAdded ? "Added" : (GameData.gunPurchased ? "Purchased" : "Not Owned"));
-        tvRocketshipStatus.setText(GameData.rocketshipAdded ? "Added" : (GameData.rocketshipPurchased ? "Purchased" : "Not Owned"));
+        tvTorpedoStatus.setText(GameData.torpedoAdded ? "Added" : "Not Owned");
+        tvGrenadeStatus.setText(GameData.grenadeAdded ? "Added" : "Not Owned");
+        tvGunStatus.setText(GameData.gunAdded ? "Added" : "Not Owned");
+        tvRocketshipStatus.setText(GameData.rocketshipAdded ? "Added" : "Not Owned");
 
         int green = 0xFF90EE90;
-        int yellow = 0xFFFFD700;
         int red = 0xFFFF6666;
         
-        tvTorpedoStatus.setTextColor(GameData.torpedoAdded ? green : (GameData.torpedoPurchased ? yellow : red));
-        tvGrenadeStatus.setTextColor(GameData.grenadeAdded ? green : (GameData.grenadePurchased ? yellow : red));
-        tvGunStatus.setTextColor(GameData.gunAdded ? green : (GameData.gunPurchased ? yellow : red));
-        tvRocketshipStatus.setTextColor(GameData.rocketshipAdded ? green : (GameData.rocketshipPurchased ? yellow : red));
+        tvTorpedoStatus.setTextColor(GameData.torpedoAdded ? green : red);
+        tvGrenadeStatus.setTextColor(GameData.grenadeAdded ? green : red);
+        tvGunStatus.setTextColor(GameData.gunAdded ? green : red);
+        tvRocketshipStatus.setTextColor(GameData.rocketshipAdded ? green : red);
 
-        btnPurchaseTorpedo.setEnabled(!GameData.torpedoPurchased);
-        btnPurchaseGrenade.setEnabled(!GameData.grenadePurchased);
-        btnPurchaseGun.setEnabled(!GameData.gunPurchased);
-        btnPurchaseRocketship.setEnabled(!GameData.rocketshipPurchased);
-
-        btnAddTorpedo.setEnabled(!GameData.torpedoAdded);
-        btnAddGrenade.setEnabled(!GameData.grenadeAdded);
-        btnAddGun.setEnabled(!GameData.gunAdded);
-        btnAddRocketship.setEnabled(!GameData.rocketshipAdded);
+        btnPurchaseTorpedo.setVisibility(GameData.torpedoAdded ? View.GONE : View.VISIBLE);
+        btnAddTorpedo.setVisibility(GameData.torpedoAdded ? View.GONE : View.VISIBLE);
+        
+        btnPurchaseGrenade.setVisibility(GameData.grenadeAdded ? View.GONE : View.VISIBLE);
+        btnAddGrenade.setVisibility(GameData.grenadeAdded ? View.GONE : View.VISIBLE);
+        
+        btnPurchaseGun.setVisibility(GameData.gunAdded ? View.GONE : View.VISIBLE);
+        btnAddGun.setVisibility(GameData.gunAdded ? View.GONE : View.VISIBLE);
+        
+        btnPurchaseRocketship.setVisibility(GameData.rocketshipAdded ? View.GONE : View.VISIBLE);
+        btnAddRocketship.setVisibility(GameData.rocketshipAdded ? View.GONE : View.VISIBLE);
     }
 }

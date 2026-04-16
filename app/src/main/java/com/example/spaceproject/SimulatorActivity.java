@@ -223,7 +223,7 @@ public class SimulatorActivity extends AppCompatActivity {
         btnInstantTrain.setEnabled(false);
 
         CrewMember trained = GameData.crewList.get(selectedCrewIndex);
-        trained.train(0); // +2 XP, isTrained = true
+        trained.train(0); // This internally increments trainingSessions
 
         updateUI();
 

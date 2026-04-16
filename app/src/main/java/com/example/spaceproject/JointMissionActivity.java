@@ -72,6 +72,19 @@ public class JointMissionActivity extends AppCompatActivity {
     }
 
     private void setupMission() {
+        // Increment colony-wide total missions
+        StatisticsActivity.totalMissions++;
+        
+        // Increment missions participated for both crew members in GameData
+        for (CrewMember m : GameData.crewList) {
+            if (crewA != null && m.name.equals(crewA.name)) {
+                m.setMissionsParticipated(m.getMissionsParticipated() + 1);
+            }
+            if (crewB != null && m.name.equals(crewB.name)) {
+                m.setMissionsParticipated(m.getMissionsParticipated() + 1);
+            }
+        }
+
         int avgXP = 0;
         int countXP = 0;
         if (crewA != null) { avgXP += crewA.experience; countXP++; }
@@ -353,40 +366,56 @@ public class JointMissionActivity extends AppCompatActivity {
     private void endMission(boolean success) {
         missionOver = true;
         if (success) {
+            StatisticsActivity.missionsWon++;
             GameData.successfulMissionsCount++;
             GameData.addCoins(10);
             appendLog("MISSION COMPLETE", Color.WHITE, true);
             Toast.makeText(this, "Joint Mission Success!", Toast.LENGTH_SHORT).show();
-            updateGameDataOnSuccess();
+            updateGameData(true);
         } else {
             appendLog("MISSION FAILED", Color.WHITE, true);
-            removeCrewFromGame(crewA);
-            removeCrewFromGame(crewB);
+            GameData.coins = Math.max(0, GameData.coins - 5);
+            Toast.makeText(this, "Mission Failed! -5 Coins Penalty.", Toast.LENGTH_LONG).show();
+            updateGameData(false);
         }
         updateUI();
     }
 
-    private void updateGameDataOnSuccess() {
-        for (CrewMember m : GameData.crewList) {
-            if (crewA != null && m.name.equals(crewA.name) && crewA.currentEnergy > 0) {
-                m.experience += 2;
-                m.skillLevel += 1;
-                m.currentEnergy = crewA.currentEnergy;
-            }
-            if (crewB != null && m.name.equals(crewB.name) && crewB.currentEnergy > 0) {
-                m.experience += 2;
-                m.skillLevel += 1;
-                m.currentEnergy = crewB.currentEnergy;
-            }
-        }
+    private void updateGameData(boolean success) {
+        if (crewA != null) syncCrewMember(crewA, success);
+        if (crewB != null) syncCrewMember(crewB, success);
     }
 
-    private void removeCrewFromGame(CrewMember crew) {
-        if (crew == null) return;
-        Iterator<CrewMember> it = GameData.crewList.iterator();
-        while (it.hasNext()) {
-            if (it.next().name.equals(crew.name)) {
-                it.remove();
+    private void syncCrewMember(CrewMember localCopy, boolean success) {
+        for (CrewMember m : GameData.crewList) {
+            if (m.name.equals(localCopy.name)) {
+                m.currentEnergy = localCopy.currentEnergy;
+                if (success) {
+                    m.setMissionsWon(m.getMissionsWon() + 1);
+                    // Award XP/Skill only if they survived the mission
+                    if (m.currentEnergy > 0) {
+                        m.experience += 2;
+                        m.skillLevel += 1;
+                    }
+                } else {
+                    m.setMissionsLost(m.getMissionsLost() + 1);
+                }
+
+                // If they died (reached 0 energy), send to Hospital
+                if (m.currentEnergy <= 0) {
+                    m.location = "Hospital";
+                    // Avoid duplicate patient entries
+                    boolean alreadyIn = false;
+                    for (HospitalActivity.Patient p : HospitalActivity.patients) {
+                        if (p.name.equals(m.name)) {
+                            alreadyIn = true;
+                            break;
+                        }
+                    }
+                    if (!alreadyIn) {
+                        HospitalActivity.patients.add(new HospitalActivity.Patient(m.name, HospitalActivity.PatientStatus.CRITICAL));
+                    }
+                }
                 break;
             }
         }

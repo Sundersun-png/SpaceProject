@@ -48,6 +48,16 @@ public class EngineerMissionActivity extends AppCompatActivity {
                 break;
             }
         }
+        
+        if (engineer != null) {
+            // Check if engineer is in hospital
+            if ("Hospital".equalsIgnoreCase(engineer.location)) {
+                Toast.makeText(this, "Engineer is in Hospital!", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+            engineer.setMissionsParticipated(engineer.getMissionsParticipated() + 1);
+        }
 
         findViewById(R.id.btnBack).setOnClickListener(v -> {
             if (countDownTimer != null) countDownTimer.cancel();
@@ -78,7 +88,6 @@ public class EngineerMissionActivity extends AppCompatActivity {
     private void startMission() {
         puzzleCount = 0;
         puzzlesSolved = 0;
-        // updateProgress(); // Removed to fix starting at 2/5
         nextPuzzle();
         startCountdown();
     }
@@ -123,6 +132,8 @@ public class EngineerMissionActivity extends AppCompatActivity {
             if (engineer != null) {
                 engineer.experience += 1;
                 engineer.skillLevel += 1;
+                // Profession-specific mission wins count as training sessions
+                engineer.setTrainingSessions(engineer.getTrainingSessions() + 1);
                 Toast.makeText(this, "Mission Successful! +1 XP, +1 Skill.", Toast.LENGTH_LONG).show();
             }
             GameData.addCoins(10);

@@ -114,7 +114,7 @@ public class MedicTrainingActivity extends AppCompatActivity {
 
     private void completeTraining() {
         if (activeMedic != null) {
-            activeMedic.experience += 1;
+            activeMedic.train(0); // Using the train method to increment session count
             Toast.makeText(this, "Medic training complete! Skill +1", Toast.LENGTH_SHORT).show();
         }
         tvCountdown.setVisibility(View.GONE);

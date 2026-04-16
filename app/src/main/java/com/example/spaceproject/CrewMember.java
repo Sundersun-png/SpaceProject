@@ -13,6 +13,11 @@ public class CrewMember implements Serializable {
     public String location = "Quarters";
     public boolean isTrained = false;
 
+    private int missionsParticipated = 0;
+    private int missionsWon = 0;
+    private int missionsLost = 0;
+    private int trainingSessions = 0;
+
     public CrewMember(String name, String role, int resilience, int maxEnergy) {
         this.name = name;
         this.role = role;
@@ -33,6 +38,7 @@ public class CrewMember implements Serializable {
 
     public void train(int bonus) {
         isTrained = true;
+        trainingSessions++; // Increment training sessions
         if (isScientist()) {
             experience += 1 + bonus;
         } else {
@@ -50,6 +56,38 @@ public class CrewMember implements Serializable {
             case "Soldier": return "soldier";
             default: return "ic_launcher_foreground";
         }
+    }
+
+    public int getMissionsParticipated() {
+        return missionsParticipated;
+    }
+
+    public void setMissionsParticipated(int missionsParticipated) {
+        this.missionsParticipated = missionsParticipated;
+    }
+
+    public int getMissionsWon() {
+        return missionsWon;
+    }
+
+    public void setMissionsWon(int missionsWon) {
+        this.missionsWon = missionsWon;
+    }
+
+    public int getMissionsLost() {
+        return missionsLost;
+    }
+
+    public void setMissionsLost(int missionsLost) {
+        this.missionsLost = missionsLost;
+    }
+
+    public int getTrainingSessions() {
+        return trainingSessions;
+    }
+
+    public void setTrainingSessions(int trainingSessions) {
+        this.trainingSessions = trainingSessions;
     }
 
     @Override

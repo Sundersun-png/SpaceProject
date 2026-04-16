@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/engineerback">
+    android:background="@drawable/bg_soldier_mission">
 
-    <!-- Cloud/Mist Overlay for atmospheric effect -->
+    <!-- Cloud/Mist Overlay -->
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -35,7 +35,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <!-- Top Right Stats Panel -->
+    <!-- Stats Panel -->
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,56 +51,41 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="12dp">
-
-            <TextView
-                android:id="@+id/tvEnergy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Energy: 100%"
-                android:textColor="#00FF00"
-                android:textSize="12sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/tvThreatSkill"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Threat Skill: 50"
-                android:textColor="#FF0000"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"/>
-
-            <TextView
-                android:id="@+id/tvThreatResilience"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Threat Resilience: 80"
-                android:textColor="#FF6600"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"/>
-
-            <TextView
-                android:id="@+id/tvDamage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Damage: 0"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"/>
-
-            <TextView
-                android:id="@+id/tvCrewStats"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Skill: 0 | XP: 0"
-                android:textColor="#00FFFF"
-                android:textSize="12sp"
-                android:layout_marginTop="4dp"/>
-
+            <TextView android:id="@+id/tvEnergy" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Energy: 100%" android:textColor="#00FF00" android:textSize="12sp" android:textStyle="bold"/>
+            <TextView android:id="@+id/tvThreatSkill" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Threat Skill: 0" android:textColor="#FF0000" android:textSize="12sp" android:layout_marginTop="4dp"/>
+            <TextView android:id="@+id/tvThreatResilience" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Threat Resilience: 0" android:textColor="#FF6600" android:textSize="12sp" android:layout_marginTop="4dp"/>
+            <TextView android:id="@+id/tvDamage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Damage: 0" android:textColor="#FFFFFF" android:textSize="12sp" android:layout_marginTop="4dp" android:visibility="gone"/>
+            <TextView android:id="@+id/tvCrewStats" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Skill: 0 | XP: 0" android:textColor="#00FFFF" android:textSize="12sp" android:layout_marginTop="4dp"/>
+            <TextView android:id="@+id/tvCoins" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Soldier (Left) -->
+    <!-- Health Bars -->
+    <ProgressBar
+        android:id="@+id/soldierHealthBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="120dp"
+        android:layout_height="8dp"
+        android:progress="100"
+        android:progressTint="#00FF00"
+        app:layout_constraintBottom_toTopOf="@id/imgSoldier"
+        app:layout_constraintStart_toStartOf="@id/imgSoldier"
+        app:layout_constraintEnd_toEndOf="@id/imgSoldier"
+        android:layout_marginBottom="8dp"/>
+
+    <ProgressBar
+        android:id="@+id/enemyHealthBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="120dp"
+        android:layout_height="8dp"
+        android:progress="100"
+        android:progressTint="#FF0000"
+        app:layout_constraintBottom_toTopOf="@id/imgAlien"
+        app:layout_constraintStart_toStartOf="@id/imgAlien"
+        app:layout_constraintEnd_toEndOf="@id/imgAlien"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Soldier -->
     <ImageView
         android:id="@+id/imgSoldier"
         android:layout_width="160dp"
@@ -110,9 +95,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="160dp"
-        android:layout_marginStart="20dp"/>
+        android:layout_marginStart="20dp"
+        android:contentDescription="soldier"/>
 
-    <!-- Alien (Right) -->
+    <!-- Alien/Tyranide -->
     <ImageView
         android:id="@+id/imgAlien"
         android:layout_width="140dp"
@@ -122,48 +108,50 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="180dp"
-        android:layout_marginEnd="30dp"/>
+        android:layout_marginEnd="30dp"
+        android:contentDescription="alien"/>
 
-    <!-- Action Buttons in a vertical list at bottom right -->
+    <!-- Projectile -->
+    <ImageView
+        android:id="@+id/projectile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="projectile"/>
+
+    <!-- Combat Log -->
+    <TextView
+        android:id="@+id/tvCombatLog"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="#AA000000"
+        android:padding="8dp"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:scrollbars="vertical"
+        android:maxLines="4"
+        app:layout_constraintBottom_toTopOf="@id/buttonPanel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Buttons -->
     <LinearLayout
         android:id="@+id/buttonPanel"
-        android:layout_width="160dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="end"
+        android:orientation="horizontal"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            android:id="@+id/btnTorpedo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Torpedo Strike"
-            android:textSize="11sp"
-            android:layout_marginBottom="4dp"
-            android:backgroundTint="#8B0000"
-            android:textColor="#FFFFFF"/>
-
-        <Button
-            android:id="@+id/btnPowerBoost"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Power Boost"
-            android:textSize="11sp"
-            android:layout_marginBottom="4dp"
-            android:backgroundTint="#00008B"
-            android:textColor="#FFFFFF"/>
-
-        <Button
-            android:id="@+id/btnReduceSkill"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Reduce Skill"
-            android:textSize="11sp"
-            android:backgroundTint="#006400"
-            android:textColor="#FFFFFF"/>
-
+        <Button android:id="@+id/btnShoot" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="SHOOT" android:layout_margin="4dp" android:backgroundTint="#CC2D82"/>
+        <Button android:id="@+id/btnDodge" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="DODGE" android:layout_margin="4dp" android:backgroundTint="#CC2D82"/>
+        <Button android:id="@+id/btnGrenade" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="GRENADE" android:layout_margin="4dp" android:backgroundTint="#CC2D82"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

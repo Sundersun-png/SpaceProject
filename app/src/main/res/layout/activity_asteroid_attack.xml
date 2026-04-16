@@ -166,28 +166,6 @@
         android:layout_marginBottom="16dp">
 
         <Button
-            android:id="@+id/btnUseWeakness"
-            android:layout_width="120dp"
-            android:layout_height="50dp"
-            android:text="Weak Enemy"
-            android:textSize="10sp"
-            android:backgroundTint="#4CAF50"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="8dp"
-            android:enabled="false"/>
-
-        <Button
-            android:id="@+id/btnUseTorpedo"
-            android:layout_width="120dp"
-            android:layout_height="50dp"
-            android:text="Use Torpedo"
-            android:textSize="10sp"
-            android:backgroundTint="#F44336"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="8dp"
-            android:enabled="false"/>
-
-        <Button
             android:id="@+id/btnPowerBoost"
             android:layout_width="120dp"
             android:layout_height="50dp"
