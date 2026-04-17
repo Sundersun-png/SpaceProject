@@ -152,4 +152,24 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="60dp" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="263dp"
+        android:layout_height="72dp"
+        android:layout_above="@+id/layoutNavButtons"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="89dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="110dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Navigation"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FAF3F3"
+        android:textColorLink="#A4A2A2"
+        android:textSize="48sp" />
+
 </RelativeLayout>

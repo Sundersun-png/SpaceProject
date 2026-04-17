@@ -78,7 +78,7 @@ public class SoldierMissionActivity extends AppCompatActivity {
                 finish();
                 return;
             }
-            soldier.setMissionsParticipated(soldier.getMissionsParticipated() + 1);
+            // Training missions do not count as 'missions' in Statistics page
         }
 
         // Initialize Enemy scaling
@@ -279,19 +279,14 @@ public class SoldierMissionActivity extends AppCompatActivity {
             if (soldier != null) {
                 soldier.experience += 1;
                 soldier.skillLevel += 1;
-                // Simulator wins count as training sessions
+                // Training sessions updated for successful training mission
                 soldier.setTrainingSessions(soldier.getTrainingSessions() + 1);
+                Toast.makeText(this, "Training Successful! Soldier +1 XP, +1 Skill.", Toast.LENGTH_LONG).show();
             }
             GameData.addCoins(10);
-            Toast.makeText(this, "Mission Successful! Soldier +1 XP, +1 Skill.", Toast.LENGTH_LONG).show();
             finish();
         } else if (soldierHealth <= 0) {
-            if (soldier != null) {
-                soldier.location = "Hospital";
-                soldier.currentEnergy = 0;
-                HospitalActivity.patients.add(new HospitalActivity.Patient(soldier.name, HospitalActivity.PatientStatus.CRITICAL));
-            }
-            Toast.makeText(this, "Mission Failed! Soldier sent to Hospital.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Training Failed! Try again later.", Toast.LENGTH_SHORT).show();
             finish();
         }
     }

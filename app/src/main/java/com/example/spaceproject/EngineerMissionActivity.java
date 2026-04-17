@@ -56,7 +56,7 @@ public class EngineerMissionActivity extends AppCompatActivity {
                 finish();
                 return;
             }
-            engineer.setMissionsParticipated(engineer.getMissionsParticipated() + 1);
+            // Training missions do not count as 'missions' in Statistics page
         }
 
         findViewById(R.id.btnBack).setOnClickListener(v -> {
@@ -132,19 +132,19 @@ public class EngineerMissionActivity extends AppCompatActivity {
             if (engineer != null) {
                 engineer.experience += 1;
                 engineer.skillLevel += 1;
-                // Profession-specific mission wins count as training sessions
+                // successful training session increment
                 engineer.setTrainingSessions(engineer.getTrainingSessions() + 1);
-                Toast.makeText(this, "Mission Successful! +1 XP, +1 Skill.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Training Successful! +1 XP, +1 Skill.", Toast.LENGTH_LONG).show();
             }
             GameData.addCoins(10);
             tvResultIcon.setText("⚙️");
-            tvResultTitle.setText("REACTOR STABILIZED");
+            tvResultTitle.setText("TRAINING COMPLETE");
             tvResultMessage.setText("You solved " + puzzlesSolved + " puzzles! Accessing inventory...");
             cardResult.setVisibility(View.VISIBLE);
         } else {
             tvResultIcon.setText("💥");
-            tvResultTitle.setText("REACTOR FAILURE");
-            tvResultMessage.setText("Only solved " + puzzlesSolved + ". Ship takes damage!");
+            tvResultTitle.setText("TRAINING FAILED");
+            tvResultMessage.setText("Only solved " + puzzlesSolved + " puzzles. Try again later.");
             cardResult.setVisibility(View.VISIBLE);
         }
     }

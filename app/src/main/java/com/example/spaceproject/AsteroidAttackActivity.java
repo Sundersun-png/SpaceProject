@@ -25,6 +25,7 @@ public class AsteroidAttackActivity extends AppCompatActivity {
     private int ufoEnergy = 100;
     private boolean isPowerBoostActive = false;
     private float ufoSpeedMultiplier = 1.0f;
+    private boolean missionOver = false;
 
     private TextView tvCoins, tvEnergyLevel, tvDamage, tvPowerBoostCountdown, tvUfoEnergy;
     private ImageView ivUfo, ivRocketship;
@@ -64,7 +65,13 @@ public class AsteroidAttackActivity extends AppCompatActivity {
         findPilot();
         
         if (pilot != null) {
-            pilot.setMissionsParticipated(pilot.getMissionsParticipated() + 1);
+            // Check if pilot is in hospital
+            if ("Hospital".equalsIgnoreCase(pilot.location)) {
+                Toast.makeText(this, "Pilot is in Hospital!", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+            // Training mission - do not increment missionsParticipated here
         }
 
         updateUI();
@@ -93,6 +100,7 @@ public class AsteroidAttackActivity extends AppCompatActivity {
     }
 
     private void launchMeteor() {
+        if (missionOver) return;
         ImageView meteor = new ImageView(this);
         meteor.setImageResource(R.drawable.meteor);
         meteor.setLayoutParams(new ViewGroup.LayoutParams(60, 60));
@@ -103,6 +111,7 @@ public class AsteroidAttackActivity extends AppCompatActivity {
     }
 
     private void moveRocket(float deltaX) {
+        if (missionOver) return;
         float newX = ivRocketship.getX() + deltaX;
         if (newX >= 0 && newX <= gameContainer.getWidth() - ivRocketship.getWidth()) {
             ivRocketship.setX(newX);
@@ -110,7 +119,7 @@ public class AsteroidAttackActivity extends AppCompatActivity {
     }
 
     private void activatePowerBoost() {
-        if (isPowerBoostActive) return;
+        if (isPowerBoostActive || missionOver) return;
         if (!GameData.powerBoostAdded) {
             if (GameData.coins < 5) return;
             GameData.coins -= 5;
@@ -138,7 +147,7 @@ public class AsteroidAttackActivity extends AppCompatActivity {
         meteorSpawner = new Runnable() {
             @Override
             public void run() {
-                if (isPowerBoostActive) {
+                if (isPowerBoostActive && !missionOver) {
                     launchMeteor();
                     gameHandler.postDelayed(this, 200);
                 }
@@ -155,17 +164,21 @@ public class AsteroidAttackActivity extends AppCompatActivity {
         gameHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                updateGame();
-                gameHandler.postDelayed(this, 30);
+                if (!missionOver) {
+                    updateGame();
+                    gameHandler.postDelayed(this, 30);
+                }
             }
         }, 30);
 
         gameHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                moveUfo();
-                dropAsteroid();
-                gameHandler.postDelayed(this, (long)(1500 / ufoSpeedMultiplier));
+                if (!missionOver) {
+                    moveUfo();
+                    dropAsteroid();
+                    gameHandler.postDelayed(this, (long)(1500 / ufoSpeedMultiplier));
+                }
             }
         }, 1500);
     }
@@ -255,23 +268,26 @@ public class AsteroidAttackActivity extends AppCompatActivity {
     }
 
     private void checkWin() {
-        if (ufoEnergy <= 0) {
+        if (ufoEnergy <= 0 && !missionOver) {
+            missionOver = true;
             gameHandler.removeCallbacksAndMessages(null);
             if (pilot != null) {
                 pilot.experience += 1;
                 pilot.skillLevel += 1;
-                pilot.setMissionsWon(pilot.getMissionsWon() + 1);
+                // Pilot training mission win updates trainingSessions
+                pilot.setTrainingSessions(pilot.getTrainingSessions() + 1);
             }
             GameData.addCoins(20);
-            Toast.makeText(this, "Mission Accomplished! Pilot +1 XP, +1 Skill.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Training Successful! Pilot +1 XP, +1 Skill.", Toast.LENGTH_LONG).show();
             finish();
         }
     }
 
     private void checkGameOver() {
-        if (pilotEnergy <= 0 || damageTaken >= 5) {
+        if ((pilotEnergy <= 0 || damageTaken >= 5) && !missionOver) {
+            missionOver = true;
             gameHandler.removeCallbacksAndMessages(null);
-            Toast.makeText(this, "Mission Failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Training Failed! Try again later.", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
